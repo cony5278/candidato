@@ -17,7 +17,7 @@ class MDAdmin
     {
         $usuario=\Auth::user();
         if($usuario->type='S'){
-            return view('mensajes.msj_rechazado')->with("msj","No tine suficientes privilegios para acceder a esta sección");
+            return view('alert.mensaje')->with("msj","No tine suficientes privilegios para acceder a esta sección");
         }
         return $next($request);
     }
