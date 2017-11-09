@@ -15,8 +15,8 @@ class CreatePuntosVotacionsTable extends Migration
     {
         Schema::create('puntos_votacions', function (Blueprint $table) {
             $table->string('id',15)->primary();
-            $table->string('nombre',60)->nullable();
-            $table->string('id_barrio',15)->nullable();
+            $table->string('nombre',60);
+            $table->string('id_barrio',15);
             $table->foreign('id_barrio')
                 ->references('id')->on('barrios');
             $table->timestamps();

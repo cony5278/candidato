@@ -15,8 +15,8 @@ class CreateMesasVotacionsTable extends Migration
     {
         Schema::create('mesas_votacions', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('numero')->nullable();
-            $table->string('id_punto',15)->nullable();
+            $table->integer('numero');
+            $table->string('id_punto',15);
             $table->foreign('id_punto')
                 ->references('id')
                 ->on('puntos_votacions');
