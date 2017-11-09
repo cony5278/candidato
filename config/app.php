@@ -66,7 +66,6 @@ return [
     */
 
     'timezone' => 'America/Caracas',
-
     /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
