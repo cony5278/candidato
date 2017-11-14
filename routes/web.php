@@ -19,4 +19,16 @@ Route::get('/', function () {
 Route::resource('consultar', 'ConsultarInformacionElectoral');
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware'=>'admin'],function(){
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::post('registrar', 'RegistrarUsuarioController@registrar')->name('registrar');
+    Route::post('actualizar/{id}', 'RegistrarUsuarioController@update')->name('actualizar');
+    Route::get('form_editar_usuario/{id}', 'RegistrarUsuarioController@form_editar_usuario');
+    Route::get('form_crear_usuario', 'RegistrarUsuarioController@form_crear_usuario');
+    Route::get('form_listar_usuario', 'RegistrarUsuarioController@form_listar_usuario');
+
+   // Route::get('form_crear_usuario/{id}', '');
+   // Route::post('/registrarpersona','RegistrarUsuarioController@register')->name('registrarpersona');
+
+});
+

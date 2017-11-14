@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Support\Facades\Session;
+
 
 class MDAdmin
 {
@@ -16,9 +18,11 @@ class MDAdmin
     public function handle($request, Closure $next)
     {
         $usuario=\Auth::user();
-        if($usuario->type='S'){
-            return view('alert.mensaje')->with("msj","No tine suficientes privilegios para acceder a esta sección");
-        }
+        if($usuario->type=='A'){
+
+            Session::flash("activar",true);
+            Session::flash("msj","No tiene privilegios para acceder a este recurso consulte al administrador del sistema");
+         }
         return $next($request);
     }
 }

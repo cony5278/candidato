@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\User;
+use Illuminate\Support\Facades\Session;
 class HomeController extends Controller
 {
+    private $suario;
+
+
+
     /**
      * Create a new controller instance.
      *
@@ -13,6 +18,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
+        $this -> usuario = new User ( );
         $this->middleware('auth');
     }
 
@@ -23,6 +29,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $user=\Auth::user();
+
+        return view('layouts.appadmin')->with(['usuarioAdmin'=> $this -> usuario->getAllUsuarioAdmin($user->type=='S'?'A':'E')]);
     }
 }

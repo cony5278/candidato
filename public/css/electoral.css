@@ -1,0 +1,8 @@
+.notificacion{
+    display: none;
+    z-index: 100;
+    width: 20%;
+    position: absolute;
+    left: 80%;
+    top: 50%;
+}
