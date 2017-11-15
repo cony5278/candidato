@@ -23,20 +23,15 @@
     <link href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
     <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
     <link href="{{ asset('css/sb-admin.css') }}" rel="stylesheet">
-
+    <link href="{{ asset('css/electoral.css') }}" rel="stylesheet">
     <script type="text/javascript" src="{{ asset('js/jquery-3.2.1.min.js')}}"></script>
     <script type="text/javascript" src="{{ asset('js/enviar.js')}}"></script>
-
+    <script type="text/javascript" src="{{ asset('js/notificacion.js')}}"></script>
 
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
-<script>
 
-    var notificacion = new Notificacion();
-    notificacion.crearContenedor();
-    notificacion.crearNotificacion("dfdsf", "SUCCESS");
-</script>
 @include('alert.notificacion')
 
 <!-- Navigation-->
@@ -130,10 +125,7 @@
 <div class="content-wrapper">
     <div class="porro"></div>
     <div class="container-fluid contenedor-persona">
-
-        @include('alert.mensaje')
         @include('auth.admin.listar')
-
     </div>
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->

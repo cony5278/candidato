@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
             $table->string('lastname')->nullable();
             $table->string('lastname2')->nullable();
             $table->string('nit')->nullable();
-            $table -> enum ( 'type',['A' , 'A' ,'E'] );
+            $table -> enum ( 'type',['S' , 'A' ,'E'] );
             $table->string('email')->unique();
             $table->string('password');
             $table->string('photo')->default("default.png");

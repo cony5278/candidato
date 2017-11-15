@@ -1,6 +1,6 @@
 .notificacion{
     display: none;
-    z-index: 100;
+    z-index: 1050;
     width: 20%;
     position: absolute;
     left: 80%;

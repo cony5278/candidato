@@ -14,15 +14,12 @@
 Route::get('/', function () {
     return view('welcome');
 });
-
-
-Route::resource('consultar', 'ConsultarInformacionElectoral');
 Auth::routes();
 
 Route::group(['middleware'=>'admin'],function(){
     Route::get('/home', 'HomeController@index')->name('home');
     Route::post('registrar', 'RegistrarUsuarioController@registrar')->name('registrar');
-    Route::post('actualizar/{id}', 'RegistrarUsuarioController@update')->name('actualizar');
+    Route::resource('usuario', 'RegistrarUsuarioController');
     Route::get('form_editar_usuario/{id}', 'RegistrarUsuarioController@form_editar_usuario');
     Route::get('form_crear_usuario', 'RegistrarUsuarioController@form_crear_usuario');
     Route::get('form_listar_usuario', 'RegistrarUsuarioController@form_listar_usuario');

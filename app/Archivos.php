@@ -90,10 +90,9 @@ class Archivos {
      * @param  $nombre
      * @return string
      */
-    private function nombreRutaArchivos ($extension , $nombre)
+    private function nombreRutaArchivos ($usuario,$extension , $nombre)
     {
-        return Auth :: user ( ) -> type . '/'.Auth :: user ( ) -> id . '/' . $extension . '/' .
-            $nombre;
+        return $usuario -> type . '/'.$usuario -> id . '/' .$nombre;
 
     }
 
@@ -102,10 +101,10 @@ class Archivos {
      * @param  $dateServidor
      * @return string
      */
-    private function nombreRutaArchivo ()
+    private function nombreRutaArchivo ($usuario)
     {
 
-        return $this -> nombreRutaArchivos ( $this -> file -> getClientOriginalExtension ( ),
+        return $this -> nombreRutaArchivos ( $usuario,$this -> file -> getClientOriginalExtension ( ),
             $this -> file -> getClientOriginalName ( ) );
 
     }
@@ -113,10 +112,11 @@ class Archivos {
     /**
      * metodo que guarda el archivo en la ruta especifica
      */
-    public function guardarArchivo ()
+    public function guardarArchivo ($usuario)
     {
+
         Storage :: disk ( EvssaConstantes :: LOCAL ) -> put (
-            $this -> nombreRutaArchivo (  ),
+            $this -> nombreRutaArchivo ( $usuario ),
             File :: get ( $this -> file ) );
 
     }

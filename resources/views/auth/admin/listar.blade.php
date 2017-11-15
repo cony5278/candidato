@@ -1,3 +1,4 @@
+
 <button type="submit" onclick="mostrarseccion('I','')" class="btn btn-primary">
     Nuevo
 </button>

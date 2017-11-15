@@ -47,7 +47,7 @@
 
                             <div class="col-md-6">
 
-                                <input type="hidden" name="type" value="{{Auth::user()->type=='S'?'A':'E'}}"/>
+                                <input type="hidden" name="type" value="{{Auth::user()->type}}"/>
                                 <input id="name" type="text" class="form-control" name="name" value="{{ old('name') }}" required autofocus>
 
                                 @if ($errors->has('name'))

@@ -87,7 +87,7 @@ function Notificacion(){
 			return codigo;
 
 	        break;		 
-	        case "SUCCESS":		
+	        case "SUCCESS":
 	            codigo="<div class='notificacion-mensajes col-xs-12 col-sm-12 col-md-12' id='notificacion-"+this.contador+"'>";
 		        codigo+="    <div class='alert alert-success'>";
 		        codigo+="        <button  type='button' class='close' data-dismiss='alert' aria-hidden='true'>";

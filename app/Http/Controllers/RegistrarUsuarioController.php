@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Session;
 use App\Archivos;
 
 
@@ -69,7 +69,6 @@ class RegistrarUsuarioController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
             'type' => 'required',
-            'photo' => 'required',
         ]);
     }
 
@@ -81,17 +80,23 @@ class RegistrarUsuarioController extends Controller
      */
     public function create(array $data)
     {
-
-        $archivo = new Archivos ($data['photo']);
-        $archivo -> guardarArchivo ( );
         $usuario=new User();
+
 
         $usuario->name = $data['name'];
         $usuario->email= $data['email'];
         $usuario->password = bcrypt($data['password']);
-        $usuario->type= $data['type']=='A'?'A':'E';
-        $usuario->photo = $archivo -> getArchivoNombreExtension();
+        $usuario->type= $data['type']=='S'?'A':'E';
+        if (!empty($data['photo'])) {
+            $archivo = new Archivos ($data['photo']);
+            $usuario->photo = $archivo -> getArchivoNombreExtension();
+        }
         $usuario->save();
+        if (!empty($data['photo'])) {
+            $archivo->guardarArchivo($usuario);
+        }
+        Session::flash("notificacion","SUCCESS");
+        Session::flash("msj","Usuario creado. ");
         return $usuario;
 
 
@@ -130,6 +135,16 @@ class RegistrarUsuarioController extends Controller
         //
     }
 
+    public function changue_password(Request $request, $id){
+
+    }
+    public function validatorUpdate(array $data)
+    {
+        return Validator::make($data, [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+        ]);
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -140,18 +155,21 @@ class RegistrarUsuarioController extends Controller
     public function update(Request $request, $id)
     {
 
-        $usuario=$this->usuario->getUsuarioTipo($id);
+        $this->validatorUpdate($request->all())->validate();
+
+        $usuario = $this->usuario->getUsuarioTipo($id);
 
         $usuario->name = $request->name;
-        $usuario->email= $request->email;
-        if(Hash::check($request->passwordold,$request->password)){
-            return back()->with(["error"=>"La contraseña no se cambio."]);
-        }else{
-            $usuario->save();
-            return back()->with(["exito"=>"La contraseña se cambio correctamente."]);
+        $usuario->email = $request->email;
+        if (!empty($request->photo)) {
+            $archivo = new Archivos ($request->photo);
+            $archivo -> guardarArchivo ( );
+            $usuario->photo = $archivo->getArchivoNombreExtension();
         }
-
-
+        $usuario->save();
+        Session::flash("notificacion","SUCCESS");
+        Session::flash("msj","Se cambiaron los datos correctamente.");
+        return  redirect($this->redirectPath());
     }
 
     /**

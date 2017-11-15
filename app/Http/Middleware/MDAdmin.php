@@ -19,8 +19,7 @@ class MDAdmin
     {
         $usuario=\Auth::user();
         if($usuario->type=='A'){
-
-            Session::flash("activar",true);
+            Session::flash("notificacion","DANGER");
             Session::flash("msj","No tiene privilegios para acceder a este recurso consulte al administrador del sistema");
          }
         return $next($request);

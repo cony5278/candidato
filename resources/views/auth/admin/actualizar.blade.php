@@ -1,4 +1,7 @@
-<form class="formulario-persona" enctype="multipart/form-data" id="form-persona" method="POST" action="{{ route('registrar').'/'.$usuario->id }}">
+<form class="formulario-persona" enctype="multipart/form-data" id="form-persona" method="POST" action="{{ route('usuario.update',$usuario->id) }}">
+
+    <input name="_method" type="hidden" value="PUT">
+
     <button type="submit"  class="btn btn-primary">
         Guardar
     </button>
@@ -34,7 +37,7 @@
                                     }
                                 });
                             </script>
-                            <img id="imagePreview"  alt="Bootstrap Image Preview" src="{{'archivos/'.$usuario->type.'/'.$usuario->id.'/'.$usuario->photo}}" class="img-circle" style="width:120px;height: 120px;"/>
+                            <img id="imagePreview"  alt="Bootstrap Image Preview" src="{{$usuario->photo=='default.png'?'archivos/\\default.png':'archivos/'.$usuario->type.'/'.$usuario->id.'/'.$usuario->photo}}" class="img-circle" style="width:120px;height: 120px;"/>
 
 
                         </div>
@@ -46,14 +49,10 @@
 
                                 <div class="col-md-6">
 
-                                    <input type="hidden" name="type" value="{{Auth::user()->type=='A'?'A':'E'}}"/>
-                                    <input id="name" type="text" class="form-control" name="name" value="{{ $usuario->name }}" required autofocus>
+                                    <input type="hidden" name="type" value="{{$usuario->type}}"/>
+                                    <input id="name" type="text" class="form-control" name="name" value="{{ $usuario->name }}" >
 
-                                    @if ($errors->has('name'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                    @endif
+
                                 </div>
                             </div>
 
@@ -68,38 +67,6 @@
                                         <strong>{{ $errors->first('email') }}</strong>
                                     </span>
                                     @endif
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="passwordold" required>
-
-                                @if ($errors->has('passwordold'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('passwordold') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-
-                            <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                                <label for="password" class="col-md-4 control-label">Nueva:</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" name="password" required>
-
-                                    @if ($errors->has('password'))
-                                        <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="password-confirm" class="col-md-4 control-label">Confirmar la contraseña:</label>
-
-                                <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                                 </div>
                             </div>
 

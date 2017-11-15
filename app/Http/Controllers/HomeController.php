@@ -30,7 +30,6 @@ class HomeController extends Controller
     public function index()
     {
         $user=\Auth::user();
-
         return view('layouts.appadmin')->with(['usuarioAdmin'=> $this -> usuario->getAllUsuarioAdmin($user->type=='S'?'A':'E')]);
     }
 }
