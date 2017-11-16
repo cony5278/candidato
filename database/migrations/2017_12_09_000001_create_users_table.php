@@ -28,6 +28,10 @@ class CreateUsersTable extends Migration
             $table->foreign('id_mesa')
                 ->references('id')
                 ->on('mesas_votacions');
+            $table->integer('id_opcions')->unsigned()->nullable();
+            $table->foreign('id_opcions')
+                ->references('id')
+                ->on('opcions');
             $table->rememberToken();
             $table->timestamps();
             $table->string('address',40)->nullable();
