@@ -4,8 +4,12 @@
 function mostrarseccion(acme,id){
 
 switch (acme){
-    case "I":
+    case "I"://para mostrar el formulario del usuario administrador
         var url = "form_crear_usuario/";
+        getAjax(url);
+        break;
+    case "II"://para mostrar el formulario del usuario estandar
+        var url = "form_crear_usuarioe/";
         getAjax(url);
         break;
     case "A":

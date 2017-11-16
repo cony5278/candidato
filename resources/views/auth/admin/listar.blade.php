@@ -1,8 +1,8 @@
 
-<button type="submit" onclick="mostrarseccion('I','')" class="btn btn-primary">
+<button type="submit" onclick="mostrarseccion('.{{Auth::user()->type=='A'?'I':'II'}}.','')" class="btn btn-primary">
     Nuevo
 </button>
-
+@if (!$usuarioAdmin->isEmpty())
 <table class="table">
     <input type="hidden" id="usuario-token" name="_token" value="{{ csrf_token() }}">
     <thead >
@@ -29,4 +29,17 @@
     @endforeach
     </tbody>
 </table>
+@else
+    <div  style="
+                font-size: 84px;  margin-bottom: 30px;   text-align: center;
+                background-color: #fff;
+                color: #636b6f;
+                font-family: 'Raleway', sans-serif;
+                font-weight: 100;
+                height: 100vh;
+                margin: 0;
+    ">
+        Registre una Persona
+    </div>
+@endif
 {{$usuarioAdmin->render() }}

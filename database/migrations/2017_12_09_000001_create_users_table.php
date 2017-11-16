@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('lastname2')->nullable();
             $table->string('nit')->nullable();
             $table -> enum ( 'type',['S' , 'A' ,'E'] );
-            $table->string('email')->unique();
+            $table->string('email',90)->unique();
             $table->string('password');
             $table->string('photo')->default("default.png");
             $table->integer('id_mesa')->unsigned()->nullable();

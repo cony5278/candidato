@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title>Laravel</title>
-
+        <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
 
@@ -64,8 +64,12 @@
             }
         </style>
 
+        <link href="{{ asset('css/electoral.css') }}" rel="stylesheet">
+        <script type="text/javascript" src="{{ asset('js/jquery-3.2.1.min.js')}}"></script>
+        <script type="text/javascript" src="{{ asset('js/notificacion.js')}}"></script>
     </head>
     <body>
+    @include('alert.notificacion')
 
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))

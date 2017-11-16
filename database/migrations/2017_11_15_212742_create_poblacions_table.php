@@ -15,7 +15,7 @@ class CreatePoblacionsTable extends Migration
     {
         Schema::create('poblacions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre',10);
+            $table->string('nombre',30);
             $table->timestamps();
         });
     }

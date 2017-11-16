@@ -15,7 +15,7 @@ class CreateOtrosTable extends Migration
     {
         Schema::create('otros', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre','10');
+            $table->string('nombre',15);
             $table->timestamps();
         });
     }

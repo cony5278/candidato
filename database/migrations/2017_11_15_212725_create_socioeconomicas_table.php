@@ -15,7 +15,7 @@ class CreateSocioeconomicasTable extends Migration
     {
         Schema::create('socioeconomicas', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nivel',10);
+            $table->string('nivel',20);
             $table->timestamps();
         });
     }
