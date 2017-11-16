@@ -29,3 +29,7 @@ Route::group(['middleware'=>'admin'],function(){
 
 });
 
+Route::group(['middleware'=>'usuarioEstandar'],function(){
+
+
+});
