@@ -30,6 +30,8 @@ class CreateUsersTable extends Migration
                 ->on('mesas_votacions');
             $table->rememberToken();
             $table->timestamps();
+            $table->string('address',40)->nullable();
+            $table -> enum ( 'sex',['F' , 'M'])->nullable();
         });
     }
 
