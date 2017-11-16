@@ -43,3 +43,22 @@ function postAjax(url,evento){
 function formulario(url,nombreFormulario){
     postAjax(url,nombreFormulario);
 }
+
+function eliminarDatos(opcion,id){
+    switch (opcion)
+    {
+        case "1":
+           var  data = {  _method:"delete",_token : $("#usuario-token").attr("value")};
+            $.post("usuario/"+id, data,function(resul){
+                $(".contenedor-persona").html(resul);
+            })
+            break;
+        case "2":
+            getAjax();
+            break;
+        case "3":
+            getAjax();
+            break;
+    }
+
+}

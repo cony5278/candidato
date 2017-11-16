@@ -163,13 +163,12 @@ class RegistrarUsuarioController extends Controller
         $usuario->email = $request->email;
         if (!empty($request->photo)) {
             $archivo = new Archivos ($request->photo);
-            $archivo -> guardarArchivo ( );
+            $archivo -> guardarArchivo ($usuario );
             $usuario->photo = $archivo->getArchivoNombreExtension();
         }
         $usuario->save();
-        Session::flash("notificacion","SUCCESS");
-        Session::flash("msj","Se cambiaron los datos correctamente.");
-        return  redirect($this->redirectPath());
+
+        return  redirect($this->redirectPath())->withInput()->with(["notificacion"=>"SUCCESS","msj"=>"Se cambiaron los datos correctamente."]);
     }
 
     /**
@@ -180,7 +179,12 @@ class RegistrarUsuarioController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        User::find($id)->delete();
+        $user=\Auth::user();
+        $listar=$this -> usuario->getAllUsuarioAdmin($user->type=='S'?'A':'E');
+        $listar->setPath(url("home"));
+        return view('auth.admin.listar')->with(['usuarioAdmin'=>$listar]);
     }
 
     public function form_crear_usuario(){

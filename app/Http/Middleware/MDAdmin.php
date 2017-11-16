@@ -19,9 +19,9 @@ class MDAdmin
     {
         $usuario=\Auth::user();
         if($usuario->type=='A'){
-            Session::flash("notificacion","DANGER");
-            Session::flash("msj","No tiene privilegios para acceder a este recurso consulte al administrador del sistema");
-         }
+
+            return  redirect($this->redirectPath())->withInput()->with(["notificacion"=>"DANGER","msj"=>"No tiene privilegios para acceder a este recurso consulte al administrador del sistema"]);
+        }
         return $next($request);
     }
 }
