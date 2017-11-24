@@ -17,7 +17,7 @@ class MDEUsuario
     {
         $usuario=\Auth::user();
         if($usuario->type='A'){
-            return view('alert.mensaje')->with("msj","Aun no ha sido asignado como usuario, consulte al administrador del sistema");
+            //return view('alert.mensaje')->with("msj","Aun no ha sido asignado como usuario, consulte al administrador del sistema");
         }
         return $next($request);
     }

@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Areaconocimiento;
+use App\MesasVotacion;
 use App\Nivelacademico;
 use App\Otro;
 use App\Poblacion;
+use App\PuntosVotacion;
 use App\Socioeconomica;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use App\Archivos;
+use Carbon\Carbon;
 
 class UsuarioEController extends Controller
 {
@@ -37,12 +40,14 @@ class UsuarioEController extends Controller
     public function index()
     {
         //
+        return 'hola';
+
     }
 
     public function registrar(Request $request)
     {
 
-        $this->validator($request->all())->validate();
+        //$this->validator($request->all())->validate();
         $this->create($request->all());
         return  redirect($this->redirectPath());
 
@@ -86,7 +91,35 @@ class UsuarioEController extends Controller
     public function create(array $data)
     {
 
+        $usuario=new User();
 
+
+        $usuario->name = $data['nombre'];
+        $usuario->name2 = $data['nombre2'];
+        $usuario->lastname = $data['apellido'];
+        $usuario->lastname2 = $data['apellido2'];
+        if(!empty($data['fechanacimiento'])) {
+            $usuario->birthdate = Carbon:: createFromFormat('Y-m-d H:i:s',
+                $data['fechanacimiento'])->format('H-i-s');
+        }
+        $usuario->email= $data['email'];
+        $usuario->type= $data['type']=='S'?'A':'E';
+        if (!empty($data['photo'])) {
+            $archivo = new Archivos ($data['photo']);
+            $usuario->photo = $archivo -> getArchivoNombreExtension();
+        }
+        $puntoVotacion=new PuntosVotacion();
+        $puntoVotacion=$puntoVotacion->buscar($data['direccionvotacion'],$data['id_ciudad']);
+        $mesa=new MesasVotacion();
+        $mesa->buscar($data['mesavotacion'],$puntoVotacion);
+
+        $usuario->save();
+        if (!empty($data['photo'])) {
+            $archivo->guardarArchivo($usuario);
+        }
+        Session::flash("notificacion","SUCCESS");
+        Session::flash("msj","Usuario creado. ");
+        return $usuario;
 
     }
 

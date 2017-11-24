@@ -27,25 +27,25 @@ $(document).on('click','.pagination a',function(e){
 });
 
 function paginacion(evento,url){
+    if($(evento).val()!='' || $(evento).val()!=null) {
+        $.ajax({
+            url: url,
+            data: {
+                buscar: $(evento).val(),
+                departamento: $("#entrada-departamento").val(),
+                iddepartamento: $("#entrada-departamento-id").val(),
+                ciudad: $("#entrada-ciudad").val(),
+            },
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $(evento).siblings("div").css("display", "block");
+                $(evento).siblings("div").html();
+                $(evento).siblings("div").html(data);
+            }
 
-            $.ajax({
-                url:url,
-                data: {
-                    buscar: $(evento).val(),
-                    departamento:$("#entrada-departamento").val(),
-                    iddepartamento:$("#entrada-departamento-id").val(),
-                    ciudad:$("#entrada-ciudad").val(),
-                },
-                type: 'GET',
-                dataType: 'json',
-                success: function (data) {
-                    $(evento).siblings("div").css("display","block");
-                    $(evento).siblings("div").html();
-                    $(evento).siblings("div").html(data);
-                }
-
-            });
-
+        });
+    }
 }
 
 function foco(){

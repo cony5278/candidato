@@ -26,6 +26,7 @@ class DepartamentoController extends Controller
     private function buscar($vista,$buscar)
     {
         $departmanetos=new Departamentos();
+
         return view($vista)->with([
             "departamentos"=>$departmanetos->getListarDepartamentos($buscar),
             "entrada"=>"entrada-departamento",

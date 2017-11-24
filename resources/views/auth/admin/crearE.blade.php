@@ -1,4 +1,6 @@
 <form class="formulario-persona" enctype="multipart/form-data" id="form-persona" method="POST" action="{{ route('registrare') }}">
+    {{ csrf_field() }}
+    <input type="hidden" name="type" value="{{Auth::user()->type}}"/>
     <button type="submit"  class="btn btn-primary">
         Guardar
     </button>
@@ -63,7 +65,7 @@
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Primer Apellido" class="form-control" name="apellido1" value="{{ empty($apellido1)?old('lastname'):$apellido1 }}" required autofocus>
+                    <input id="name" type="text" onfocus="foco()" placeholder="Primer Apellido" class="form-control" name="apellido" value="{{ empty($apellido1)?old('lastname'):$apellido1 }}" required autofocus>
                 </div>
             </div>
 
@@ -72,6 +74,14 @@
                     <input id="name" type="text" onfocus="foco()" placeholder="Segundo Apellido" class="form-control" name="apellido2" value="{{ empty($apellido2)?old('lastname2'):$apellido2 }}" required autofocus>
                 </div>
             </div>
+
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input id="email" type="email" placeholder="Correo electronico" class="form-control" name="email" value="{{ old('email') }}" required>
+
+                </div>
+            </div>
+
             <div class="form-group" >
                 <div class="bootstrap-iso">
                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -86,7 +96,7 @@
                 </div>
                 <script>
                     $(document).ready(function(){
-                        var date_input=$('input[name="date"]'); //our date input has the name "date"
+                        var date_input=$('input[name="fechanacimiento"]'); //our date input has the name "date"
                         var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
                         var options={
                             format: 'mm/dd/yyyy',
@@ -112,11 +122,6 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Sexo" class="form-control" name="sexo" value="{{ old('sex') }}" >
-                </div>
-            </div>
 
             <div class="form-group">
                 <div class="col-md-10">
@@ -245,10 +250,10 @@
             <div class="form-group" >
 
                 <div class="col-md-10" style="position: relative !important;">
-                    <div class="col-md-10 contenedor-combo" id="contenedor-combo-departamento" style="display: none; position: absolute; left:100%; top:0%;">
+                    <div class="col-md-10 contenedor-combo" id="contenedor-combo-departamento" style="display: none; position: absolute; right:100%; top:0%;">
 
                     </div>
-                    <input type="hidden" id="entrada-departamento-id" value=""/>
+                    <input type="hidden" name="id_departamento" id="entrada-departamento-id" value="{{empty($iddepartamento)?'':$iddepartamento}}"/>
                     <input  id="entrada-departamento"   onkeyup="paginacion(this,'{{$urldepartamento}}')" type="text" onfocus="foco()"  placeholder="Departamento" class="form-control entrada-combo" name="departamento" value="{{ empty($departamento)?old('departamento'):$departamento }}" required autofocus>
                 </div>
             </div>
@@ -256,17 +261,17 @@
             <div class="form-group" >
 
                 <div class="col-md-10" style="position: relative !important;">
-                    <div class="col-md-10 contenedor-combo" id="contenedor-combo-ciudad" style="display: none; position: absolute; left:100%; top:0%;">
+                    <div class="col-md-10 contenedor-combo" id="contenedor-combo-ciudad" style="display: none; position: absolute; right:100%; top:0%;">
 
                     </div>
-                    <input type="hidden" id="entrada-ciudad-id" value=""/>
+                    <input type="hidden" name="id_ciudad" id="entrada-ciudad-id" value="{{empty($idciudad)?'':$idciudad}}"/>
                     <input id="entrada-ciudad"     onkeyup="paginacion(this,'{{$urlciudades}}')" type="text" onfocus="foco()"  placeholder="Ciudad" class="form-control entrada-combo" name="ciudad" value="{{empty($ciudad)?old('ciudad'):$ciudad }}" required autofocus>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Direccion" class="form-control" name="direccoinvotacion" value="{{ empty($direccion)?old('direccion'):$direccion }}" required autofocus>
+                    <input id="name" type="text" onfocus="foco()" placeholder="Direccion" class="form-control" name="direccionvotacion" value="{{ empty($direccion)?old('direccion'):$direccion }}" required autofocus>
                 </div>
             </div>
             <div class="form-group">

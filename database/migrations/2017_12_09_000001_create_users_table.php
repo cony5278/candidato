@@ -22,7 +22,10 @@ class CreateUsersTable extends Migration
             $table->string('nit')->nullable();
             $table -> enum ( 'type',['S' , 'A' ,'E'] );
             $table->string('email',90)->unique();
-            $table->string('password');
+            $table->string('password')->nullable();
+            $table->string('telefonofijo',11)->nullable();
+            $table->string('telefonomovil',11)->nullable();
+            $table->dateTime('birthdate')->nullable();
             $table->string('photo')->default("default.png");
             $table->integer('id_mesa')->unsigned()->nullable();
             $table->foreign('id_mesa')
@@ -35,7 +38,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->string('address',40)->nullable();
-            $table -> enum ( 'sex',['F' , 'M'])->nullable();
+            $table -> enum ( 'sex',['F' , 'M','O'])->nullable();
         });
     }
 

@@ -28,6 +28,7 @@
     <script type="text/javascript" src="{{ asset('js/notificacion.js')}}"></script>
     <script type="text/javascript" src="{{ asset('js/paginacion.js')}}"></script>
     <script type="text/javascript" src="{{ asset('js/select.js')}}"></script>
+
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">

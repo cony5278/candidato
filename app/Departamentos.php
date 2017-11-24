@@ -28,4 +28,17 @@ class Departamentos extends Model
         return $this->where('nombre','like','%'.$buscar.'%')->paginate(5);
     }
 
+    public function buscar($nombre){
+        $departamento=$this->where('nombre','like','%'.$nombre.'%')->first();
+
+        if(empty($departamento)){
+            return $this->crear($nombre);
+        }
+        return $departamento;
+    }
+    public function crear($nombre){
+        $this->nombre=$nombre;
+        $this->save();
+        return $this;
+    }
 }

@@ -17,10 +17,10 @@ class CreateTelefonosTable extends Migration
             $table->increments('id');
             $table->string('numero',10);
             $table -> enum ( 'tipo',['C' , 'F' ] );
-            $table->integer('id_usuario')->unsigned()->nullable();
-            $table->foreign('id_usuario')
-                ->references('id')
-                ->on('users');
+            //$table->integer('id_usuario')->unsigned()->nullable();
+            //$table->foreign('id_usuario')
+             //   ->references('id')
+              //  ->on('users');
             $table->timestamps();
         });
     }

@@ -14,12 +14,13 @@ class CreatePuntosVotacionsTable extends Migration
     public function up()
     {
         Schema::create('puntos_votacions', function (Blueprint $table) {
-            $table->string('id',15)->primary();
-            $table->string('nombre',60);
+            $table->increments('id');
+            $table->string('nombre',60)->nullable();
             $table->string('direccion',60);
-            $table->string('id_ciudad',15);
+            $table->integer('id_ciudad')->unsigned();
             $table->foreign('id_ciudad')
-                ->references('id')->on('ciudades');
+                ->references('id')
+                ->on('ciudades');
             $table->timestamps();
         });
     }

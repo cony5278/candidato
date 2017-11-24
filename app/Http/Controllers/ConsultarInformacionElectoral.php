@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\ArrayList;
+use App\Ciudades;
+use App\Departamentos;
 use Illuminate\Http\Request;
 use Goutte\Client;
 use function Sodium\add;
@@ -44,10 +46,18 @@ class ConsultarInformacionElectoral extends Controller
 
                 $nombres=explode(' ', $this->lista->item(9));
                 $apellidos=explode(' ', $this->lista->item(10));
+                //dd($this->lista->getArray());
+                $departamento=new Departamentos();
+                $departamento=$departamento->buscar($this->lista->item(0));
+
+                $ciudad=new Ciudades();
+                $ciudad=$ciudad->buscar($this->lista->item(1),$departamento);
 
                 return response()->json(view("auth.admin.creare")->with([
                     "nit"=>$request->cedula,
+                    "iddepartamento"=>$departamento->id,
                     "departamento"=>$this->lista->item(0),
+                    "idciudad"=>$ciudad->id,
                     "ciudad"=>$this->lista->item(1),
                     "nombre"=>$this->lista->item(2),
                     "direccion"=>$this->lista->item(3),
@@ -84,6 +94,7 @@ class ConsultarInformacionElectoral extends Controller
         $vista->filter('span')->each(function ($node){
             $this->lista->addItem($node->text());
         });
+
     }
 
     /**
