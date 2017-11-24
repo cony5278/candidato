@@ -69,6 +69,7 @@
         <script type="text/javascript" src="{{ asset('js/notificacion.js')}}"></script>
     </head>
     <body>
+
     @include('alert.notificacion')
 
         <div class="flex-center position-ref full-height">

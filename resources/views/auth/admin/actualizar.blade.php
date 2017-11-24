@@ -18,9 +18,9 @@
 
                             <div class="input-group">
                                 <label class="input-group-btn">
-                            <span class="btn btn-lg btn-primary">
-                                Archivo <input id="imageUpload" type="file" name="photo" style="display: none;" multiple>
-                            </span>
+                                    <span class="btn btn-lg btn-primary">
+                                        Archivo <input id="imageUpload" type="file" name="photo" style="display: none;" multiple>
+                                    </span>
                                 </label>
                             </div>
                             <script>

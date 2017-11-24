@@ -21,13 +21,13 @@
     <title>SB Admin - Start Bootstrap Template</title>
     <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('vendor/datatables/dataTables.bootstrap4.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/sb-admin.css') }}" rel="stylesheet">
+
     <link href="{{ asset('css/electoral.css') }}" rel="stylesheet">
     <script type="text/javascript" src="{{ asset('js/jquery-3.2.1.min.js')}}"></script>
     <script type="text/javascript" src="{{ asset('js/enviar.js')}}"></script>
     <script type="text/javascript" src="{{ asset('js/notificacion.js')}}"></script>
-
+    <script type="text/javascript" src="{{ asset('js/paginacion.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('js/select.js')}}"></script>
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
@@ -177,7 +177,13 @@
     <!-- Custom scripts for this page-->
     <script src="{{asset('js/sb-admin-datatables.min.js') }}"></script>
     <script src="{{asset('js/sb-admin-charts.min.js') }}"></script>
+
 </div>
+
+<!-- para que funcione las fechas -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css"/>
+
 </body>
 
 </html>

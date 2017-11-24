@@ -1,80 +1,57 @@
-<!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
 <head>
+    <title>Desarrollo Hidrocálido - Recorrer Select option</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript" src="{{ asset('js/select.js')}}"></script>
+    <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <script type="text/javascript" src="{{ asset('js/jquery-3.2.1.min.js')}}"></script>
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
-
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">
-                        <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
-                </div>
-
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                        @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-
+<div class="container">
+    <div class="form-group">
+        <div class="col-md-10">
+            <input   type="text"  class="form-control" >
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlSelect1">Example select</label>
+        <input type="hidden" id="oculto" name="select-option[]" value="">
+        <select class="form-control" onchange="presionar(this)" id="seleccionar">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
     </div>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    <button class="presionar" >presionar</button>
+</div>
+</body>
+
+<script>
+
+    function presionar(event) {
+
+
+        if ($("#oculto").val() == '') {
+            var formData = new FormData();
+            formData.append("archivos[]",event.value);
+            $("#oculto").val(formData);
+        } else {
+            var formData = new FormData();
+            formData.append("archivos[]",event.value);
+            formData.append("archivos[]",$("#oculto").val());
+            $("#oculto").val(formData);
+            for(var pair in formData.entries()) {
+                console.log(pair[0]+ ', '+ pair[1]);
+            }
+
+        }
+
+    };
+
+</script>
 </body>
 </html>

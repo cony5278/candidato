@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Areaconocimiento;
+use App\Nivelacademico;
+use App\Otro;
+use App\Poblacion;
+use App\Socioeconomica;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -140,8 +145,21 @@ class UsuarioEController extends Controller
     {
         //
     }
+    public static function  url(){
+        return [
+            'urldepartamento'=>url("/listadepartamentos"),
+            'urlciudades'=>url("/listaciudades"),
+            'urldatosregistraduria'=>url("/datosregistraduria"),
+            'condicionsocioeconomicas'=>SocioEconomica::all(),
+            'poblaciones'=>Poblacion::all(),
+            'areasconocimiento'=>Areaconocimiento::all(),
+            'otros'=>Otro::all(),
+            'nivelacademico'=>Nivelacademico::all(),
+
+        ];
+    }
     public function form_crear_usuarioe(){
 
-        return view("auth.admin.crearE");
+        return view("auth.admin.creare")->with(self::url());
     }
 }

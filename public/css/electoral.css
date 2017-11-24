@@ -6,3 +6,34 @@
     left: 80%;
     top: 50%;
 }
+.form-control{
+    margin-bottom: 5px;
+}
+
+/**
+combo grande
+ */
+
+.combo-grande tr td{
+    cursor: pointer;
+}
+.combo-grande thead{
+    color:  #fff;
+   background: #3097d1;
+}
+
+.combo-grande tr td:hover {
+    background-color: #ced4da;
+    cursor: pointer;
+    border: 1px inset #ABA791 !important;
+}
+.contenedor-combo {
+    border-radius: 7px 7px 7px 7px;
+    -moz-border-radius: 7px 7px 7px 7px;
+    -webkit-border-radius: 7px 7px 7px 7px;
+    border: 2px solid #848484;
+}
+
+/**
+fin
+ */

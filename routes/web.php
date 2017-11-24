@@ -12,7 +12,19 @@
 */
 
 Route::get('/', function () {
+    return view('welcome')->with(["todo"]);
+});
+Route::get('listadepartamentos','DepartamentoController@index');
+
+Route::get('listaciudades','CiudadController@index');
+
+Route::get('datosregistraduria','ConsultarInformacionElectoral@index');
+
+Route::get('/', function () {
     return view('welcome');
+});
+Route::get('/select', function () {
+    return view('layouts.copiaapp');
 });
 Auth::routes();
 
@@ -29,7 +41,8 @@ Route::group(['middleware'=>'admin'],function(){
 
 });
 
-Route::group(['middleware'=>'usuarioEstandar'],function(){
-
+Route::group(['middleware'=>'usuarioestandar'],function(){
+    Route::get('form_crear_usuarioe', 'UsuarioEController@form_crear_usuarioe');
+    Route::post('registrare', 'UsuarioEController@registrar')->name('registrare');
 
 });

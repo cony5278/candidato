@@ -30,6 +30,9 @@ class User extends Authenticatable
     public function getAllUsuarioAdmin($tipo){
         return $this->where("type",$tipo)->paginate(2);
     }
+    public function getAllUsuarioTodo(){
+        return $this->paginate(2);
+    }
     public function actualizar(Request $request, $id){
         $registro=$this->where('id', '=', $id)->first();
         $registro->name=$request->name;

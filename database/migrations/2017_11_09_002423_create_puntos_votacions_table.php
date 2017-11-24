@@ -16,9 +16,10 @@ class CreatePuntosVotacionsTable extends Migration
         Schema::create('puntos_votacions', function (Blueprint $table) {
             $table->string('id',15)->primary();
             $table->string('nombre',60);
-            $table->string('id_barrio',15);
-            $table->foreign('id_barrio')
-                ->references('id')->on('barrios');
+            $table->string('direccion',60);
+            $table->string('id_ciudad',15);
+            $table->foreign('id_ciudad')
+                ->references('id')->on('ciudades');
             $table->timestamps();
         });
     }

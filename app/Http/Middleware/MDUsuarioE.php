@@ -3,10 +3,8 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Support\Facades\Session;
 
-
-class MDAdmin
+class MDUsuarioE
 {
     /**
      * Handle an incoming request.
@@ -18,8 +16,8 @@ class MDAdmin
     public function handle($request, Closure $next)
     {
         $usuario=\Auth::user();
-        if($usuario->type=='A'){
-          //  return  redirect('/')->withInput()->with(["notificacion"=>"DANGER","msj"=>"No tiene privilegios para acceder a este recurso consulte al administrador del sistema"]);
+        if($usuario->type='E'){
+          //  return  redirect('/')->withInput()->with("msj","Aun no ha sido asignado como usuario, consulte al administrador del sistema");
         }
         return $next($request);
     }

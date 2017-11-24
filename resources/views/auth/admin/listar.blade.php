@@ -1,5 +1,5 @@
 
-<button type="submit" onclick="mostrarseccion('.{{Auth::user()->type=='A'?'I':'II'}}.','')" class="btn btn-primary">
+<button type="submit" onclick="mostrarseccion('{{Auth::user()->type=='S'?'I':'II'}}','')" class="btn btn-primary">
     Nuevo
 </button>
 @if (!$usuarioAdmin->isEmpty())
