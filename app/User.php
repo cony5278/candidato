@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','nit'
     ];
 
     /**
@@ -45,5 +45,20 @@ class User extends Authenticatable
     }
     public function getUsuarioTipo($id){
        return $this->where('id', '=', $id)->where('type','=',\Auth::user()->type=='S'?'A':'E')->first();
+    }
+    public function getUsuarioAll(){
+      return $this->join('opcions', 'opcions.id', '=','users.id_opcions')
+                  ->join('socioeconomicas','socioeconomicas.id','=','opcions.id_socioeconomica')
+                  ->join('poblacions','poblacions.id','=','opcions.id_poblacions')
+                  ->join('areaconocimientos','areaconocimientos.id','=','opcions.id_areaconocimientos')
+                  ->join('otros','otros.id','=','opcions.id_otros')
+                  ->join('mesas_votacions','mesas_votacions.id','=','users.id_mesa')
+                  ->join('puntos_votacions','puntos_votacions.id','=','mesas_votacions.id_punto')
+                  ->join('ciudades','ciudades.id','=','puntos_votacions.id_ciudad')
+                  ->join('departamentos','departamentos.id','=','ciudades.id_departamento')
+                  ->join('empresas','empresas.id','=','users.id_empresa')
+                  ->join('users','users.id','=','formacionacademicas.id_usuario')
+                  ->join('nivelacademico','nivelacademico.id','=','formacionacademicas.id_nivelacademicos')
+                  ->get();
     }
 }

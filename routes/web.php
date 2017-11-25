@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+use App\User;
 Route::get('/', function () {
     return view('welcome')->with(["todo"]);
 });
@@ -23,8 +23,9 @@ Route::get('datosregistraduria','ConsultarInformacionElectoral@index');
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/select', function () {
-    return view('layouts.copiaapp');
+Route::get('/prueba', function () {
+$usuario=User::find(3);
+return view('layouts.copiaapp')->with(["usuario"=>$usuario->getUsuarioAll()]);
 });
 Auth::routes();
 
@@ -32,7 +33,7 @@ Route::group(['middleware'=>'admin'],function(){
     Route::get('/home', 'HomeController@index')->name('home');
     Route::post('registrar', 'RegistrarUsuarioController@registrar')->name('registrar');
     Route::resource('usuario', 'RegistrarUsuarioController');
-    Route::get('form_editar_usuario/{id}', 'RegistrarUsuarioController@form_editar_usuario');
+    //Route::get('form_editar_usuario/{id}', 'RegistrarUsuarioController@form_editar_usuario');
     Route::get('form_crear_usuario', 'RegistrarUsuarioController@form_crear_usuario');
     Route::get('form_listar_usuario', 'RegistrarUsuarioController@form_listar_usuario');
 
@@ -44,5 +45,6 @@ Route::group(['middleware'=>'admin'],function(){
 Route::group(['middleware'=>'usuarioestandar'],function(){
     Route::get('form_crear_usuarioe', 'UsuarioEController@form_crear_usuarioe');
     Route::post('registrare', 'UsuarioEController@registrar')->name('registrare');
+    Route::get('form_editar_usuario/{id}', 'UsuarioEController@form_editar_usuario');
 
 });

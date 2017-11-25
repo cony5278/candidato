@@ -93,7 +93,7 @@ class UsuarioEController extends Controller
 
         $usuario=new User();
 
-
+        $usuario->nit = $data['nit'];
         $usuario->name = $data['nombre'];
         $usuario->name2 = $data['nombre2'];
         $usuario->lastname = $data['apellido'];
@@ -194,5 +194,12 @@ class UsuarioEController extends Controller
     public function form_crear_usuarioe(){
 
         return view("auth.admin.creare")->with(self::url());
+    }
+
+    public function form_editar_usuario($id){
+
+        $usuario=User::find($id);
+        $usuario=$usuario->getUsuarioAll();
+        return view("auth.admin.actualizare")->with("usuario",$usuario)->with(self::url());
     }
 }

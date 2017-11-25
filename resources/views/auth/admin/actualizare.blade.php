@@ -1,11 +1,12 @@
 <form class="formulario-persona" enctype="multipart/form-data" id="form-persona" method="POST" action="{{ route('registrare') }}">
+
     {{ csrf_field() }}
     <input type="hidden" name="type" value="{{Auth::user()->type}}"/>
     <button type="submit"  class="btn btn-primary">
         Guardar
     </button>
     <input class="btn btn-primary" onclick="mostrarseccion('L','')"  type="button" value="Cerrar">
-<div class="row">
+    <div class="row">
         <div align="center" class="col-md-3">
             {{--PERSONAJE--}}
             <h1>Información <span class="small">Personaje</span></h1>
@@ -46,38 +47,38 @@
 
             <div  class="form-group grupos">
                 <div class="col-md-10">
-                    <input id="name" onkeypress="registraduria(event,this,'{{$urldatosregistraduria}}')" type="text" onfocus="foco()" placeholder="Cedula" class="form-control" name="nit" value="{{ empty($nit)?old('nit'):$nit }}" required autofocus>
+                    <input id="name"  type="text" onfocus="foco()" placeholder="Cedula" class="form-control" name="nit" value="{{ empty($nit)?empty($usuario->nit)?old('nit'):$usuario->nit:$nit }}" required autofocus>
                 </div>
             </div>
 
             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Primer Nombre" class="form-control" name="nombre" value="{{ empty($nombre1)?old('name'):$nombre1 }}" required autofocus>
+                    <input id="name" type="text" onfocus="foco()" placeholder="Primer Nombre" class="form-control" name="nombre" value="{{ empty($nombre1)?empty($usuario->name)?old('name'):$usuario->name:$nombre1 }}" required autofocus>
                 </div>
             </div>
 
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Segundo Nombre" class="form-control" name="nombre2" value="{{ empty($nombre2)?old('name2'):$nombre2 }}">
+                    <input id="name" type="text" onfocus="foco()" placeholder="Segundo Nombre" class="form-control" name="nombre2" value="{{ empty($nombre2)?empty($usuario->name2)?old('name2'):$usuario->name2:$nombre2 }}" required autofocus>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Primer Apellido" class="form-control" name="apellido" value="{{ empty($apellido1)?old('lastname'):$apellido1 }}" required autofocus>
+                    <input id="name" type="text" onfocus="foco()" placeholder="Primer Apellido" class="form-control" name="apellido" value="{{ empty($apellido1)?empty($usuario->lastname)?old('lastname'):$usuario->lastname:$apellido1 }}" required autofocus>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Segundo Apellido" class="form-control" name="apellido2" value="{{ empty($apellido2)?old('lastname2'):$apellido2 }}">
+                    <input id="name" type="text" onfocus="foco()" placeholder="Segundo Apellido" class="form-control" name="apellido2" value="{{ empty($apellido2)?empty($usuario->lastname2)?old('lastname2'):$usuario->lastname2:$apellido2 }}" required autofocus>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input id="email" type="email" placeholder="Correo electronico" class="form-control" name="email" value="{{ old('email') }}" required>
+                    <input id="email" type="email" placeholder="Correo electronico" class="form-control" name="email" value="{{empty($usuario->email)? old('email') :$usuario->email}}" required>
 
                 </div>
             </div>
@@ -90,7 +91,7 @@
                                 <i class="fa fa-calendar"  style="z-index:1000;">
                                 </i>
                             </div>
-                            <input class="form-control" id="date" name="fechanacimiento" placeholder="MM/DD/YYYY" type="text">
+                            <input class="form-control" id="date" value="{{empty($usuario->birthdate)?old('birthdate'):Carbon\Carbon::parse($usuario->birthdate)->format('d/m/Y')  }}" name="fechanacimiento" placeholder="MM/DD/YYYY" type="text">
                         </div>
                     </div>
                 </div>
@@ -112,31 +113,26 @@
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Telefono movil" class="form-control" name="movil" value="{{ old('movil') }}" >
+                    <input id="name" type="text" onfocus="foco()" placeholder="Telefono movil" class="form-control" name="movil" value="{{empty($usuario->telefonomovil)? old('movil'):$usuario->telefonomovil }}" >
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Telefono Fijo" class="form-control" name="fijo" value="{{ old('fijo') }}" >
+                    <input id="name" type="text" onfocus="foco()" placeholder="Telefono Fijo" class="form-control" name="fijo" value="{{empty($usuario->telefonofijo)? old('fijo'):$usuario->telefonofijo }}" >
                 </div>
             </div>
 
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <select style="height: 35px;" name="sexo" class="form-control">
-                        <option value="D">Sexo</option>
-                        <option value="F">Femenino</option>
-                        <option value="M">Masculino</option>
-                        <option value="O">Otro</option>
-                    </select>
+                  {{Form::select('sexo', array('D'=> 'Sexo', 'F' => 'Femenino','M'=>'Maculino','O'=>'Otro'), empty($usuario->sex)?'D':$usuario->sex,array('class'=>'form-control','style'=>'height:35px'))}}
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input  id="name" type="text" onfocus="foco()" placeholder="Direccion Residencia" class="form-control" name="direccionusuario" value="{{ old('address') }}" >
+                    <input  id="name" type="text" onfocus="foco()" placeholder="Direccion Residencia" class="form-control" name="direccionusuario" value="{{ empty($usuario->address)?old('address'):$usuario->address }}" >
                 </div>
             </div>
 
@@ -146,10 +142,20 @@
             <h1>Información <span class="small">Detalles del personaje</span></h1>
             <div class="form-group">
                 <div class="col-md-12">
+
                     <select style="height: 35px;" name="condicionsocial" class="form-control">
                         <option value="0">Condición socioeconomica</option>
+
                         @foreach($condicionsocioeconomicas as $condicion)
-                            <option value="{{$condicion->id}}">{{$condicion->nivel}}</option>
+                          @if (!empty($usuario->id_socioeconomica))
+                              @if ($condicion->id === $usuario->id_socioeconomica)
+                                  <option value="{{$condicion->id}}" selected>{{$condicion->nivel}}</option>
+                              @else
+                                 <option value="{{$condicion->id}}">{{$condicion->nivel}}</option>
+                              @endif
+                          @else
+                             <option value="{{$condicion->id}}">{{$condicion->nivel}}</option>
+                          @endif
                         @endforeach
                     </select>
                 </div>
@@ -159,7 +165,15 @@
                     <select style="height: 35px;" name="poblacion" class="form-control">
                         <option value="0">Poblaciones</option>
                         @foreach($poblaciones as $poblacion)
-                            <option value="{{$poblacion->id}}">{{$poblacion->nombre}}</option>
+                            @if (!empty($usuario->id_poblacions))
+                                @if ($poblacion->id===$usuario->id_poblacions)
+                                   <option value="{{$poblacion->id}}" selected>{{$poblacion->nombre}}</option>
+                                @else
+                                   <option value="{{$poblacion->id}}">{{$poblacion->nombre}}</option>
+                                @endif
+                            @else
+                               <option value="{{$poblacion->id}}">{{$poblacion->nombre}}</option>
+                            @endif
                         @endforeach
                     </select>
                 </div>
@@ -169,7 +183,15 @@
                     <select style="height: 35px;" name="area" class="form-control">
                         <option value="0">Areas de conocimiento</option>
                         @foreach($areasconocimiento as $area)
-                            <option value="{{$area->id}}">{{$area->nombre}}</option>
+                            @if (!empty($usuario->id_areaconocimientos))
+                                @if ($area->id===$usuario->id_areaconocimientos)
+                                  <option value="{{$area->id}}" selected>{{$area->nombre}}</option>
+                                @else
+                                  <option value="{{$area->id}}">{{$area->nombre}}</option>
+                                @endif
+                            @else
+                              <option value="{{$area->id}}">{{$area->nombre}}</option>
+                            @endif
                         @endforeach
                     </select>
                 </div>
@@ -179,10 +201,18 @@
                     <select style="height: 35px;" name="otro" class="form-control">
                         <option value="0">Otros</option>
                         @foreach($otros as $otro)
-                            <option value="{{$otro->id}}">{{$otro->nombre}}</option>
+                            @if (!empty($usuario->id_areaconocimientos))
+                                @if ($otro->id===$usuario->id_otros))
+                                    <option value="{{$otro->id}}" selected>{{$otro->nombre}}</option>
+                                @else
+                                    <option value="{{$otro->id}}">{{$otro->nombre}}</option>
+                                @endif
+                            @else
+                                <option value="{{$otro->id}}">{{$otro->nombre}}</option>
+                            @endif
                         @endforeach
                     </select>
-                 </div>
+                </div>
             </div>
         </div>
         <div class="col-md-3">
@@ -225,16 +255,16 @@
                     <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
                         <div class="card-body">
 
-                                    <div class="form-group">
-                                        <div class="col-md-10">
-                                            <input id="nombreempresa" type="text" onfocus="foco()" placeholder="Nombre Empresa" class="form-control" name="empresa"  value="{{ old('nombreempresa')}}" >
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="col-md-10">
-                                            <input id="cargoempresa" type="text" onfocus="foco()" placeholder="Cargo Empresa" class="form-control" name="cargo"  value="{{ old('cargoempresa')}}" >
-                                        </div>
-                                    </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    <input id="nombreempresa" type="text" onfocus="foco()" placeholder="Nombre Empresa" class="form-control" name="empresa"  value="{{ old('nombreempresa')}}" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    <input id="cargoempresa" type="text" onfocus="foco()" placeholder="Cargo Empresa" class="form-control" name="cargo"  value="{{ old('cargoempresa')}}" >
+                                </div>
+                            </div>
 
                         </div>
                     </div>
