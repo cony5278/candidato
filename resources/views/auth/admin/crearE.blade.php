@@ -59,7 +59,7 @@
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Segundo Nombre" class="form-control" name="nombre2" value="{{ empty($nombre2)?old('name2'):$nombre2 }}" required autofocus>
+                    <input id="name" type="text" onfocus="foco()" placeholder="Segundo Nombre" class="form-control" name="nombre2" value="{{ empty($nombre2)?old('name2'):$nombre2 }}">
                 </div>
             </div>
 
@@ -71,7 +71,7 @@
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Segundo Apellido" class="form-control" name="apellido2" value="{{ empty($apellido2)?old('lastname2'):$apellido2 }}" required autofocus>
+                    <input id="name" type="text" onfocus="foco()" placeholder="Segundo Apellido" class="form-control" name="apellido2" value="{{ empty($apellido2)?old('lastname2'):$apellido2 }}">
                 </div>
             </div>
 
@@ -204,11 +204,17 @@
                                 <div class="col-md-12">
 
 
-                                    <select style="height: 35px;" name="nivelacademico" class="form-control" multiple >
+                                    <select onchange="agregarSeleccionFormacion(this);" style="height: 35px;" name="nivelacademico" class="form-control" >
                                         @foreach($nivelacademico as $academico)
                                             <option value="{{$academico->id}}">{{$academico->nombre}}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12 agregar-formacion">
+
+
                                 </div>
                             </div>
                         </div>

@@ -15,7 +15,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use App\Archivos;
 use Carbon\Carbon;
-
+use App\Opcion;
+use App\Empresa;
+use App\Formacionacademica;
 class UsuarioEController extends Controller
 {
     protected $redirectTo = '/home';
@@ -91,6 +93,7 @@ class UsuarioEController extends Controller
     public function create(array $data)
     {
 
+
         $usuario=new User();
 
         $usuario->nit = $data['nit'];
@@ -99,21 +102,50 @@ class UsuarioEController extends Controller
         $usuario->lastname = $data['apellido'];
         $usuario->lastname2 = $data['apellido2'];
         if(!empty($data['fechanacimiento'])) {
-            $usuario->birthdate = Carbon:: createFromFormat('Y-m-d H:i:s',
-                $data['fechanacimiento'])->format('H-i-s');
+            $usuario->birthdate = Carbon::createFromFormat('d/m/Y',
+                $data['fechanacimiento']);
         }
         $usuario->email= $data['email'];
         $usuario->type= $data['type']=='S'?'A':'E';
+        $usuario->telefonofijo=empty($data['fijo'])?null:$data['fijo'];
+        $usuario->telefonomovil=empty($data['movil'])?null:$data['movil'];
+        $usuario->sex=empty($data['sexo'])?null:$data['sexo'];
+        $usuario->address=empty($data['direccionusuario'])?null:$data['direccionusuario'];
+
         if (!empty($data['photo'])) {
             $archivo = new Archivos ($data['photo']);
             $usuario->photo = $archivo -> getArchivoNombreExtension();
         }
         $puntoVotacion=new PuntosVotacion();
         $puntoVotacion=$puntoVotacion->buscar($data['direccionvotacion'],$data['id_ciudad']);
-        $mesa=new MesasVotacion();
-        $mesa->buscar($data['mesavotacion'],$puntoVotacion);
 
+        $mesa=new MesasVotacion();
+        $mesa=$mesa->buscar($data['mesavotacion'],$puntoVotacion);
+        $usuario->id_mesa=$mesa->id;
+
+        $opciones=new Opcion();
+        $opciones->buscar($data);
+        if(!empty($opciones)){
+          $usuario->id_opcions=$opciones->id;
+        }
+        if(!empty($data['empresa']) && !empty($data['cargo'])){
+          $empresa=new Empresa();
+          $empresa->buscar($data);
+          $usuario->id_empresa=$empresa->id;
+          }
         $usuario->save();
+
+        if(!empty($data['idforomacionacademica'])){
+
+              for($i = 0; $i < count($data['idforomacionacademica']); ++$i) {
+          //    foreach ($data['idforomacionacademica'] as $idformacion and $data['descripcionacademica'] as $descripcion) {
+                  $formacionacademica=new Formacionacademica();
+                  $formacionacademica->user_id=$usuario->id;
+                  $formacionacademica->id_nivelacademicos=$data['idforomacionacademica'][$i];
+                  $formacionacademica->descripcion=empty($data['descripcionacademica'][$i])?null:$data['descripcionacademica'][$i];
+                  $formacionacademica->save();
+                }
+        }
         if (!empty($data['photo'])) {
             $archivo->guardarArchivo($usuario);
         }
@@ -200,6 +232,6 @@ class UsuarioEController extends Controller
 
         $usuario=User::find($id);
         $usuario=$usuario->getUsuarioAll();
-        return view("auth.admin.actualizare")->with("usuario",$usuario)->with(self::url());
+        return view("auth.admin.creare")->with("usuario",$usuario)->with(self::url());
     }
 }

@@ -24,8 +24,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/prueba', function () {
-$usuario=User::find(3);
-return view('layouts.copiaapp')->with(["usuario"=>$usuario->getUsuarioAll()]);
+  $comments = App\User::find(3)->formacionacademicas;
+
+  foreach ($comments as $comment) {
+      echo 'dsafasd'. $coment->id;
+  }
+
+});
+
+Route::get('/select', function () {
+  return view("auth.admin.form.formacionacademica");
 });
 Auth::routes();
 

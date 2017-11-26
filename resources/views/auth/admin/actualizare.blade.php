@@ -232,12 +232,11 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <div class="col-md-12">
-
-
                                     <select style="height: 35px;" name="nivelacademico" class="form-control" multiple >
-                                        @foreach($nivelacademico as $academico)
-                                            <option value="{{$academico->id}}">{{$academico->nombre}}</option>
-                                        @endforeach
+                                      @foreach($nivelacademico as $academico)
+                                         <option value="{{$academico->id}}">{{$academico->nombre}}</option>
+                                      @endforeach
+
                                     </select>
                                 </div>
                             </div>

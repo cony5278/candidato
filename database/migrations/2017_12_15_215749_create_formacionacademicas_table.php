@@ -19,10 +19,11 @@ class CreateFormacionacademicasTable extends Migration
             $table->foreign('id_nivelacademicos')
                 ->references('id')
                 ->on('nivelacademicos');
-            $table->integer('id_usuario')->unsigned()->nullable();
-            $table->foreign('id_usuario')
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->foreign('user_id')
                 ->references('id')
                 ->on('users');
+            $table->string('descripcion',60)->nullable();
             $table->timestamps();
         });
     }

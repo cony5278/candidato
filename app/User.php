@@ -57,8 +57,9 @@ class User extends Authenticatable
                   ->join('ciudades','ciudades.id','=','puntos_votacions.id_ciudad')
                   ->join('departamentos','departamentos.id','=','ciudades.id_departamento')
                   ->join('empresas','empresas.id','=','users.id_empresa')
-                  ->join('users','users.id','=','formacionacademicas.id_usuario')
-                  ->join('nivelacademico','nivelacademico.id','=','formacionacademicas.id_nivelacademicos')
                   ->get();
+    }
+    public function formacionacademicas(){
+        return $this->hasMany('App\Formacionacademica');
     }
 }
