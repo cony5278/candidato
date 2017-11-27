@@ -24,10 +24,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/prueba', function () {
-  $comments = App\User::find(3)->formacionacademicas;
+  $formacions = App\User::find(6)->formacionacademica()->get();
+  $formacion
+  foreach ($formacions as $formacion) {
 
-  foreach ($comments as $comment) {
-      echo 'dsafasd'. $coment->id;
   }
 
 });

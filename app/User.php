@@ -56,10 +56,24 @@ class User extends Authenticatable
                   ->join('puntos_votacions','puntos_votacions.id','=','mesas_votacions.id_punto')
                   ->join('ciudades','ciudades.id','=','puntos_votacions.id_ciudad')
                   ->join('departamentos','departamentos.id','=','ciudades.id_departamento')
-                  ->join('empresas','empresas.id','=','users.id_empresa')
-                  ->get();
+                  ->leftJoin('empresas','empresas.id','=','users.id_empresa')
+                  ->select("users.*",
+                           "empresas.nombre as empresa",
+                           "empresas.cargo",
+                           "departamentos.nombre as departamento",
+                           "ciudades.nombre as ciudad",
+                           "puntos_votacions.*",
+                           "mesas_votacions.*",
+                           "otros.*",
+                           "areaconocimientos.*",
+                           "areaconocimientos.*",
+                           "poblacions.*",
+                           "socioeconomicas.*",
+                           "opcions.*",
+                           "users.id")
+                  ->first();
     }
-    public function formacionacademicas(){
+    public function formacionacademica(){
         return $this->hasMany('App\Formacionacademica');
     }
 }

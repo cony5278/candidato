@@ -231,7 +231,8 @@ class UsuarioEController extends Controller
     public function form_editar_usuario($id){
 
         $usuario=User::find($id);
+        $formacions=$usuario->formacionacademica()->get();
         $usuario=$usuario->getUsuarioAll();
-        return view("auth.admin.creare")->with("usuario",$usuario)->with(self::url());
+        return view("auth.admin.creare")->with(["usuario"=>$usuario,"formacions"=>$formacions])->with(self::url());
     }
 }

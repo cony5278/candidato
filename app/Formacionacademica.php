@@ -11,4 +11,8 @@ class Formacionacademica extends Model
     public function users(){
         return $this->belongsTo('App\users');
     }
+
+    public function nivel(){
+        return $this->belongsTo('App\Nivelacademico');
+    }
 }
