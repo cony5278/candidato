@@ -28,4 +28,15 @@ class PuntosVotacion extends Model
         $this->save();
         return $this;
     }
+    public function mesa(){
+        return $this->hasMany('App\MesasVotacion');
+    }
+
+    public function ciudad(){
+        return $this->belongsTo('App\Ciudades');
+    }
+
+    public function departamento(){
+        return $this->belongsTo('App\Departamentos');
+    }
 }

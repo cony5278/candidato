@@ -24,11 +24,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/prueba', function () {
-  $formacions = App\User::find(6)->formacionacademica()->get();
-  $formacion
-  foreach ($formacions as $formacion) {
-
-  }
+  $usuario=User::find(6);
+  dd($usuario->mesa());
 
 });
 

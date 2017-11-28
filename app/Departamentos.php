@@ -41,4 +41,8 @@ class Departamentos extends Model
         $this->save();
         return $this;
     }
+
+    public function ciudad(){
+        return $this->hasMany('App\Ciudades');
+    }
 }

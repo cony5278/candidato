@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use Illuminate\Support\Facades\DB;
 class User extends Authenticatable
 {
     use Notifiable;
@@ -46,34 +46,43 @@ class User extends Authenticatable
     public function getUsuarioTipo($id){
        return $this->where('id', '=', $id)->where('type','=',\Auth::user()->type=='S'?'A':'E')->first();
     }
-    public function getUsuarioAll(){
+
+    public function formacionacademica(){
+        return $this->hasMany('App\Formacionacademica');
+    }
+    public function opcion(){
       return $this->join('opcions', 'opcions.id', '=','users.id_opcions')
                   ->join('socioeconomicas','socioeconomicas.id','=','opcions.id_socioeconomica')
                   ->join('poblacions','poblacions.id','=','opcions.id_poblacions')
                   ->join('areaconocimientos','areaconocimientos.id','=','opcions.id_areaconocimientos')
                   ->join('otros','otros.id','=','opcions.id_otros')
-                  ->join('mesas_votacions','mesas_votacions.id','=','users.id_mesa')
-                  ->join('puntos_votacions','puntos_votacions.id','=','mesas_votacions.id_punto')
-                  ->join('ciudades','ciudades.id','=','puntos_votacions.id_ciudad')
-                  ->join('departamentos','departamentos.id','=','ciudades.id_departamento')
-                  ->leftJoin('empresas','empresas.id','=','users.id_empresa')
-                  ->select("users.*",
-                           "empresas.nombre as empresa",
-                           "empresas.cargo",
-                           "departamentos.nombre as departamento",
-                           "ciudades.nombre as ciudad",
-                           "puntos_votacions.*",
-                           "mesas_votacions.*",
-                           "otros.*",
-                           "areaconocimientos.*",
-                           "areaconocimientos.*",
-                           "poblacions.*",
-                           "socioeconomicas.*",
-                           "opcions.*",
-                           "users.id")
-                  ->first();
+                  ->select("otros.*",
+                       "areaconocimientos.*",
+                       "areaconocimientos.*",
+                       "poblacions.*",
+                       "socioeconomicas.*",
+                       "opcions.*",
+                       "users.*")->where("users.id","=",$this->id)->first();
+
     }
-    public function formacionacademica(){
-        return $this->hasMany('App\Formacionacademica');
+    public function mesa(){
+        return $this->join('mesas_votacions','mesas_votacions.id','=','users.id_mesa')
+                    ->join('puntos_votacions','puntos_votacions.id','=','mesas_votacions.id_punto')
+                    ->join('ciudades','ciudades.id','=','puntos_votacions.id_ciudad')
+                    ->join('departamentos','departamentos.id','=','ciudades.id_departamento')
+                    ->select("departamentos.nombre as departamento",
+                             "departamentos.id as id_departamento",
+                             "ciudades.nombre as ciudad",
+                             "ciudades.id as id_ciudad",
+                             "puntos_votacions.*",
+                             "mesas_votacions.id as id_mesa",
+                             "mesas_votacions.numero")
+                    ->where("users.id","=",$this->id)->first();
+
+    }
+    public function empresas(){
+        return $this->join('empresas','empresas.id','=','users.id_empresa')
+                    ->select("empresas.*")
+                    ->where("users.id","=",$this->id)->first();
     }
 }

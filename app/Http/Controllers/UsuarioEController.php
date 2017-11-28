@@ -49,7 +49,7 @@ class UsuarioEController extends Controller
     public function registrar(Request $request)
     {
 
-        //$this->validator($request->all())->validate();
+        $this->validator($request->all())->validate();
         $this->create($request->all());
         return  redirect($this->redirectPath());
 
@@ -77,10 +77,15 @@ class UsuarioEController extends Controller
     public function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'type' => 'required',
+            'nombre'            => 'required|string|max:255',
+            'apellido'          => 'required|string|max:255',
+            'nombre'            => 'required|string|max:255',
+            'mesavotacion'      => 'required|string|max:255',
+            'direccionvotacion' => 'required|string|max:255',
+            'ciudad'            => 'required|string|max:255',
+            'departamento'      => 'required|string|max:255',
+            'email'             => 'required|string|email|max:255|unique:users',
+            'type'              => 'required',
         ]);
     }
 
@@ -197,7 +202,7 @@ class UsuarioEController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        dd($request);
     }
 
     /**
@@ -227,12 +232,17 @@ class UsuarioEController extends Controller
 
         return view("auth.admin.creare")->with(self::url());
     }
-
     public function form_editar_usuario($id){
 
         $usuario=User::find($id);
         $formacions=$usuario->formacionacademica()->get();
-        $usuario=$usuario->getUsuarioAll();
-        return view("auth.admin.creare")->with(["usuario"=>$usuario,"formacions"=>$formacions])->with(self::url());
+
+        return view("auth.admin.creare")->with([
+          "usuario"=>$usuario,
+          "formacions"=>$formacions,
+          "opcion"=>$usuario->opcion(),
+          "empresa"=>$usuario->empresas(),
+          "mesavotacion"=>$usuario->mesa(),
+          ])->with(self::url());
     }
 }

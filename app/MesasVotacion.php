@@ -31,4 +31,12 @@ class MesasVotacion extends Model
         $this->save();
         return $this;
     }
+
+    public function user(){
+        return $this->hasMany('App\User');
+    }
+
+    public function puntovotacion(){
+        return $this->belongsTo('App\PuntosVotacion');
+    }
 }

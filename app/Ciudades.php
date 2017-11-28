@@ -42,4 +42,8 @@ class Ciudades extends Model
         $this->save();
         return $this;
     }
+
+    public function puntosvotacion(){
+        return $this->hasMany('App\PuntosVotacion');
+    }
 }

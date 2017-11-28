@@ -17,4 +17,7 @@ class Empresa extends Model
       }
       return $empresa;
     }
+    public function user(){
+        return $this->hasMany('App\User');
+    }
 }

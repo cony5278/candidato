@@ -22,4 +22,17 @@ class Opcion extends Model
       }
       return $opcion;
     }
+
+    public function user(){
+        return $this->hasMany('App\User');
+    }
+    public function condicionsocio(){
+          return $this->belongsTo('App\Socioeconomica');
+    }
+    public function otro(){
+        return $this->belongsTo('App\Otro');
+    }
+    public function poblacion(){
+        return $this->belongsTo('App\Poblacion');
+    }
 }

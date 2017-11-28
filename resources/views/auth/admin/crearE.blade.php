@@ -9,7 +9,7 @@
         <div align="center" class="col-md-3">
             {{--PERSONAJE--}}
             <h1>Información <span class="small">Personaje</span></h1>
-          <img id="imagePreview" width="100" height="100" src="{{empty($usuario)?'archivos/\\default.png':'archivos/'.$usuario->type.'/'.$usuario->id.'/'.$usuario->photo}}" class="img-circle" />
+          <img id="imagePreview" width="100" height="100" src="{{empty($usuario)?'archivos/\\default.png':$usuario->photo=='default.png'?'archivos/\\default.png':'archivos/'.$usuario->type.'/'.$usuario->id.'/'.$usuario->photo}}" class="img-circle" />
             <div class="col-lg-10 col-sm-10 col-10">
                 <div class="input-group">
                     <label class="input-group-btn">
@@ -145,8 +145,8 @@
                     <select style="height: 35px;" name="condicionsocial" class="form-control">
                         <option value="0">Condición socioeconomica</option>
                         @foreach($condicionsocioeconomicas as $condicion)
-                          @if (!empty($usuario->id_socioeconomica))
-                              @if ($condicion->id === $usuario->id_socioeconomica)
+                          @if (!empty($opcion->id_socioeconomica))
+                              @if ($condicion->id === $opcion->id_socioeconomica)
                                   <option value="{{$condicion->id}}" selected>{{$condicion->nivel}}</option>
                               @else
                                  <option value="{{$condicion->id}}">{{$condicion->nivel}}</option>
@@ -163,8 +163,8 @@
                     <select style="height: 35px;" name="poblacion" class="form-control">
                         <option value="0">Poblaciones</option>
                         @foreach($poblaciones as $poblacion)
-                            @if (!empty($usuario->id_poblacions))
-                                @if ($poblacion->id===$usuario->id_poblacions)
+                            @if (!empty($opcion->id_poblacions))
+                                @if ($poblacion->id===$opcion->id_poblacions)
                                    <option value="{{$poblacion->id}}" selected>{{$poblacion->nombre}}</option>
                                 @else
                                    <option value="{{$poblacion->id}}">{{$poblacion->nombre}}</option>
@@ -181,8 +181,8 @@
                     <select style="height: 35px;" name="area" class="form-control">
                         <option value="0">Areas de conocimiento</option>
                         @foreach($areasconocimiento as $area)
-                            @if (!empty($usuario->id_areaconocimientos))
-                                @if ($area->id===$usuario->id_areaconocimientos)
+                            @if (!empty($opcion->id_areaconocimientos))
+                                @if ($area->id===$opcion->id_areaconocimientos)
                                   <option value="{{$area->id}}" selected>{{$area->nombre}}</option>
                                 @else
                                   <option value="{{$area->id}}">{{$area->nombre}}</option>
@@ -199,8 +199,8 @@
                     <select style="height: 35px;" name="otro" class="form-control">
                         <option value="0">Otros</option>
                         @foreach($otros as $otro)
-                              @if (!empty($usuario->id_areaconocimientos))
-                                  @if ($otro->id===$usuario->id_otros))
+                              @if (!empty($opcion->id_areaconocimientos))
+                                  @if ($otro->id===$opcion->id_otros))
                                       <option value="{{$otro->id}}" selected>{{$otro->nombre}}</option>
                                   @else
                                       <option value="{{$otro->id}}">{{$otro->nombre}}</option>
@@ -243,7 +243,7 @@
                                   @if (!empty($formacions))
                                     @foreach($formacions as $formacion)
                                         <script type="text/javascript">
-                                              agregarSeleccionSinEvento('{{App\Nivelacademico::find($formacion->id_nivelacademicos)->nombre}}','{{$formacion->id_nivelacademicos}}','{{$formacion->descripcion}}');
+                                              agregarSeleccionSinEvento('{{App\Nivelacademico::find($formacion->id_nivelacademicos)->nombre}}','{{$formacion->id}}','{{$formacion->descripcion}}');
 
                                         </script>
                                       @endforeach
@@ -269,12 +269,12 @@
 
                                     <div class="form-group">
                                         <div class="col-md-10">
-                                            <input id="nombreempresa" type="text" onfocus="foco()" placeholder="Nombre Empresa" class="form-control" name="empresa"  value="{{ empty($usuario->empresa)?old('nombreempresa'):$usuario->empresa}}" >
+                                            <input id="nombreempresa" type="text" onfocus="foco()" placeholder="Nombre Empresa" class="form-control" name="empresa"  value="{{ empty($empresa->nombre)?old('nombreempresa'):$empresa->nombre}}" >
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-10">
-                                            <input id="cargoempresa" type="text" onfocus="foco()" placeholder="Cargo Empresa" class="form-control" name="cargo"  value="{{ empty($usuario->cargo)? old('cargoempresa'):$usuario->cargo}}" >
+                                            <input id="cargoempresa" type="text" onfocus="foco()" placeholder="Cargo Empresa" class="form-control" name="cargo"  value="{{ empty($empresa->cargo)? old('cargoempresa'):$empresa->cargo}}" >
                                         </div>
                                     </div>
 
@@ -295,8 +295,8 @@
                     <div class="col-md-10 contenedor-combo" id="contenedor-combo-departamento" style="display: none; position: absolute; right:100%; top:0%;">
 
                     </div>
-                    <input type="hidden" name="id_departamento" id="entrada-departamento-id" value="{{empty($iddepartamento)?empty($usuario->id_departamento)?null:$usuario->id_departamento:$iddepartamento}}"/>
-                    <input  id="entrada-departamento"   onkeyup="paginacion(this,'{{$urldepartamento}}')" type="text" onfocus="foco()"  placeholder="Departamento" class="form-control entrada-combo" name="departamento" value="{{ empty($departamento)?empty($usuario->departamento)?old('departamento'):$usuario->departamento:$departamento }}" required autofocus>
+                    <input type="hidden" name="id_departamento" id="entrada-departamento-id" value="{{empty($iddepartamento)?empty($mesavotacion->id_departamento)?null:$mesavotacion->id_departamento:$iddepartamento}}"/>
+                    <input  id="entrada-departamento"   onkeyup="paginacion(this,'{{$urldepartamento}}')" type="text" onfocus="foco()"  placeholder="Departamento" class="form-control entrada-combo" name="departamento" value="{{ empty($departamento)?empty($mesavotacion->departamento)?old('departamento'):$mesavotacion->departamento:$departamento }}" required autofocus>
                 </div>
             </div>
 
@@ -306,19 +306,20 @@
                     <div class="col-md-10 contenedor-combo" id="contenedor-combo-ciudad" style="display: none; position: absolute; right:100%; top:0%;">
 
                     </div>
-                    <input type="hidden" name="id_ciudad" id="entrada-ciudad-id" value="{{empty($idciudad)?empty($usuario->id_ciudad)?null:$usuario->id_ciudad:$idciudad}}"/>
-                    <input id="entrada-ciudad"     onkeyup="paginacion(this,'{{$urlciudades}}')" type="text" onfocus="foco()"  placeholder="Ciudad" class="form-control entrada-combo" name="ciudad" value="{{empty($ciudad)?empty($usuario->ciudad)?old('ciudad'):$usuario->ciudad:$ciudad }}" required autofocus>
+                    <input type="hidden" name="id_ciudad" id="entrada-ciudad-id" value="{{empty($idciudad)?empty($mesavotacion->id_ciudad)?null:$mesavotacion->id_ciudad:$idciudad}}"/>
+                    <input id="entrada-ciudad"     onkeyup="paginacion(this,'{{$urlciudades}}')" type="text" onfocus="foco()"  placeholder="Ciudad" class="form-control entrada-combo" name="ciudad" value="{{empty($ciudad)?empty($mesavotacion->ciudad)?old('ciudad'):$mesavotacion->ciudad:$ciudad }}" required autofocus>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Direccion" class="form-control" name="direccionvotacion" value="{{ empty($direccion)?empty($usuario->direccion)?old('direccion'):$usuario->direccion:$direccion }}" required autofocus>
+                    <input id="name" type="text" onfocus="foco()" placeholder="Direccion" class="form-control" name="direccionvotacion" value="{{ empty($direccion)?empty($mesavotacion->direccion)?old('direccion'):$mesavotacion->direccion:$direccion }}" required autofocus>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Mesa de votación" class="form-control" name="mesavotacion" value="{{empty($mesa)?empty($usuario->numero)?old('fijo'):$usuario->numero:$mesa }}" required autofocus>
+                  <input type="hidden" name="id_mesa" id="entrada-ciudad-id" value="{{empty($mesavotacion->id_mesa)?null:$mesavotacion->id_mesa}}"/>
+                  <input id="name" type="text" onfocus="foco()" placeholder="Mesa de votación" class="form-control" name="mesavotacion" value="{{empty($mesa)?empty($mesavotacion->numero)?old('fijo'):$mesavotacion->numero:$mesa }}" required autofocus>
                 </div>
             </div>
         </div>
