@@ -1,43 +1,59 @@
 /**
  * Created by Juan Camilo on 11/11/2017.
  */
+
 function mostrarseccion(acme,id){
+    formacion=[];//se inicializa nuevamente el array global que se encuentra en el script iniciar
+    switch (acme){
+        case "I"://para mostrar el formulario del usuario administrador
+            var url = "form_crear_usuario/";
+            getAjax(url);
+            break;
+        case "II"://para mostrar el formulario del usuario estandar
+            var url = "form_crear_usuarioe/";
+            getAjax(url);
+            break;
+        case "A":
+            var url = "form_editar_usuario/"+id+"";
+            getAjax(url);
+            break;
+        case "E":
+            var url = "form_eliminar_usuario/"+id+"";
+            getAjax(url);
+            break;
+        case "L":
+            var url = "form_listar_usuario";
+            getAjax(url);
+            break;
+    }
+}
+function mostrarSeccionMenu(opcion){
+    switch (opcion) {
 
-switch (acme){
-    case "I"://para mostrar el formulario del usuario administrador
-        var url = "form_crear_usuario/";
-        getAjax(url);
+        case "L001"://informes de la persona listar
+            getAjax("form_informe_usurioe");
         break;
-    case "II"://para mostrar el formulario del usuario estandar
-        var url = "form_crear_usuarioe/";
-        getAjax(url);
+
+        case "A001"://informes de la persona actualizar
+
         break;
-    case "A":
-        var url = "form_editar_usuario/"+id+"";
-        getAjax(url);
+        case "I001"://informes de la persona insercion
+
         break;
-    case "E":
-        var url = "form_eliminar_usuario/"+id+"";
-        getAjax(url);
+        case "D001"://informes de la persona dato
+
         break;
-    case "L":
-        var url = "form_listar_usuario";
-        getAjax(url);
-        break;
+
+
+      default:
+
+    }
 }
 
-}
 
-function getAjax(url){
-    $(".contenedor-persona").html();
-    $.get(url,function(resul){
-        $(".contenedor-persona").html(resul);
-    })
-
-}
 
 function postAjax(url,evento){
-    $(".contenedor-persona").html();
+    $(".contenedor").html();
     var formulario = $(evento).parents("form:first");
     $.post(url,$(formulario).serializeArray(),function(resul){
         //$(".contenedor-persona").html(resul);
@@ -54,7 +70,7 @@ function eliminarDatos(opcion,id){
         case "1":
            var  data = {  _method:"delete",_token : $("#usuario-token").attr("value")};
             $.post("usuario/"+id, data,function(resul){
-                $(".contenedor-persona").html(resul);
+                $(".contenedor").html(resul);
             })
             break;
         case "2":
@@ -70,8 +86,8 @@ function eliminarDatos(opcion,id){
 function cerrarFormacion (event){
   $(event.target).parents().parents().parents()[0].remove();
 }
-formacion=[];
-function agregarHtml(profesion,id,descripcion){
+// formacion=[];
+function agregarHtml(idprofesion,profesion,id,descripcion){
   return '<div class="modal-dialog" role="document">'+
       '<div class="modal-content">'+
       '<div class="modal-header">'+
@@ -83,6 +99,7 @@ function agregarHtml(profesion,id,descripcion){
       '<div class="modal-body">'+
         '<div class="form-group">'+
             '<div class="col-md-10">'+
+                '<input id="name" type="hidden" onfocus="foco()" value="'+idprofesion+'"  name="idprofesion[]" >'+
                 '<input id="name" type="hidden" onfocus="foco()" value="'+id+'"  name="idforomacionacademica[]" >'+
                 '<input id="name" type="text" onfocus="foco()" value="'+profesion+'"  placeholder="Nivel academico" class="form-control" name="foromacionacademica[]" disabled>'+
             '</div>'+
@@ -100,19 +117,10 @@ function agregarHtml(profesion,id,descripcion){
   '</div>';
 
 }
-function agregarSeleccionSinEvento(profesion,id,descripcion){
-  var estado=false;
 
-  $.each(formacion, function( index, value ) {
-      if(value==id){
-        estado=true;
-        return estado;
-      }
-  });
-  if(!estado){
-        formacion.push(id);
-        $(".agregar-formacion").append(agregarHtml(profesion,id,descripcion));
-  }
+function agregarSeleccionSinEvento(idprofesion,profesion,id,descripcion){
+        formacion.push(idprofesion);
+        $(".agregar-formacion").append(agregarHtml(idprofesion,profesion,id,descripcion));
 }
 
 function agregarSeleccionFormacion(elemento)
@@ -128,6 +136,6 @@ function agregarSeleccionFormacion(elemento)
   });
   if(!estado){
         formacion.push($(elemento).val());
-        $(".agregar-formacion").append(agregarHtml(texto,$(elemento).val(),""));
+        $(".agregar-formacion").append(agregarHtml('',texto,$(elemento).val(),""));
   }
 }

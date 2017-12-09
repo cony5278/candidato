@@ -15,4 +15,17 @@ class Formacionacademica extends Model
     public function nivel(){
         return $this->belongsTo('App\Nivelacademico');
     }
+    public function eliminar($usuario,array $data){
+      $formacions=$this->where("user_id","=",$usuario->id)->get();
+      if(!empty($data['idforomacionacademica'])){
+        foreach ($formacions As $formacion){
+            if (!in_array($formacion->id, $data['idforomacionacademica'])) {
+              $formacion->delete();
+            }
+        }
+      }elseif(!empty($formacions->first())){
+            $formacions->first()->delete();
+
+      }
+    }
 }

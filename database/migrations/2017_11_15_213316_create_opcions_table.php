@@ -15,19 +15,19 @@ class CreateOpcionsTable extends Migration
     {
         Schema::create('opcions', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('id_socioeconomica')->unsigned();
+            $table->integer('id_socioeconomica')->unsigned()->nullable();
             $table->foreign('id_socioeconomica')
                 ->references('id')
                 ->on('socioeconomicas');
-            $table->integer('id_poblacions')->unsigned();
+            $table->integer('id_poblacions')->unsigned()->nullable();
             $table->foreign('id_poblacions')
                 ->references('id')
                 ->on('poblacions');
-            $table->integer('id_areaconocimientos')->unsigned();
+            $table->integer('id_areaconocimientos')->unsigned()->nullable();
             $table->foreign('id_areaconocimientos')
                 ->references('id')
                 ->on('areaconocimientos');
-            $table->integer('id_otros')->unsigned();
+            $table->integer('id_otros')->unsigned()->nullable();
             $table->foreign('id_otros')
                 ->references('id')
                 ->on('otros');

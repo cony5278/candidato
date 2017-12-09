@@ -21,13 +21,16 @@
     <title>SB Admin - Start Bootstrap Template</title>
     <link href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
-
     <link href="{{ asset('css/electoral.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/cargando.css') }}" rel="stylesheet">
+
     <script type="text/javascript" src="{{ asset('js/jquery-3.2.1.min.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('js/iniciar.js')}}"></script>
     <script type="text/javascript" src="{{ asset('js/enviar.js')}}"></script>
     <script type="text/javascript" src="{{ asset('js/notificacion.js')}}"></script>
     <script type="text/javascript" src="{{ asset('js/paginacion.js')}}"></script>
     <script type="text/javascript" src="{{ asset('js/select.js')}}"></script>
+      <script type="text/javascript" src="{{ asset('js/menuizquierda.js')}}"></script>
 
 </head>
 
@@ -57,10 +60,10 @@
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapseComponents">
                     <li>
-                        <a href="navbar.html">Archivos</a>
+                        <a onclick="menuizquierda(1)">Archivos</a>
                     </li>
                     <li>
-                        <a href="cards.html">Informes</a>
+                        <a onclick="menuizquierda('L001')">Informes</a>
                     </li>
                 </ul>
             </li>
@@ -125,8 +128,8 @@
 </nav>
 <div class="content-wrapper">
     <div class="porro"></div>
-    <div class="container-fluid contenedor-persona">
-        @include('auth.admin.listar')
+    <div class="container-fluid contenedor">
+        <!-- @include('auth.admin.listar') -->
     </div>
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->

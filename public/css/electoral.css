@@ -37,3 +37,27 @@ combo grande
 /**
 fin
  */
+
+/**
+*formulario persona e
+*/
+
+.acordion-personae{
+  position: relative;
+  border-right: 1px solid #ced4da;
+}
+ .semi-circulo{
+
+   position: absolute;
+   left: 100%;
+   top: 50%;
+   width: 50px;
+   color:#fff;
+    height: 100px;
+    background: #007bff;
+    -moz-border-radius: 0 100px 100px 0;
+    -webkit-border-radius: 0 100px 100px 0;
+    border-radius: 0 100px 100px 0;
+    cursor: pointer;
+    z-index: 2 !important;
+ }

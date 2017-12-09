@@ -19,5 +19,18 @@
         });
 
     </script>
+
 @endforeach
+@if(Session::has("seccion"))
+    @if(Session::get("seccion")=='II')
+      <script>
+            mostrarseccion('II','');
+      </script>
+    @endif
+    @if(Session::get("seccion")=='A')
+      <script>
+            mostrarseccion('A',{{Session::get("seccionid")}});
+      </script>
+    @endif
+@endif
 <div class="notificacion"></div>

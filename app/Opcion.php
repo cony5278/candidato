@@ -13,10 +13,10 @@ class Opcion extends Model
                    ->where("id_areaconocimientos","=",empty($data['area'])?null:$data['area'])
                    ->where("id_otros","=",empty($data['otro'])?null:$data['otro'])->first();
       if(empty($opcion)){
-          $this->id_socioeconomica=empty($data['condicionsocial'])?null:$data['condicionsocial'];
-          $this->id_poblacions=empty($data['poblacion'])?null:$data['poblacion'];
-          $this->id_areaconocimientos=empty($data['area'])?null:$data['area'];
-          $this->id_otros=empty($data['otro'])?null:$data['otro'];
+          $this->id_socioeconomica=$data['condicionsocial']==0?null:$data['condicionsocial'];
+          $this->id_poblacions=$data['poblacion']==0?null:$data['poblacion'];
+          $this->id_areaconocimientos=$data['area']==0?null:$data['area'];
+          $this->id_otros=$data['otro']==0?null:$data['otro'];
           $this->save();
           return $this;
       }

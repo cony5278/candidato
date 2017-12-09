@@ -48,21 +48,56 @@ function paginacion(evento,url){
     }
 }
 
-function foco(){
-    $(".contenedor-combo").hide();
-}
-function registraduria(event,evento,url){
-    var keycode = (event.keyCode ? event.keyCode : event.which);
-    if(keycode == 13) {
-        $.ajax({
-            url: url,
-            data: {cedula: $(evento).val()},
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                $(".contenedor-persona").html();
-                $(".contenedor-persona").html(data);
-            }
-        });
+
+function registraduria(event,evento,url,acme){
+    if(acme!='A'){
+      var keycode = (event.keyCode ? event.keyCode : event.which);
+      if(keycode == 13) {
+          $.ajax({
+              url: url,
+              data: {cedula: $(evento).val(),acme:acme},
+              type: 'GET',
+              dataType: 'json',
+              success: function (data) {
+                  $(".contenedor-persona").html();
+                  $(".contenedor-persona").html(data);
+              }
+          });
+        }
     }
+}
+
+
+/**
+*formulario persona estandar
+*/
+
+function acordionFormularioPE(numero){
+  // $(event.target).parent().next().show();
+  if($(".acordion-personae").eq(numero).css("display")=="none"){
+      $(".acordion-personae").eq(numero).show(400);
+  }else{
+      // $(".acordion-personae").eq(1==3?numero:numero+1).hide(400);
+      // $(".acordion-personae").eq(numero).hide(400);
+      switch (numero) {
+        case 1:
+          $('.acordion-personae').each(function (index, value) {
+              if(index!=0){
+                $(".acordion-personae").eq(index).hide(400);
+              }
+          });
+          break;
+          case 2:
+              $('.acordion-personae').each(function (index, value) {
+                  if(index!=1 && index!=0){
+                    $(".acordion-personae").eq(index).hide(400);
+                  }
+              });
+            break;
+        default:
+          $(".acordion-personae").eq(numero).hide(400);
+      }
+  }
+
+
 }

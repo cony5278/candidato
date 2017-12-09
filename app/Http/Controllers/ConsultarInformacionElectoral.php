@@ -54,6 +54,7 @@ class ConsultarInformacionElectoral extends Controller
                 $ciudad=$ciudad->buscar($this->lista->item(1),$departamento);
 
                 return response()->json(view("auth.admin.creare")->with([
+                    "formulario"=>$request->acme,
                     "nit"=>$request->cedula,
                     "iddepartamento"=>$departamento->id,
                     "departamento"=>$this->lista->item(0),

@@ -24,32 +24,39 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/prueba', function () {
-  $usuario=User::find(6);
-  dd($usuario->mesa());
+  $usuario=User::find(8);
 
+  return view("layouts.cargando");
 });
+Route::get('reporte', 'UsuarioEController@oprimirExcel');
+
 
 Route::get('/select', function () {
   return view("auth.admin.form.formacionacademica");
 });
 Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['middleware'=>'super'],function(){
 
-Route::group(['middleware'=>'admin'],function(){
-    Route::get('/home', 'HomeController@index')->name('home');
-    Route::post('registrar', 'RegistrarUsuarioController@registrar')->name('registrar');
-    Route::resource('usuario', 'RegistrarUsuarioController');
-    //Route::get('form_editar_usuario/{id}', 'RegistrarUsuarioController@form_editar_usuario');
+    Route::post('registrar','RegistrarUsuarioController@registrar')->name('registrar');
+    Route::resource('usuario','RegistrarUsuarioController');
+    Route::get('form_editar_usuario/{id}', 'RegistrarUsuarioController@form_editar_usuario');
     Route::get('form_crear_usuario', 'RegistrarUsuarioController@form_crear_usuario');
-    Route::get('form_listar_usuario', 'RegistrarUsuarioController@form_listar_usuario');
+
 
    // Route::get('form_crear_usuario/{id}', '');
    // Route::post('/registrarpersona','RegistrarUsuarioController@register')->name('registrarpersona');
 
 });
 
-Route::group(['middleware'=>'usuarioestandar'],function(){
+Route::group(['middleware'=>'comun'],function(){
+  Route::get('form_listar_usuario', 'RegistrarUsuarioController@form_listar_usuario');
+
+});
+Route::group(['middleware'=>'admin'],function(){
     Route::get('form_crear_usuarioe', 'UsuarioEController@form_crear_usuarioe');
     Route::post('registrare', 'UsuarioEController@registrar')->name('registrare');
-    Route::get('form_editar_usuario/{id}', 'UsuarioEController@form_editar_usuario');
-
+    Route::get('form_editar_usuarioe/{id}', 'UsuarioEController@form_editar_usuario');
+    Route::resource('usuarioe', 'UsuarioEController');
+    Route::get('form_informe_usurioe', 'InformePersonaE@form_informe_usurioe');
 });

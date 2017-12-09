@@ -1,4 +1,10 @@
-<form class="formulario-persona" enctype="multipart/form-data" id="form-persona" method="POST" action="{{ route('registrare') }}">
+@if ($formulario ==='I')
+<form class="formulario-persona" onsubmit="onCargandoSubmit()" enctype="multipart/form-data" id="form-persona" method="POST" action="{{ route('registrare') }}">
+@elseif ($formulario ==='A')
+<form class="formulario-persona" onsubmit="onCargandoSubmit()" enctype="multipart/form-data" id="form-persona" method="POST" action="{{ route('usuarioe.update',$usuario->id) }}">
+<input name="_method" type="hidden" value="PUT">
+@endif
+
     {{ csrf_field() }}
     <input type="hidden" name="type" value="{{Auth::user()->type}}"/>
     <button type="submit"  class="btn btn-primary">
@@ -6,7 +12,8 @@
     </button>
     <input class="btn btn-primary" onclick="mostrarseccion('L','')"  type="button" value="Cerrar">
 <div class="row">
-        <div align="center" class="col-md-3">
+        <div class="col-md-3 acordion-personae" >
+          <div class="semi-circulo" onclick="acordionFormularioPE(1)"><p class="h1">1</p></div>
             {{--PERSONAJE--}}
             <h1>Información <span class="small">Personaje</span></h1>
           <img id="imagePreview" width="100" height="100" src="{{empty($usuario)?'archivos/\\default.png':$usuario->photo=='default.png'?'archivos/\\default.png':'archivos/'.$usuario->type.'/'.$usuario->id.'/'.$usuario->photo}}" class="img-circle" />
@@ -17,7 +24,7 @@
                         Subir Imagen&hellip; <input id="imageUpload" type="file" name="photo" style="display: none;" multiple>
                     </span>
                     </label>
-                    <input id="valor-img" type="text" onfocus="foco()" align="rigth" value="{{empty($usuario->photo)?null:$usuario->photo}}" style="position: relative;
+                    <input id="valor-img" type="text"  align="rigth" value="{{empty($usuario->photo)?null:$usuario->photo}}" style="position: relative;
                                                  left: 79px;max-width:55% !important; height: 25px !important;" class="form-control" disabled>
 
                 </div>
@@ -46,32 +53,32 @@
 
             <div  class="form-group grupos">
                 <div class="col-md-10">
-                    <input id="name" onkeypress="registraduria(event,this,'{{$urldatosregistraduria}}')" type="text" onfocus="foco()" placeholder="Cedula" class="form-control" name="nit" value="{{ empty($nit)?empty($usuario->nit)?old('nit'):$usuario->nit:$nit }}" required autofocus>
+                    <input id="name" onkeypress="registraduria(event,this,'{{$urldatosregistraduria}}','{{$formulario}}')" type="text"  placeholder="Cedula" class="form-control" name="nit" value="{{ empty($nit)?empty($usuario->nit)?old('nit'):$usuario->nit:$nit }}" required autofocus>
                 </div>
             </div>
 
             <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Primer Nombre" class="form-control" name="nombre" value="{{ empty($nombre1)?empty($usuario->name)?old('name'):$usuario->name:$nombre1 }}" required autofocus>
+                    <input id="name" type="text"  placeholder="Primer Nombre" class="form-control" name="nombre" value="{{ empty($nombre1)?empty($usuario->name)?old('name'):$usuario->name:$nombre1 }}" required autofocus>
                 </div>
             </div>
 
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Segundo Nombre" class="form-control" name="nombre2" value="{{ empty($nombre2)?empty($usuario->name2)?old('name2'):$usuario->name2:$nombre2 }}">
+                    <input id="name" type="text"  placeholder="Segundo Nombre" class="form-control" name="nombre2" value="{{ empty($nombre2)?empty($usuario->name2)?old('name2'):$usuario->name2:$nombre2 }}">
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Primer Apellido" class="form-control" name="apellido" value="{{ empty($apellido1)?empty($usuario->lastname)?old('lastname'):$usuario->lastname:$apellido1 }}" required autofocus>
+                    <input id="name" type="text"  placeholder="Primer Apellido" class="form-control" name="apellido" value="{{ empty($apellido1)?empty($usuario->lastname)?old('lastname'):$usuario->lastname:$apellido1 }}" required autofocus>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Segundo Apellido" class="form-control" name="apellido2" value="{{ empty($apellido2)?empty($usuario->lastname2)?old('lastname2'):$usuario->lastname2:$apellido2 }}">
+                    <input id="name" type="text"  placeholder="Segundo Apellido" class="form-control" name="apellido2" value="{{ empty($apellido2)?empty($usuario->lastname2)?old('lastname2'):$usuario->lastname2:$apellido2 }}">
                 </div>
             </div>
 
@@ -112,32 +119,33 @@
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Telefono movil" class="form-control" name="movil" value="{{empty($usuario->telefonomovil)? old('movil'):$usuario->telefonomovil }}" >
+                    <input id="name" type="number"  placeholder="Telefono movil" class="form-control" name="movil" value="{{empty($usuario->telefonomovil)? old('movil'):$usuario->telefonomovil }}" >
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Telefono Fijo" class="form-control" name="fijo" value="{{empty($usuario->telefonofijo)? old('fijo'):$usuario->telefonofijo }}" >
+                    <input id="name" type="number"  placeholder="Telefono Fijo" class="form-control" name="fijo" value="{{empty($usuario->telefonofijo)? old('fijo'):$usuario->telefonofijo }}" >
                 </div>
             </div>
 
 
             <div class="form-group">
                 <div class="col-md-10">
-                  {{Form::select('sexo', array('D'=> 'Sexo', 'F' => 'Femenino','M'=>'Maculino','O'=>'Otro'), empty($usuario->sex)?'D':$usuario->sex,array('class'=>'form-control','style'=>'height:35px'))}}
+                  {{Form::select('sexo', array('O'=> 'Sexo', 'F' => 'Femenino','M'=>'Maculino','O'=>'Otro'), empty($usuario->sex)?'D':$usuario->sex,array('class'=>'form-control','style'=>'height:35px'))}}
 
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input  id="name" type="text" onfocus="foco()" placeholder="Direccion Residencia" class="form-control" name="direccionusuario" value="{{ empty($usuario->address)?old('address'):$usuario->address }}" >
+                    <input  id="name"  type="text"  placeholder="Direccion Residencia" class="form-control" name="direccionusuario" value="{{ empty($usuario->address)?old('address'):$usuario->address }}">
                 </div>
             </div>
 
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 acordion-personae" style="display:none;">
+            <div class="semi-circulo" onclick="acordionFormularioPE(2)"><p class="h1">2</p></div>
             {{--CONDICION SOCIOECONOMICA ETIQUETAS--}}
             <h1>Información <span class="small">Detalles del personaje</span></h1>
             <div class="form-group">
@@ -145,7 +153,7 @@
                     <select style="height: 35px;" name="condicionsocial" class="form-control">
                         <option value="0">Condición socioeconomica</option>
                         @foreach($condicionsocioeconomicas as $condicion)
-                          @if (!empty($opcion->id_socioeconomica))
+                          @if (!empty($opcion))
                               @if ($condicion->id === $opcion->id_socioeconomica)
                                   <option value="{{$condicion->id}}" selected>{{$condicion->nivel}}</option>
                               @else
@@ -162,8 +170,9 @@
                 <div class="col-md-12">
                     <select style="height: 35px;" name="poblacion" class="form-control">
                         <option value="0">Poblaciones</option>
+
                         @foreach($poblaciones as $poblacion)
-                            @if (!empty($opcion->id_poblacions))
+                            @if (!empty($opcion))
                                 @if ($poblacion->id===$opcion->id_poblacions)
                                    <option value="{{$poblacion->id}}" selected>{{$poblacion->nombre}}</option>
                                 @else
@@ -181,7 +190,7 @@
                     <select style="height: 35px;" name="area" class="form-control">
                         <option value="0">Areas de conocimiento</option>
                         @foreach($areasconocimiento as $area)
-                            @if (!empty($opcion->id_areaconocimientos))
+                            @if (!empty($opcion))
                                 @if ($area->id===$opcion->id_areaconocimientos)
                                   <option value="{{$area->id}}" selected>{{$area->nombre}}</option>
                                 @else
@@ -199,7 +208,7 @@
                     <select style="height: 35px;" name="otro" class="form-control">
                         <option value="0">Otros</option>
                         @foreach($otros as $otro)
-                              @if (!empty($opcion->id_areaconocimientos))
+                              @if (!empty($opcion))
                                   @if ($otro->id===$opcion->id_otros))
                                       <option value="{{$otro->id}}" selected>{{$otro->nombre}}</option>
                                   @else
@@ -213,7 +222,8 @@
                  </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 acordion-personae" style="display:none;">
+                <div class="semi-circulo" onclick="acordionFormularioPE(3)"><p class="h1">3</p></div>
             {{--INFORMACION ELECTORAL--}}
             <h1>Formación <span class="small">Información académica y laboral</span></h1>
             <div id="accordion" role="tablist">
@@ -242,10 +252,9 @@
                             <div class="form-group">
                                   @if (!empty($formacions))
                                     @foreach($formacions as $formacion)
-                                        <script type="text/javascript">
-                                              agregarSeleccionSinEvento('{{App\Nivelacademico::find($formacion->id_nivelacademicos)->nombre}}','{{$formacion->id}}','{{$formacion->descripcion}}');
-
-                                        </script>
+                                      <script type="text/javascript">
+                                              agregarSeleccionSinEvento('{{App\Nivelacademico::find($formacion->id_nivelacademicos)->id}}','{{App\Nivelacademico::find($formacion->id_nivelacademicos)->nombre}}','{{$formacion->id}}','{{$formacion->descripcion}}');
+                                      </script>
                                       @endforeach
                                   @endif
                                 <div class="col-md-12 agregar-formacion">
@@ -269,12 +278,13 @@
 
                                     <div class="form-group">
                                         <div class="col-md-10">
-                                            <input id="nombreempresa" type="text" onfocus="foco()" placeholder="Nombre Empresa" class="form-control" name="empresa"  value="{{ empty($empresa->nombre)?old('nombreempresa'):$empresa->nombre}}" >
+                                            <input type="hidden" name="id_empresa" value="{{empty($empresa->id)?null:$empresa->id}}">
+                                            <input id="nombreempresa" type="text"  placeholder="Nombre Empresa" class="form-control" name="empresa"  value="{{ empty($empresa->nombre)?old('nombreempresa'):$empresa->nombre}}" >
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-md-10">
-                                            <input id="cargoempresa" type="text" onfocus="foco()" placeholder="Cargo Empresa" class="form-control" name="cargo"  value="{{ empty($empresa->cargo)? old('cargoempresa'):$empresa->cargo}}" >
+                                            <input id="cargoempresa" type="text"  placeholder="Cargo Empresa" class="form-control" name="cargo"  value="{{ empty($empresa->cargo)? old('cargoempresa'):$empresa->cargo}}" >
                                         </div>
                                     </div>
 
@@ -287,16 +297,17 @@
 
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-3 acordion-personae" style="display:none;">
+          <div class="semi-circulo" onclick="acordionFormularioPE(-1)"><p class="h1">1</p></div>
             <h1>Información Electoral <span class="small">Datos electorales</span></h1>
             <div class="form-group" >
 
                 <div class="col-md-10" style="position: relative !important;">
-                    <div class="col-md-10 contenedor-combo" id="contenedor-combo-departamento" style="display: none; position: absolute; right:100%; top:0%;">
+                    <div class="col-md-10 contenedor-combo" id="contenedor-combo-departamento" style="background:#fff; display: none; position: absolute; right:100%; top:0%;">
 
                     </div>
                     <input type="hidden" name="id_departamento" id="entrada-departamento-id" value="{{empty($iddepartamento)?empty($mesavotacion->id_departamento)?null:$mesavotacion->id_departamento:$iddepartamento}}"/>
-                    <input  id="entrada-departamento"   onkeyup="paginacion(this,'{{$urldepartamento}}')" type="text" onfocus="foco()"  placeholder="Departamento" class="form-control entrada-combo" name="departamento" value="{{ empty($departamento)?empty($mesavotacion->departamento)?old('departamento'):$mesavotacion->departamento:$departamento }}" required autofocus>
+                    <input  id="entrada-departamento"   onkeyup="paginacion(this,'{{$urldepartamento}}')" type="text"   placeholder="Departamento" class="form-control entrada-combo" name="departamento" value="{{ empty($departamento)?empty($mesavotacion->departamento)?old('departamento'):$mesavotacion->departamento:$departamento }}" required autofocus>
                 </div>
             </div>
 
@@ -307,19 +318,19 @@
 
                     </div>
                     <input type="hidden" name="id_ciudad" id="entrada-ciudad-id" value="{{empty($idciudad)?empty($mesavotacion->id_ciudad)?null:$mesavotacion->id_ciudad:$idciudad}}"/>
-                    <input id="entrada-ciudad"     onkeyup="paginacion(this,'{{$urlciudades}}')" type="text" onfocus="foco()"  placeholder="Ciudad" class="form-control entrada-combo" name="ciudad" value="{{empty($ciudad)?empty($mesavotacion->ciudad)?old('ciudad'):$mesavotacion->ciudad:$ciudad }}" required autofocus>
+                    <input id="entrada-ciudad"     onkeyup="paginacion(this,'{{$urlciudades}}')" type="text"   placeholder="Ciudad" class="form-control entrada-combo" name="ciudad" value="{{empty($ciudad)?empty($mesavotacion->ciudad)?old('ciudad'):$mesavotacion->ciudad:$ciudad }}" required autofocus>
                 </div>
             </div>
 
             <div class="form-group">
                 <div class="col-md-10">
-                    <input id="name" type="text" onfocus="foco()" placeholder="Direccion" class="form-control" name="direccionvotacion" value="{{ empty($direccion)?empty($mesavotacion->direccion)?old('direccion'):$mesavotacion->direccion:$direccion }}" required autofocus>
+                    <input id="name" type="text"  placeholder="Direccion" class="form-control" name="direccionvotacion" value="{{ empty($direccion)?empty($mesavotacion->direccion)?old('direccion'):$mesavotacion->direccion:$direccion }}" required autofocus>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-md-10">
                   <input type="hidden" name="id_mesa" id="entrada-ciudad-id" value="{{empty($mesavotacion->id_mesa)?null:$mesavotacion->id_mesa}}"/>
-                  <input id="name" type="text" onfocus="foco()" placeholder="Mesa de votación" class="form-control" name="mesavotacion" value="{{empty($mesa)?empty($mesavotacion->numero)?old('fijo'):$mesavotacion->numero:$mesa }}" required autofocus>
+                  <input id="name" type="text"  placeholder="Mesa de votación" class="form-control" name="mesavotacion" value="{{empty($mesa)?empty($mesavotacion->numero)?old('fijo'):$mesavotacion->numero:$mesa }}" required autofocus>
                 </div>
             </div>
         </div>

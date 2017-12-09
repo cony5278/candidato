@@ -52,10 +52,10 @@ class User extends Authenticatable
     }
     public function opcion(){
       return $this->join('opcions', 'opcions.id', '=','users.id_opcions')
-                  ->join('socioeconomicas','socioeconomicas.id','=','opcions.id_socioeconomica')
-                  ->join('poblacions','poblacions.id','=','opcions.id_poblacions')
-                  ->join('areaconocimientos','areaconocimientos.id','=','opcions.id_areaconocimientos')
-                  ->join('otros','otros.id','=','opcions.id_otros')
+                  ->leftJoin('socioeconomicas','socioeconomicas.id','=','opcions.id_socioeconomica')
+                  ->leftJoin('poblacions','poblacions.id','=','opcions.id_poblacions')
+                  ->leftJoin('areaconocimientos','areaconocimientos.id','=','opcions.id_areaconocimientos')
+                  ->leftJoin('otros','otros.id','=','opcions.id_otros')
                   ->select("otros.*",
                        "areaconocimientos.*",
                        "areaconocimientos.*",

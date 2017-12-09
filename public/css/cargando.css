@@ -1,0 +1,34 @@
+.cargando{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=67)";
+  filter: alpha(opacity=67);
+  -moz-opacity: 0.67;
+  -khtml-opacity: 0.67;
+  opacity: 0.77;
+  z-index: 1500;
+  margin: 0px;
+  padding: 0px;
+}
+.contenedor-cargando{
+  position: relative;
+  left: 40%;
+  top: 30%;
+  width: 190px;
+  height: 190px;
+  background: #fff;
+  z-index: 1501;
+  border-radius: 200px 200px 200px 200px;
+  -moz-border-radius: 200px 200px 200px 200px;
+  -webkit-border-radius: 200px 200px 200px 200px;
+  border: 0px solid #000000;
+}
+.contenedor-cargando-body{
+  position: absolute;
+  left: 10%;
+  Top:40%;
+}

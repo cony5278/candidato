@@ -18,8 +18,8 @@ class MDAdmin
     public function handle($request, Closure $next)
     {
         $usuario=\Auth::user();
-        if($usuario->type=='A'){
-          //  return  redirect('/')->withInput()->with(["notificacion"=>"DANGER","msj"=>"No tiene privilegios para acceder a este recurso consulte al administrador del sistema"]);
+        if($usuario->type=='E'){
+          return  redirect('/')->withInput()->with(["notificacion"=>"DANGER","msj"=>"No tiene privilegios para acceder a este recurso consulte al administrador del sistema"]);
         }
         return $next($request);
     }
