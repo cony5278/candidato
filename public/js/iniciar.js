@@ -2,9 +2,7 @@
 formacion=[];
 
 
-window.onclick = function(event) {
-        $(".contenedor-combo").hide();
-}
+
 
 //html del gis cargando
 function htmlCargado(){
@@ -37,6 +35,64 @@ function getAjax(url){
     }) .done(function( data ) {
       $(".cargando").remove();
     }).fail(function(error) {
-          //alert(error); // or whatever
+        $(".cargando").remove();
     });
 }
+
+function postAjax(url,id){
+  $(".contenedor").html();
+  $("body").append(htmlCargado());
+        var  data = {  _method:"delete",_token : $("#token").attr("value")};
+         $.post(url+"/"+id, data,function(resul){
+           if(resul.notificacion==undefined){
+             $(".contenedor").html(resul);
+           }else{
+             var notificacion = new Notificacion();
+             notificacion.crearContenedor();
+             notificacion.crearNotificacion(resul.msj,resul.notificacion);
+              $(".contenedor").html(resul.html);
+           }
+         }).done(function( data ) {
+           $(".cargando").remove();
+         }).fail(function(error) {
+            $(".cargando").remove();
+         });
+}
+
+function postAjaxSend(){
+  $(".contenedor").html();
+  $("body").append(htmlCargado());
+  var formData = new FormData();
+  // formData.append("photo",  $('#imageUpload')[0].files[0]);
+  var data=$('.formulario').serializeArray();
+    // data.push({ name: "photo", value: formData});
+           $.post($('.formulario').attr('action'), data,function(resul){
+           if(resul.notificacion==undefined){
+             $(".contenedor").html(resul);
+           }else{
+             var notificacion = new Notificacion();
+             notificacion.crearContenedor();
+             notificacion.crearNotificacion(resul.msj,resul.notificacion);
+              $(".contenedor").html(resul.html);
+           }
+         }).done(function( data ) {
+           $(".cargando").remove();
+         }).fail(function(error) {
+                 console.log(error);
+            $(".cargando").remove();
+            var data = JSON.parse(error.responseText).errors;
+
+               for(var key in data) {
+
+                       var notificacion = new Notificacion();
+                       notificacion.crearContenedor();
+                       notificacion.crearNotificacion(data[key],"DANGER");
+               }
+
+         });
+}
+
+$(document).on('submit','.formulario',function(e){
+    e.preventDefault();
+    postAjaxSend();
+});

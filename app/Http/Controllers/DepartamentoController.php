@@ -4,15 +4,231 @@ namespace App\Http\Controllers;
 
 use App\Departamentos;
 use Illuminate\Http\Request;
+use App\Evssa\EvssaConstantes;
+use App\Evssa\EvssaUtil;
+use App\Evssa\EvssaException;
+use Illuminate\Support\Facades\Validator;
+use App\Evssa\EvssaPropertie;
 
 class DepartamentoController extends Controller
 {
+      protected $redirectTo = '/home';
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
+    {
+
+      return response()->json(view("lugar.departamento.listar")->with(["urllistar"=>"departamento","urlgeneral"=>url("/"),"listadepartamentos"=>Departamentos::paginate(10)])->render());
+    }
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    public function validator(array $data)
+    {
+        return Validator::make($data, [
+            'nombre' => 'required|string|max:255'
+          ],
+           [
+            'nombre.required'=>str_replace('s$nombre$s','nombre',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+          ]
+      );
+
+    }
+    /**
+     * Get the post register / login redirect path.
+     *
+     * @return string
+     */
+    public function redirectPath()
+    {
+        if (method_exists($this, 'redirectTo')) {
+            return $this->redirectTo();
+        }
+
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+
+        return response()->json(view("lugar.departamento.crear")->with(["formulario"=>"I"])->render());
+    }
+    /**
+     * Create a new user instance after a valid registration.
+     *
+     * @param  array  $data
+     * @return \App\Departamento
+     */
+    public function insertar(array $data)
+    {
+
+      try {
+        $departamento=new Departamentos();
+        $departamento->nombre=$data['nombre'];
+        $departamento->save();
+
+      } catch (EvssaException $e) {
+          EvssaUtil::agregarMensajeAlerta($e->getMensaje());
+      }
+      EvssaUtil::agregarMensajeConfirmacion("Se registro correctamente el departamento");
+
+    }
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+      try{
+          $this->validator($request->all())->validate();
+        $this->insertar($request->all());
+
+        return response()->json([
+            EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
+            EvssaConstantes::MSJ=>"Se ha insertado correctamente el departamento.",
+            "html"=>redirect("departamento")
+        ]);
+      } catch (EvssaException $e) {
+          return response()->json([
+              EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+              EvssaConstantes::MSJ=>$e->getMensaje(),
+          ]);
+      } catch (\Illuminate\Database\QueryException $e) {
+           return response()->json([
+               EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+               EvssaConstantes::MSJ=>"Registro secundario encontrado",
+           ]);
+      }
+
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+
+        return response()->json(view("lugar.departamento.crear")->with(["formulario"=>"A","departamento"=>Departamentos::find($id)])->render());
+
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+      try{
+          $this->validator($request->all())->validate();  
+          $this->actualizar(Departamentos::find($id),$request->all());
+          return response()->json([
+              EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
+              EvssaConstantes::MSJ=>"Se ha actualizado correctamente el departamento.",
+              "html"=>redirect("departamento")
+          ]);
+        } catch (EvssaException $e) {
+            return response()->json([
+                EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+                EvssaConstantes::MSJ=>$e->getMensaje(),
+            ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+             return response()->json([
+                 EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+                 EvssaConstantes::MSJ=>"Registro secundario encontrado",
+             ]);
+        }
+    }
+
+    /**
+     * Create a new user instance after a valid registration.
+     *
+     * @param  array  $data
+     * @return \App\Departamento
+     */
+    private function actualizar($departamento,array $data)
+    {
+
+      try {
+        $departamento->nombre=$data['nombre'];
+        $departamento->save();
+
+      } catch (EvssaException $e) {
+          EvssaUtil::agregarMensajeAlerta($e->getMensaje());
+      }
+      EvssaUtil::agregarMensajeConfirmacion("Se registro correctamente el departamento");
+
+    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+         try {
+           Departamentos::find($id)->delete();
+           // dd(redirect("departamento"));
+           // return redirect("departamento");
+           return response()->json([
+               EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
+               EvssaConstantes::MSJ=>"Se ha eliminado correctamente el registro.",
+               "html"=>redirect("departamento")
+           ]);
+          } catch (EvssaException $e) {
+              return response()->json([
+                  EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+                  EvssaConstantes::MSJ=>$e->getMensaje(),
+              ]);
+          } catch (\Illuminate\Database\QueryException $e) {
+               return response()->json([
+                   EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+                   EvssaConstantes::MSJ=>"Registro secundario encontrado",
+               ]);
+          }
+
+    }
+    /**
+    *lista todos los departamentos
+    */
+    public function cargarListaDepartamento(){
+
+      return view("lugar.listar")->with(["listadepartamentos"=>Departamentos::all()]);
+    }
+
+    public function cargarListaCombo(Request $request)
     {
 
         if($request->ajax()){
@@ -34,69 +250,10 @@ class DepartamentoController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    public function cargarDespliegueCombo(Request $request){
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+      $departamentos=new Departamentos();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+      return response()->json(view("combos.despliegue")->with(["lista"=>$departamentos->getListarDepartamentosDespliegue($request->buscar)])->render());
     }
 }

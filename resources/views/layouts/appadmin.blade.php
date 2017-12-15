@@ -59,11 +59,16 @@
                     <span class="nav-link-text">Persona</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapseComponents">
+                    @if (Auth::user()->type =='S')
                     <li>
-                        <a onclick="menuizquierda(1)">Archivos</a>
+                        <a onclick="menuizquierda(1)">Registrar Aministrador</a>
+                    </li>
+                    @endif
+                    <li>
+                        <a onclick="menuizquierda(2)">Registrar Estandar</a>
                     </li>
                     <li>
-                        <a onclick="menuizquierda('L001')">Informes</a>
+                        <a onclick="">Informes</a>
                     </li>
                 </ul>
             </li>
@@ -84,17 +89,17 @@
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Informes">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-sitemap"></i>
-                    <span class="nav-link-text">Informes</span>
+                    <span class="nav-link-text">Lugar</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapseMulti">
                     <li>
-                        <a href="#">informe 1</a>
+                        <a onclick="mostrarSeccionMenu('I','departamento','')">Departamento</a>
                     </li>
                     <li>
-                        <a href="#">informe 2</a>
+                        <a onclick="mostrarSeccionMenu('I','ciudad','')">Ciudad</a>
                     </li>
                     <li>
-                        <a href="#">informe 3</a>
+                        <a href="#">Informe</a>
                     </li>
 
                 </ul>
@@ -129,7 +134,7 @@
 <div class="content-wrapper">
     <div class="porro"></div>
     <div class="container-fluid contenedor">
-        <!-- @include('auth.admin.listar') -->
+        <!-- incluye todo -->
     </div>
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->

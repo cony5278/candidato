@@ -24,6 +24,10 @@ class Departamentos extends Model
         'id',
     ];
 
+    function getListarDepartamentosDespliegue($buscar){
+        return $this->where('nombre','like','%'.$buscar.'%')->get();
+    }
+
     function getListarDepartamentos($buscar){
         return $this->where('nombre','like','%'.$buscar.'%')->paginate(5);
     }

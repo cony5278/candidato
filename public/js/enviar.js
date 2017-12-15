@@ -17,6 +17,10 @@ function mostrarseccion(acme,id){
             var url = "form_editar_usuario/"+id+"";
             getAjax(url);
             break;
+        case "AA":
+            var url = "form_editar_usuarioe/"+id+"";
+            getAjax(url);
+        break;
         case "E":
             var url = "form_eliminar_usuario/"+id+"";
             getAjax(url);
@@ -25,41 +29,40 @@ function mostrarseccion(acme,id){
             var url = "form_listar_usuario";
             getAjax(url);
             break;
+        case "LL":
+            var url = "form_listar_usuarioe";
+            getAjax(url);
+            break;
     }
 }
-function mostrarSeccionMenu(opcion){
-    switch (opcion) {
+function mostrarSeccionMenu(acme,url,id){
+    menu(acme,url,id);
+}
+/**
+*seccion menu general
+**/
+function menu(acme,url,id){
+  switch (acme) {
+    case "L"://listar
+        getAjax(url);
+    break;
+    case "I"://insertar
+        getAjax(url);
+    break;
+    case "A"://actualizar
+        getAjax(url+"/"+id+"/edit");
+    break;
+    case "D"://eliminar
+      postAjax(url,id);
 
-        case "L001"://informes de la persona listar
-            getAjax("form_informe_usurioe");
-        break;
-
-        case "A001"://informes de la persona actualizar
-
-        break;
-        case "I001"://informes de la persona insercion
-
-        break;
-        case "D001"://informes de la persona dato
-
-        break;
-
-
-      default:
-
-    }
+    break;
+    default:
+      getAjax(url+"/"+id);
+  }
 }
 
 
 
-function postAjax(url,evento){
-    $(".contenedor").html();
-    var formulario = $(evento).parents("form:first");
-    $.post(url,$(formulario).serializeArray(),function(resul){
-        //$(".contenedor-persona").html(resul);
-    })
-
-}
 function formulario(url,nombreFormulario){
     postAjax(url,nombreFormulario);
 }
@@ -99,14 +102,14 @@ function agregarHtml(idprofesion,profesion,id,descripcion){
       '<div class="modal-body">'+
         '<div class="form-group">'+
             '<div class="col-md-10">'+
-                '<input id="name" type="hidden" onfocus="foco()" value="'+idprofesion+'"  name="idprofesion[]" >'+
-                '<input id="name" type="hidden" onfocus="foco()" value="'+id+'"  name="idforomacionacademica[]" >'+
-                '<input id="name" type="text" onfocus="foco()" value="'+profesion+'"  placeholder="Nivel academico" class="form-control" name="foromacionacademica[]" disabled>'+
+                '<input id="name" type="hidden"  value="'+idprofesion+'"  name="idprofesion[]" >'+
+                '<input id="name" type="hidden"  value="'+id+'"  name="idforomacionacademica[]" >'+
+                '<input id="name" type="text"  value="'+profesion+'"  placeholder="Nivel academico" class="form-control" name="foromacionacademica[]" disabled>'+
             '</div>'+
         '</div>'+
         '<div class="form-group">'+
             '<div class="col-md-10">'+
-                '<input id="name" type="text" onfocus="foco()" value="'+descripcion+'" placeholder="Descripcion" class="form-control" name="descripcionacademica[]">'+
+                '<input id="name" type="text" value="'+descripcion+'" placeholder="Descripcion" class="form-control" name="descripcionacademica[]">'+
             '</div>'+
         '</div>'+
       '</div>'+

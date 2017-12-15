@@ -7,7 +7,7 @@ use App\User;
 use Illuminate\Support\Facades\Session;
 class HomeController extends Controller
 {
-    private $suario;
+    private $usuario;
 
 
 
@@ -29,7 +29,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user=\Auth::user();
-        return view('layouts.appadmin')->with(['usuarioAdmin'=> $this -> usuario->getAllUsuarioAdmin($user->type=='S'?'A':'E')]);
+        return view('layouts.appadmin');
     }
 }

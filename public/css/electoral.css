@@ -28,10 +28,13 @@ combo grande
     border: 1px inset #ABA791 !important;
 }
 .contenedor-combo {
+
     border-radius: 7px 7px 7px 7px;
     -moz-border-radius: 7px 7px 7px 7px;
     -webkit-border-radius: 7px 7px 7px 7px;
-    border: 2px solid #848484;
+    -webkit-box-shadow: 0px 0px 11px 2px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 11px 2px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 11px 2px rgba(0,0,0,0.75);
 }
 
 /**

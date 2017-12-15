@@ -17,4 +17,5 @@
             @endforeach
             </tbody>
         </table>
-        {{$departamentos->render() }}
+
+        {{$departamentos->render(null,[],true) }}

@@ -1,11 +1,12 @@
 
 
 
-$(document).on('click','.pagination a',function(e){
+$(document).on('click','.pagination-combo a',function(e){
     e.preventDefault();
 
     var pagina=$(this).attr('href').split('page=')[1];
-    var ruta=$(this).attr('href').split('htt')[1];
+    var ruta=$(this).attr('href').split('page=')[1];
+
     $.ajax({
         url:"htt"+ruta.substring(0,ruta.lastIndexOf("?")),
         data:{
@@ -24,6 +25,49 @@ $(document).on('click','.pagination a',function(e){
 
     });
 
+});
+
+
+$(document).on('click','.pagination-table a',function(e){
+    e.preventDefault();
+
+    var pagina=$(this).attr('href').split('page=')[1];
+    var ruta=$(this).attr('href').split('home')[0];
+
+      $.ajax({
+          url:ruta+"\\"+$("#url-listar").val(),
+          data:{
+              page:pagina,
+              type:$("#usuario-type").val(),
+          },
+          type:'GET',
+          dataType:'json',
+          success:function(data){
+             // console.log(data);
+              $('.contenedor').html(data);
+          }
+
+      });
+});
+
+
+
+$(document).on('click','.general-pagination-table a',function(e){
+    e.preventDefault();
+    var pagina=$(this).attr('href').split('page=')[1];
+      $.ajax({
+          url:$("#url-general").val()+"/"+$("#url-listar").val(),
+          data:{
+              page:pagina
+          },
+          type:'GET',
+          dataType:'json',
+          success:function(data){
+
+              $('.contenedor').html(data);
+          }
+
+      });
 });
 
 function paginacion(evento,url){
@@ -48,19 +92,35 @@ function paginacion(evento,url){
     }
 }
 
+function despliegueCombo(evento,url){
+    // console.log(url);
+          $.ajax({
+              url: url,
+              data: {buscar: $(evento).val()},
+              type: 'GET',
+              dataType: 'json',
+              success: function (data) {
+                  $(".despliegue").html();
+                  $(".despliegue").html(data);
+              }
+          });
 
-function registraduria(event,evento,url,acme){
+
+}
+
+function registraduria(event,evento,url,acme,type){
     if(acme!='A'){
       var keycode = (event.keyCode ? event.keyCode : event.which);
       if(keycode == 13) {
           $.ajax({
               url: url,
-              data: {cedula: $(evento).val(),acme:acme},
+              data: {cedula: $(evento).val(),acme:acme,type:type},
               type: 'GET',
               dataType: 'json',
               success: function (data) {
-                  $(".contenedor-persona").html();
-                  $(".contenedor-persona").html(data);
+
+                  $(".despliegue").html();
+                  $(".despliegue").html(data);
               }
           });
         }
@@ -100,4 +160,8 @@ function acordionFormularioPE(numero){
   }
 
 
+}
+
+function fueraFoco(){
+  $(".contenedor-combo").hide();
 }

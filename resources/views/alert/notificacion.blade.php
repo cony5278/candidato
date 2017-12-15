@@ -1,14 +1,14 @@
 @if(Session::has("msj"))
-
     <script>
-        $(document).ready(function(){
+      $(document).ready(function(){
             var notificacion = new Notificacion();
             notificacion.crearContenedor();
             notificacion.crearNotificacion("{{Session::get('msj')}}","{{Session::get('notificacion')}}");
-        });
 
+    });
     </script>
 @endif
+
 
 @foreach($errors->all() as $error)
     <script>
@@ -29,8 +29,15 @@
     @endif
     @if(Session::get("seccion")=='A')
       <script>
-            mostrarseccion('A',{{Session::get("seccionid")}});
+            // mostrarseccion('A',{{Session::get("seccionid")}});
+          mostrarSeccionMenu("A","{{Session::get('urllistar').'/'}}","{{Session::get('seccionid')}}");
       </script>
     @endif
+    @if(Session::get("seccion")=='I')
+      <script>
+        mostrarSeccionMenu("I","{{Session::get('urllistar').'/'.'create'}}","");
+      </script>
+    @endif
+
 @endif
 <div class="notificacion"></div>

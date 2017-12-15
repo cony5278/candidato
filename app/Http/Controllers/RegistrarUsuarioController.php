@@ -36,7 +36,7 @@ class RegistrarUsuarioController extends Controller
 
     public function registrar(Request $request)
     {
-
+        dd("crear usuario admin");
         $this->validator($request->all())->validate();
          $this->create($request->all());
         return  redirect($this->redirectPath());
@@ -80,6 +80,7 @@ class RegistrarUsuarioController extends Controller
      */
     public function create(array $data)
     {
+        dd("crear usuario admin");
         $usuario=new User();
 
 
@@ -188,7 +189,12 @@ class RegistrarUsuarioController extends Controller
     }
 
     public function form_crear_usuario(){
-        return view("auth.admin.crear");
+        return view("auth.admin.crear")->with(["formulario"=>"I"])->with(self::url());
+    }
+    public static function  url(){
+        return [
+            'urldatosregistraduria'=>url("/datosregistraduria"),
+           ];
     }
     public function form_listar_usuario(){
         $user=\Auth::user();

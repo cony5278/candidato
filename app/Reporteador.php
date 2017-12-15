@@ -5,6 +5,7 @@ namespace App;
 
 use App\EvssaConstantes;
 use JasperPHP\JasperPHP;
+use App\Consulta;
 class Reporteador {
     /**
      * constructor de la clase recibe un archivo
@@ -23,33 +24,33 @@ class Reporteador {
        header('Pragma: public');
        header('Content-Length: ' . filesize($file));
     }
-    public static function exportar($nombre,$formato){
+    public static function exportar($nombre,$formato,$param){
 
       switch ($formato) {
-        case EvssaConstantes::XLSX:
-              self::descargar($nombre,$formato);
+        case EvssaConstantes::EXCEL:
+              self::descargar($nombre,$formato,$param);
           break;
-        case EvssaConstantes::XLS:
-                self::descargar($nombre,$formato);
+        case EvssaConstantes::EXCEL10:
+                self::descargar($nombre,$formato,$param);
           break;
         case EvssaConstantes::PDF:
-              self::descargar($nombre,$formato);
+              self::descargar($nombre,$formato,$param);
           break;
         default:
           # code...
           break;
       }
   }
-  private static function descargar($nombre,$formato){
+
+  private static function descargar($nombre,$formato,$param){
       $jasper = new JasperPHP;
       $output = public_path('archivos').'\informes';
       $input =$output.'\\'.$nombre.'.jrxml';
-
       $jasper->process(
                 $input,
                 $output,
                 array($formato),
-                array(),
+                $param,
                 \Config::get('database.connections.mysql')
       )->execute();
 
@@ -63,5 +64,14 @@ class Reporteador {
       flush();
       readfile($path);
       unlink($path);
+    }
+
+
+    public static function resuelveConsulta($codigo , $reemplazos=array()){
+      $consulta=Consulta::where("codigo","=",$codigo)->first()->consulta;
+      foreach ($reemplazos as $key => $value){
+           $consulta=str_replace('s$'.$key.'$s',$value,$consulta);
+      }  
+      return $consulta;
     }
 }

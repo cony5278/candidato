@@ -3,7 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
-
+use App\Evssa\EvssaUtil;
+use App\Evssa\EvssaConstantes;
+use App\Evssa\EvssaPropertie;
 class MDSuperAdmin
 {
     /**
@@ -15,9 +17,12 @@ class MDSuperAdmin
      */
     public function handle($request, Closure $next)
     {
-        $usuario=\Auth::user();      
+        $usuario=\Auth::user();
         if($usuario->type=='A' || $usuario->type=='E'){
-          return  redirect('/')->withInput()->with(["notificacion"=>"DANGER","msj"=>"No tiene privilegios para acceder a este recurso consulte al administrador del sistema"]);
+          return response()->json([
+              EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+              EvssaConstantes::MSJ=>'super',
+          ]);
         }
         return $next($request);
     }

@@ -20,13 +20,14 @@ use App\Empresa;
 use App\Formacionacademica;
 use App\Departamentos;
 use App\Ciudades;
-use App\EvssaConstantes;
 use App\Reporteador;
+use App\EvssaConstantes;
+use App\Evssa\EvssaUtil;
+use App\Evssa\EvssaException;
 class UsuarioEController extends Controller
 {
     protected $redirectTo = '/home';
-    private $suario;
-
+    private $usuario;
 
 
     /**
@@ -52,12 +53,16 @@ class UsuarioEController extends Controller
 
     public function registrar(Request $request)
     {
-      // dd($request->all());
-        Session::flash("seccion","II");
-        $this->validator($request->all())->validate();
-        Session::forget('seccion');
-        Session::forget('seccionid');
-        $this->create($request->all());
+
+        try {
+          EvssaUtil::agregarSeccion("II");
+          $this->validator($request->all())->validate();
+          EvssaUtil::borrarSeccion();
+          $this->create($request->all());
+
+        } catch (EvssaException $e) {
+            EvssaUtil::agregarMensajeAlerta($e->getMensaje());
+        }
         return  redirect($this->redirectPath());
 
     }
@@ -146,7 +151,7 @@ class UsuarioEController extends Controller
               $data['fechanacimiento']);
       }
       $usuario->email= $data['email'];
-      $usuario->type= $data['type']=='S'?'A':'E';
+      $usuario->type= $data['type'];
       $usuario->telefonofijo=empty($data['fijo'])?null:$data['fijo'];
       $usuario->telefonomovil=empty($data['movil'])?null:$data['movil'];
       $usuario->sex=empty($data['sexo'])?null:$data['sexo'];
@@ -236,11 +241,10 @@ class UsuarioEController extends Controller
      */
     public function update(Request $request, $id)
     {
-      // dd($request->all());
-      //buscar usuario
+
       $usuario=User::find($id);
       //crear variable de sesion por si las cosas salen mal
-      Session::flash("seccion","A");
+      Session::flash("seccion","AA");
       Session::flash("seccionid",$usuario->id);
       $this->validatorUpdate($request->all())->validate();
       //eliminar variables si toda va bien
@@ -333,7 +337,7 @@ class UsuarioEController extends Controller
         $mesa->save();
         $usuario->id_mesa=$mesa->id;
         //tabla usuario
-        $usuario->type=$data['type'];
+        $usuario->type= $data['type'];
         $usuario->nit=$data['nit'];
         $usuario->name=$data['nombre'];
         $usuario->name2=$data['nombre2'];
@@ -399,7 +403,7 @@ class UsuarioEController extends Controller
     }
     public function form_crear_usuarioe(){
 
-        return view("auth.admin.creare")->with(["formulario"=>"I"])->with(self::url());
+        return view("auth.admin.creare")->with(["formulario"=>"I","type"=>"E"])->with(self::url());
     }
     public function form_editar_usuario($id){
 
@@ -413,20 +417,46 @@ class UsuarioEController extends Controller
           "opcion"=>$usuario->opcion(),
           "empresa"=>$usuario->empresas(),
           "mesavotacion"=>$usuario->mesa(),
+          "type"=>"E",
           ])->with(self::url());
+    }
+
+    public function form_listar_usuario(){
+
+        $user=\Auth::user();
+        $listar=$this -> usuario->getAllUsuarioAdmin('E');
+        $listar->setPath(url("home"));
+        return view('auth.admin.listar')->with(['usuarioAdmin'=>$listar,'type'=>'E']);
     }
     /**
     *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en pdf
     */
     public function oprimirPdf(){
-      Reporteador::exportar("personal",EvssaConstantes::PDF);
+      $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0001PERSONALPRUEBA"));
+      Reporteador::exportar("0001PERSONALPRUEBA",EvssaConstantes::PDF,$param);
     }
 
     /**
     *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en excel
     */
     public function oprimirExcel(){
-      Reporteador::exportar("personal",EvssaConstantes::XLSX);
+      $reemplazos=array(
+        "id"=>6,
+        "nombre"=>"CO",
+      );
+      $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0002PERSONAE",$reemplazos));
+
+      Reporteador::exportar("0002PERSONA",EvssaConstantes::PDF,$param);
+    }
+
+    public function listarpaginationtable(Request $request){
+
+          if($request->ajax()){
+              $user=\Auth::user();
+              $listar=$this -> usuario->getAllUsuarioAdmin($request->type);
+              $listar->setPath(url("home"));
+              return response()->json(view('auth.admin.listar')->with(['usuarioAdmin'=>$listar,'type'=>$request->type])->render());
+          }
     }
 
 }

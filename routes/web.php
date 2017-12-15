@@ -11,12 +11,20 @@
 |
 */
 use App\User;
-Route::get('/', function () {
-    return view('welcome')->with(["todo"]);
-});
-Route::get('listadepartamentos','DepartamentoController@index');
+Route::resource('consultareporte','ConsultaController');
 
-Route::get('listaciudades','CiudadController@index');
+Route::get('/consulta', function () {
+    return view('consulta');
+});
+
+Route::get('listadepartamentos','DepartamentoController@cargarListaCombo');
+
+Route::get('listaciudades','CiudadController@cargarListaCombo');
+
+
+Route::get('listadesplieguedepartamento','DepartamentoController@cargarDespliegueCombo');
+
+
 
 Route::get('datosregistraduria','ConsultarInformacionElectoral@index');
 
@@ -38,19 +46,26 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware'=>'super'],function(){
 
-    Route::post('registrar','RegistrarUsuarioController@registrar')->name('registrar');
-    Route::resource('usuario','RegistrarUsuarioController');
-    Route::get('form_editar_usuario/{id}', 'RegistrarUsuarioController@form_editar_usuario');
-    Route::get('form_crear_usuario', 'RegistrarUsuarioController@form_crear_usuario');
-
-
-   // Route::get('form_crear_usuario/{id}', '');
-   // Route::post('/registrarpersona','RegistrarUsuarioController@register')->name('registrarpersona');
+  Route::get('form_crear_usuario', 'UsuarioAController@form_crear_usuario');
+  Route::post('registrar', 'UsuarioAController@registrar')->name('registrar');
+  Route::get('form_editar_usuario/{id}', 'UsuarioAController@form_editar_usuario');
+  Route::resource('usuario', 'UsuarioAController');
+  Route::get('form_informe_usurio', 'UsuarioAController@form_informe_usurio');
+  Route::resource('departamento', 'DepartamentoController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
+  Route::resource('ciudad', 'CiudadController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
 
 });
 
 Route::group(['middleware'=>'comun'],function(){
-  Route::get('form_listar_usuario', 'RegistrarUsuarioController@form_listar_usuario');
+  Route::get('form_listar_usuario', 'UsuarioAController@form_listar_usuario');
+  Route::get('form_listar_usuarioe', 'UsuarioEController@form_listar_usuario');
+  Route::get('listarpaginationtable', 'UsuarioEController@listarpaginationtable');
+  //Departamentos
+  Route::resource('departamento', 'DepartamentoController',  ['only' => ['index']]);
+  //Ciudad
+  Route::resource('ciudad','CiudadController',['only' => ['index']]);
+
+
 
 });
 Route::group(['middleware'=>'admin'],function(){
@@ -59,4 +74,5 @@ Route::group(['middleware'=>'admin'],function(){
     Route::get('form_editar_usuarioe/{id}', 'UsuarioEController@form_editar_usuario');
     Route::resource('usuarioe', 'UsuarioEController');
     Route::get('form_informe_usurioe', 'InformePersonaE@form_informe_usurioe');
+
 });

@@ -4,8 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Session;
-
-
+use App\Evssa\EvssaConstantes;
+use App\Evssa\EvssaPropertie;
 class MDAdmin
 {
     /**
@@ -19,7 +19,10 @@ class MDAdmin
     {
         $usuario=\Auth::user();
         if($usuario->type=='E'){
-          return  redirect('/')->withInput()->with(["notificacion"=>"DANGER","msj"=>"No tiene privilegios para acceder a este recurso consulte al administrador del sistema"]);
+          return response()->json([
+              EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
+              EvssaConstantes::MSJ=>'admin',
+          ]);
         }
         return $next($request);
     }

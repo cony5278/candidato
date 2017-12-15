@@ -7,23 +7,24 @@ use Illuminate\Http\Request;
 class Ciudades extends Model
 {
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'nombre',
-    ];
+  /**
+   * The attributes that are mass assignable.
+   *
+   * @var array
+   */
+  protected $fillable = [
+      'nombre'
+  ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'id',
-    ];
+  /**
+   * The attributes that should be hidden for arrays.
+   *
+   * @var array
+   */
+  protected $hidden = [
+      'id','id_departamento'
+  ];
+
 
     function getListarCiudades(Request $request){
       return $this->where("id_departamento","=",$request->iddepartamento)->where('nombre','like','%'.$request->ciudad.'%')->paginate(5);

@@ -47,6 +47,9 @@ class ConsultarInformacionElectoral extends Controller
                 $nombres=explode(' ', $this->lista->item(9));
                 $apellidos=explode(' ', $this->lista->item(10));
                 //dd($this->lista->getArray());
+
+                if($request->type=='E'){
+
                 $departamento=new Departamentos();
                 $departamento=$departamento->buscar($this->lista->item(0));
 
@@ -66,8 +69,20 @@ class ConsultarInformacionElectoral extends Controller
                     "nombre1"=>$nombres[0],
                     "nombre2"=>$nombres[1],
                     "apellido1"=>$apellidos[0],
-                    "apellido2"=>$apellidos[1]
+                    "apellido2"=>$apellidos[1],
+                    "type"=>$request->type
                 ])->with(UsuarioEController::url())->render());
+              }else{
+                return response()->json(view("auth.admin.crear")->with([
+                    "formulario"=>$request->acme,
+                    "nit"=>$request->cedula,
+                    "nombre1"=>$nombres[0],
+                    "nombre2"=>$nombres[1],
+                    "apellido1"=>$apellidos[0],
+                    "apellido2"=>$apellidos[1],
+                    "type"=>$request->type
+                ])->with(UsuarioEController::url())->render());
+              }
             }
     }
     private function registraduriaMesa(Request $request,$client){

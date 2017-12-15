@@ -1,10 +1,12 @@
 
-<button type="submit" onclick="mostrarseccion('{{Auth::user()->type=='S'?'I':'II'}}','')" class="btn btn-primary">
+<button type="submit" onclick="mostrarseccion('{{$type=='A'?'I':'II'}}','')" class="btn btn-primary">
     Nuevo
 </button>
 @if (!$usuarioAdmin->isEmpty())
 <table class="table">
     <input type="hidden" id="usuario-token" name="_token" value="{{ csrf_token() }}">
+    <input type="hidden" id="usuario-type" name="usuario-name-type" value="{{$type}}">
+    <input type="hidden" id="url-listar" value="listarpaginationtable">
     <thead >
 
     <tr>
@@ -22,7 +24,7 @@
             <td>{{$usuario->id}}</td>
             <td>{{$usuario->name}}</td>
             <td>{{$usuario->email}}</td>
-            <td><input class="btn btn-primary" onclick="mostrarseccion('A',{{$usuario->id}})" type="submit" value="Editar"> <input class="btn btn-primary" type="submit" onclick="eliminarDatos('1',{{$usuario->id}})" value="Eliminar"></td>
+            <td><input class="btn btn-primary" onclick="mostrarseccion('{{$type=='A'?'A':'AA'}}',{{$usuario->id}})" type="submit" value="Editar"> <input class="btn btn-primary" type="submit" onclick="eliminarDatos('1',{{$usuario->id}})" value="Eliminar"></td>
 
         </tr>
 
@@ -42,4 +44,4 @@
         Registre una Persona
     </div>
 @endif
-{{$usuarioAdmin->render() }}
+{{$usuarioAdmin->render(null,[],false) }}
