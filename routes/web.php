@@ -24,7 +24,9 @@ Route::get('listaciudades','CiudadController@cargarListaCombo');
 
 Route::get('listadesplieguedepartamento','DepartamentoController@cargarDespliegueCombo');
 
+Route::get('listadespliegueciudad','CiudadController@cargarDespliegueCombo');
 
+Route::get('listadesplieguepunto','MesaVotacionController@cargarDespliegueCombo');
 
 Route::get('datosregistraduria','ConsultarInformacionElectoral@index');
 
@@ -53,6 +55,8 @@ Route::group(['middleware'=>'super'],function(){
   Route::get('form_informe_usurio', 'UsuarioAController@form_informe_usurio');
   Route::resource('departamento', 'DepartamentoController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
   Route::resource('ciudad', 'CiudadController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
+  Route::resource('punto', 'PuntoVotacionController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
+  Route::resource('mesa', 'MesaVotacionController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
 
 });
 
@@ -64,7 +68,10 @@ Route::group(['middleware'=>'comun'],function(){
   Route::resource('departamento', 'DepartamentoController',  ['only' => ['index']]);
   //Ciudad
   Route::resource('ciudad','CiudadController',['only' => ['index']]);
-
+  //punto de
+  Route::resource('punto', 'PuntoVotacionController',  ['only' => ['index']]);
+  //mesavotacion
+  Route::resource('mesa', 'MesaVotacionController',  ['only' => ['index']]);
 
 
 });

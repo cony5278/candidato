@@ -11,6 +11,8 @@
         Guardar
     </button>
     <input class="btn btn-primary" onclick="mostrarseccion('{{$type=='A'?'L':'LL'}}','')"  type="button" value="Cerrar">
+    <input class="btn btn-primary" onclick="mostrarSeccionMenu('O','','')"  type="button" value="Adicionar observación">
+
 <div class="row">
         <div class="col-md-3 acordion-personae" >
             @include("auth.admin.form.formheader");

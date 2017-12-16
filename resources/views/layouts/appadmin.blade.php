@@ -79,14 +79,14 @@
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapseExamplePages">
                     <li>
-                        <a href="login.html">Rergistrar</a>
+                        <a onclick="mostrarSeccionMenu('I','punto','')">Rergistrar</a>
                     </li>
                     <li>
-                        <a href="register.html">Explorar</a>
+                        <a href="register.html">Informe</a>
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Informes">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Lugar">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
                     <i class="fa fa-fw fa-sitemap"></i>
                     <span class="nav-link-text">Lugar</span>
@@ -104,6 +104,22 @@
 
                 </ul>
             </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Mesa">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#mesavotacion" data-parent="#exampleAccordion">
+                    <i class="fa fa-fw fa-sitemap"></i>
+                    <span class="nav-link-text">Mesa de Votación</span>
+                </a>
+                <ul class="sidenav-second-level collapse" id="mesavotacion">
+                    <li>
+                        <a onclick="mostrarSeccionMenu('I','mesa','')">Mesa</a>
+                    </li>
+                    <li>
+                        <a href="#">Informe</a>
+                    </li>
+
+                </ul>
+            </li>
+
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
                 <a class="nav-link" href="#">
                     <i class="fa fa-fw fa-link"></i>

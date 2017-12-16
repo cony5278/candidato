@@ -143,7 +143,7 @@ class CiudadController extends Controller
                                                                 'urldespliegue'=>'listadesplieguedepartamento',
                                                                 'idname'=>'id_departamento',
                                                                 'ciudad'=>$ciudad,
-                                                                'departamento'=>Departamentos::find($ciudad->id_departamento)])->render());
+                                                                'objeto'=>Departamentos::find($ciudad->id_departamento)])->render());
 
     }
 

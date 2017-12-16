@@ -14,6 +14,9 @@ class PuntosVotacion extends Model
     protected $fillable = [
         'nombre', 'direccion','id'
     ];
+    function getListarPuntoDespliegue($buscar){
+        return $this->where('nombre','like','%'.$buscar.'%')->get();
+    }
 
     public function buscar($direccion,$idciudad){
         $puntovotacion= $this->where("id_ciudad","=",$idciudad)->first();

@@ -18,8 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AreaConocimiento::class);
         $this->call(Poblacion::class);
         $this->call(SocioEconomica::class);
-        $this->call(Departamentos::class);
-        $this->call(Ciudades::class);
         Model::reguard();
     }
 }

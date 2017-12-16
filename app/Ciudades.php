@@ -25,6 +25,10 @@ class Ciudades extends Model
       'id','id_departamento'
   ];
 
+  function getListarCiudadDespliegue($buscar){
+      return $this->where('nombre','like','%'.$buscar.'%')->get();
+  }
+
 
     function getListarCiudades(Request $request){
       return $this->where("id_departamento","=",$request->iddepartamento)->where('nombre','like','%'.$request->ciudad.'%')->paginate(5);

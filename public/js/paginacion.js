@@ -119,8 +119,8 @@ function registraduria(event,evento,url,acme,type){
               dataType: 'json',
               success: function (data) {
 
-                  $(".despliegue").html();
-                  $(".despliegue").html(data);
+                  $(".contenedor").html();
+                  $(".contenedor").html(data);
               }
           });
         }

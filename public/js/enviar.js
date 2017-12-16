@@ -54,7 +54,9 @@ function menu(acme,url,id){
     break;
     case "D"://eliminar
       postAjax(url,id);
-
+    break;
+    case "O"://OBSERVACION COMO UN CHAT DE REGISTROS
+          getAjax(url);
     break;
     default:
       getAjax(url+"/"+id);

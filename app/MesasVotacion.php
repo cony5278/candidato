@@ -14,9 +14,11 @@ class MesasVotacion extends Model
      * @var array
      */
     protected $fillable = [
-        'numero', 'id'
+        'numero', 'id','id_punto'
     ];
-
+    function getListarPuntoDespliegue($buscar){
+        return $this->where('nombre','like','%'.$buscar.'%')->get();
+    }
 
     public function buscar($numero,$puntovotacion){
         $mesa= $this->where("numero","=",$numero)->where("id_punto","=",$puntovotacion->id)->first();

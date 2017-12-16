@@ -5,5 +5,5 @@
         @endif
     @endforeach
 @else
- <option value="{{$departamento->id}}">{{$departamento->nombre}}</option>
+ <option value="{{$objeto->id}}">{{$objeto->nombre}}</option>
 @endif

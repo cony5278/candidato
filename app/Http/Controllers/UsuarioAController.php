@@ -36,7 +36,7 @@ class UsuarioAController extends Controller
 
     public function registrar(Request $request)
     {
-        
+
         $this->validator($request->all())->validate();
         $this->create($request->all());
         return  redirect($this->redirectPath());
@@ -97,6 +97,7 @@ class UsuarioAController extends Controller
       $usuario->name2 = $data['nombre2'];
       $usuario->lastname = $data['apellido'];
       $usuario->lastname2 = $data['apellido2'];
+      // $usuario->password => bcrypt($data['password']);
       if(!empty($data['fechanacimiento'])) {
           $usuario->birthdate = Carbon::createFromFormat('d/m/Y',
               $data['fechanacimiento']);
