@@ -228,4 +228,9 @@ class MesaVotacionController extends Controller
 
     return response()->json(view("combos.desplieguemesa")->with(["listamesa"=>$mesa->getListaMesa($request->buscar)])->render());
   }
+
+  public function refrescar(Request $request){
+
+    return response()->json(view("lugar.mesa.tabla")->with(["urllistar"=>"mesa","urlgeneral"=>url("/"),"listadesplieguemesa"=>MesasVotacion::where("numero","like","".$request->buscar."%")->paginate(10)])->render());
+  }
 }

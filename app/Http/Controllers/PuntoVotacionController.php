@@ -21,7 +21,7 @@ class PuntoVotacionController extends Controller
   public function index(Request $request)
   {
 
-    return response()->json(view("lugar.punto.listar")->with(["urllistar"=>"punto","urlgeneral"=>url("/"),"listapuntovotacion"=>PuntosVotacion::paginate(10)])->render());
+    return response()->json(view("lugar.punto.listar")->with(["urllistar"=>"punto","urlgeneral"=>url("/"),"listapuntovotacion"=>PuntosVotacion::paginate(2)])->render());
   }
   /**
    * Get a validator for an incoming registration request.

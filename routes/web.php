@@ -64,11 +64,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware'=>'super'],function(){
 
-  Route::get('form_crear_usuario', 'UsuarioAController@form_crear_usuario');
-  Route::post('registrar', 'UsuarioAController@registrar')->name('registrar');
-  Route::get('form_editar_usuario/{id}', 'UsuarioAController@form_editar_usuario');
-  Route::resource('usuario', 'UsuarioAController');
-  Route::get('form_informe_usurio', 'UsuarioAController@form_informe_usurio');
+  Route::resource('usuario', 'UsuarioAController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
+
   Route::resource('usuarioe', 'UsuarioEController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
 
   Route::resource('observation', 'HistorialObservacionController');
@@ -81,19 +78,23 @@ Route::group(['middleware'=>'super'],function(){
 });
 
 Route::group(['middleware'=>'comun'],function(){
-  Route::get('form_listar_usuario', 'UsuarioAController@form_listar_usuario');
-  Route::get('form_listar_usuarioe', 'UsuarioEController@form_listar_usuario');
-  Route::get('listarpaginationtable', 'UsuarioEController@listarpaginationtable');
+  Route::get('usuarioe/refrescar', 'UsuarioEController@refrescar');
+  Route::get('usuario/refrescar', 'UsuarioAController@refrescar');
+
+  Route::resource('usuario', 'UsuarioAController',  ['only' => ['index']]);
+
   //Departamentos
   Route::resource('departamento', 'DepartamentoController',  ['only' => ['index']]);
+  Route::get('departamento/refrescar','DepartamentoController@refrescar');
   //Ciudad
   Route::resource('ciudad','CiudadController',['only' => ['index']]);
   Route::get('ciudad/refrescar','CiudadController@refrescar');
   //punto de
   Route::resource('punto', 'PuntoVotacionController',  ['only' => ['index']]);
-    Route::get('punto/refrescar','PuntoVotacionController@refrescar');
+  Route::get('punto/refrescar','PuntoVotacionController@refrescar');
   //mesavotacion
   Route::resource('mesa', 'MesaVotacionController',  ['only' => ['index']]);
+  Route::get('mesa/refrescar', 'MesaVotacionController@refrescar');
 
   //buscar Referido
   Route::get('listardiferidos', 'UsuarioEController@buscarReferido');

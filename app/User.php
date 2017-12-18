@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 class User extends Authenticatable
 {
     use Notifiable;
@@ -28,10 +29,19 @@ class User extends Authenticatable
     ];
 
     public function getAllUsuarioAdmin($tipo){
-        return $this->where("type",$tipo)->paginate(10);
+        return $this->where("type",$tipo)->paginate(2);
     }
+    public function getAllUsuarioRefresh(Request $request,$type){
+      return $this->where(function ($query) use($request) {
+                   $query->orWhere("NAME","LIKE","%".$request->buscar."%")
+                       ->orWhere("NAME2","LIKE","%".$request->buscar."%")
+                       ->orWhere("LASTNAME","LIKE","%".$request->buscar."%")
+                       ->orWhere("LASTNAME2","LIKE","%".$request->buscar."%");
+               })->where("type","=",$type)->paginate(2);
+    }
+
     public function getAllUsuarioTodo(){
-        return $this->paginate(10);
+        return $this->paginate(2);
     }
     public function actualizar(Request $request, $id){
         $registro=$this->where('id', '=', $id)->first();

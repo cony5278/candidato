@@ -1,5 +1,5 @@
 @if ($formulario ==='I')
-<form class="formulario-persona" onsubmit="onCargandoSubmit()"  enctype="multipart/form-data" id="form-persona" method="POST" action="{{ route('registrar') }}">
+<form class="formulario-persona" onsubmit="onCargandoSubmit()"  enctype="multipart/form-data" id="form-persona" method="POST" action="{{ route('usuario.store') }}">
 @elseif ($formulario ==='A')
 <form class="formulario-persona" onsubmit="onCargandoSubmit()"  enctype="multipart/form-data" id="form-persona" method="POST" action="{{ route('usuario.update',$usuario->id) }}">
 <input name="_method" type="hidden" value="PUT">

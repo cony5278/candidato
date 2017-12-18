@@ -52,7 +52,7 @@ $(document).on('click','.pagination-table a',function(e){
 
 
 
-$(document).on('click','.general-pagination-table a',function(e){
+$(document).on('click','.pagination a',function(e){
     e.preventDefault();
     var pagina=$(this).attr('href').split('page=')[1];
       $.ajax({

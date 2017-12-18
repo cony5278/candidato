@@ -7,16 +7,14 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use App\Archivos;
 use Carbon\Carbon;
-use App\EvssaConstantes;
+use App\Evssa\EvssaConstantes;
 use App\Evssa\EvssaUtil;
 use App\Evssa\EvssaException;
 use App\Evssa\EvssaPropertie;
 class UsuarioAController extends Controller
 {
 
-
-
-    /**
+  /**
      * Create a new controller instance.
      *
      * @return void
@@ -41,32 +39,33 @@ class UsuarioAController extends Controller
 
     public function registrar(Request $request)
     {
+      try{
 
-      try {
         $this->validator($request->all())->validate();
-        $this->insertar(new User(),$request->all());
-
+        $this->insertar(new User(),$request);
+        $usuario=new User();
+        $listar=$usuario->getAllUsuarioAdmin('A');
+        return response()->json([
+            EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
+            EvssaConstantes::MSJ=>"Se ha registrado correctamente el administrador.",
+            "html"=> response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'A','urllistar'=>'usuario',"urlgeneral"=>url("/")])->render())
+              ]);
       } catch (EvssaException $e) {
-          EvssaUtil::agregarMensajeAlerta($e->getMensaje());
+          return response()->json([
+              EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+              EvssaConstantes::MSJ=>$e->getMensaje(),
+          ]);
+      } catch (\Illuminate\Database\QueryException $e) {
+           return response()->json([
+               EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+               EvssaConstantes::MSJ=>"Registro secundario encontrado",
+           ]);
       }
-      return  redirect($this->redirectPath());
-    }
-    /**
-     * Get the post register / login redirect path.
-     *
-     * @return string
-     */
-    public function redirectPath()
-    {
-        if (method_exists($this, 'redirectTo')) {
-            return $this->redirectTo();
-        }
 
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Get a validator for an incoming registration request.NoRewindIterator
      *
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
@@ -105,7 +104,8 @@ class UsuarioAController extends Controller
                                       'urlreferido'=>'listardiferidos'])->with(self::url());
      }
 
-    private function insertar($usuario,array $data){
+    private function insertar($usuario,Request $request){
+      $data=$request->all();
 
       $usuario->nit = $data['nit'];
       $usuario->name = $data['nombre'];
@@ -128,15 +128,15 @@ class UsuarioAController extends Controller
         $usuario->id_referido=$data['id_referido'];
       }
       //crear foto
-      if (!empty($data['photo'])) {
-          $archivo = new Archivos ($data['photo']);
+      if (!empty($request->file('photo'))) {
+          $archivo = new Archivos ($request->file('photo'));
           $usuario->photo = $archivo -> getArchivoNombreExtension();
       }
       if(!empty($data['password'])){
         $usuario->password= bcrypt($data['password']);
       }
       $usuario->save();
-      if (!empty($data['photo'])) {
+      if (!empty($request->file('photo'))) {
           $archivo->guardarArchivo($usuario);
       }
 
@@ -152,7 +152,7 @@ class UsuarioAController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       return $this->registrar($request);
     }
 
     /**
@@ -207,23 +207,37 @@ class UsuarioAController extends Controller
      */
     public function update(Request $request, $id)
     {
+      try{
 
-      $usuario=User::find($id);
-      //crear variable de sesion por si las cosas salen mal
-      Session::flash("seccion","A");
-      Session::flash("seccionid",$usuario->id);
-      $this->validatorUpdate($request->all())->validate();
-      //eliminar variables si toda va bien
-      Session::forget('seccion');
-      Session::forget('seccionid');
+        $usuario=User::find($id);
+        $this->validatorUpdate($request->all())->validate();
+        $usuario=$this->actualizar($usuario,$request);
+        $usuario=new User();
+        $listar=$usuario->getAllUsuarioAdmin('A');
+        $listar->setPath(url("home"));
+          return response()->json([
+              EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
+              EvssaConstantes::MSJ=>"Se ha actualizado correctamente el usuario.",
+              "html"=>response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'A','urllistar'=>'usuario',"urlgeneral"=>url("/")])->render())
 
-      $usuario=$this->actualizar($usuario,$request->all());
-      Session::flash("notificacion","SUCCESS");
-      Session::flash("msj","Los datos del usuario se actualizaron correctamente. ");
-      return  redirect($this->redirectPath());
+          ]);
+        } catch (EvssaException $e) {
+            return response()->json([
+                EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+                EvssaConstantes::MSJ=>$e->getMensaje(),
+            ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+             return response()->json([
+                 EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+                 EvssaConstantes::MSJ=>"Registro secundario encontrado",
+             ]);
+        }
+
     }
 
-    private function actualizar($usuario,array $data){
+    private function actualizar($usuario,Request $request){
+      //crear foto
+      $data=$request->all();
 
         //tabla usuario
         $usuario->type= $data['type'];
@@ -242,11 +256,11 @@ class UsuarioAController extends Controller
         $usuario->sex=$data['sexo'];
         $usuario->address=$data['direccionusuario'];
 
-        if (!empty($data['photo'])) {
-            $archivo = new Archivos ($data['photo']);
+        if (!empty($request->file('photo'))) {
+            $archivo = new Archivos ($request->file('photo'));
             $usuario->photo = $archivo -> getArchivoNombreExtension();
         }
-        if (!empty($data['photo'])) {
+        if (!empty($request->file('photo'))) {
             $archivo->guardarArchivo($usuario);
         }
         //si tiene referido
@@ -280,6 +294,13 @@ class UsuarioAController extends Controller
         return [
             'urldatosregistraduria'=>url("/datosregistraduria"),
            ];
+    }
+
+    public function refrescar(Request $request){
+
+      $usuario=new User();
+      $listar=$usuario->getAllUsuarioRefresh($request,'A');
+      return response()->json(view('auth.admin.tabla')->with(['listarusuario'=>$listar,'type'=>'A','urllistar'=>'usuario',"urlgeneral"=>url("/")])->render());
     }
 
 }

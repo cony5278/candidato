@@ -1,4 +1,4 @@
-@if (!empty($listapuntovotacion))
+@if (!empty($listadepartamentos))
 <table class="table">
     <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
     <input type="hidden" id="url-listar" value="{{$urllistar}}">
@@ -9,19 +9,17 @@
     <tr>
         <th>Codigo</th>
         <th>Nombre</th>
-        <th>Dirección</th>
         <th>Acciones</th>
     </tr>
     </thead>
     <tbody>
 
-    @foreach($listapuntovotacion as $punto)
+    @foreach($listadepartamentos as $departamento)
 
         <tr>
-            <td>{{$punto->id}}</td>
-            <td>{{$punto->nombre}}</td>
-            <td>{{$punto->direccion}}</td>
-            <td><input class="btn btn-primary" onclick="mostrarSeccionMenu('A','{{$urllistar}}','{{$punto->id}}')" type="submit" value="Editar"> <input class="btn btn-primary" type="submit" onclick="mostrarSeccionMenu('D','{{$urllistar}}','{{$punto->id}}')" value="Eliminar"></td>
+            <td>{{$departamento->id}}</td>
+            <td>{{$departamento->nombre}}</td>
+            <td><input class="btn btn-primary" onclick="mostrarSeccionMenu('A','{{$urllistar}}','{{$departamento->id}}')" type="submit" value="Editar"> <input class="btn btn-primary" type="submit" onclick="mostrarSeccionMenu('D','{{$urllistar}}','{{$departamento->id}}')" value="Eliminar"></td>
 
         </tr>
 
@@ -38,7 +36,7 @@
                 height: 100vh;
                 margin: 0;
     ">
-        Registre un Punto de Votación
+        Registre un Departamento
     </div>
 @endif
-{{$listapuntovotacion->render() }}
+{{$listadepartamentos->render() }}

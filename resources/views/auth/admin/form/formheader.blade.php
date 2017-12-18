@@ -26,6 +26,7 @@
                         var reader = new FileReader();
                         reader.onload = (function(theFile) {
                             return function(e) {
+                                photo[0]=theFile;
                                 $('#imagePreview').attr('src', e.target.result);
                                 $('#valor-img').attr('value', theFile.name);
                             };

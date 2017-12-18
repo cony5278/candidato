@@ -39,4 +39,4 @@
         Registre una Ciudad
     </div>
 @endif
-{{$listaciudades->renderGeneral() }}
+{{$listaciudades->render()}}

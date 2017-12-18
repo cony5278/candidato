@@ -255,7 +255,9 @@ class CiudadController extends Controller
       $ciudad=new Ciudades();
       return response()->json(view("combos.desplieguefinal")->with(["listafinal"=>$ciudad->getListarCiudadDespliegueFinal($request)])->render());
     }
-
+/**
+*refrescar la tabla
+*/
     public function refrescar(Request $request){
 
       return response()->json(view("lugar.ciudad.tabla")->with(["urllistar"=>"ciudad","urlgeneral"=>url("/"),"listaciudades"=>Ciudades::where("nombre","like","%".$request->buscar."%")->paginate(10)])->render());

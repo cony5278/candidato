@@ -152,7 +152,7 @@ class DepartamentoController extends Controller
               EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
               EvssaConstantes::MSJ=>"Se ha actualizado correctamente el departamento.",
               "html"=>response()->json(view("lugar.departamento.listar")->with(["urllistar"=>"departamento","urlgeneral"=>url("/"),"listadepartamentos"=>Departamentos::paginate(10)])->render())
-        
+
           ]);
         } catch (EvssaException $e) {
             return response()->json([
@@ -247,4 +247,13 @@ class DepartamentoController extends Controller
 
       return response()->json(view("combos.despliegue")->with(["lista"=>$departamentos->getListarDepartamentosDespliegue($request->buscar)])->render());
     }
+
+
+    /**
+    *refrescar la tabla
+    */
+        public function refrescar(Request $request){
+
+          return response()->json(view("lugar.departamento.tabla")->with(["urllistar"=>"departamento","urlgeneral"=>url("/"),"listadepartamentos"=>Departamentos::where("nombre","like","%".$request->buscar."%")->paginate(10)])->render());
+      }
 }

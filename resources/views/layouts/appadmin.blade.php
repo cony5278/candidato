@@ -137,7 +137,7 @@
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
                 <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-                  <img id="imagePreview" width="25" height="25" src="{{Auth::user()->photo=='default.png'?'archivos/\\default.png':'archivos/'.Auth::user()->type.'/'.Auth::user()->id.'/'.Auth::user()->photo}}" class="img-circle" />
+                  <img  width="25" height="25" src="{{Auth::user()->photo=='default.png'?'archivos/\\default.png':'archivos/'.Auth::user()->type.'/'.Auth::user()->id.'/'.Auth::user()->photo}}" class="img-circle" />
                   {{Auth::user()->name.' '.Auth::user()->name2.' '.Auth::user()->lastname  }}</a>
             </li>
 
