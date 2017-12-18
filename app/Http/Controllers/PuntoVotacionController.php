@@ -10,6 +10,7 @@ use App\Evssa\EvssaUtil;
 use App\Evssa\EvssaException;
 use Illuminate\Support\Facades\Validator;
 use App\Ciudades;
+use JavaScript;
 class PuntoVotacionController extends Controller
 {
   /**
@@ -63,7 +64,7 @@ class PuntoVotacionController extends Controller
   {
       //
 
-      return response()->json(view("lugar.punto.crear")->with(["formulario"=>"I",'urldespliegue'=>'listadesplieguepunto','idname'=>'id_punto'])->render());
+      return response()->json(view("lugar.punto.crear")->with(["formulario"=>"I",'urldespliegue'=>'listadespliegueciudad','idname'=>'id_ciudad'])->render());
   }
   /**
    * Create a new user instance after a valid registration.
@@ -74,21 +75,12 @@ class PuntoVotacionController extends Controller
   public function insertar(array $data)
   {
 
-    try {
       $punto=new PuntosVotacion();
 
       $punto->nombre=$data['nombre'];
       $punto->direccion=$data['direccion'];
       $punto->id_ciudad=$data['id_ciudad'];
       $punto->save();
-
-
-
-    } catch (EvssaException $e) {
-        EvssaUtil::agregarMensajeAlerta($e->getMensaje());
-    }
-    EvssaUtil::agregarMensajeConfirmacion("Se registro correctamente la ciudad");
-
   }
   /**
    * Store a newly created resource in storage.
@@ -106,7 +98,7 @@ class PuntoVotacionController extends Controller
       return response()->json([
           EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
           EvssaConstantes::MSJ=>"Se ha insertado correctamente la punto.",
-          "html"=>redirect("punto")
+          "html"=>response()->json(view("lugar.punto.listar")->with(["urllistar"=>"punto","urlgeneral"=>url("/"),"listapuntovotacion"=>PuntosVotacion::paginate(10)])->render())
       ]);
     } catch (EvssaException $e) {
         return response()->json([
@@ -168,7 +160,7 @@ class PuntoVotacionController extends Controller
         return response()->json([
             EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
             EvssaConstantes::MSJ=>"Se ha actualizado correctamente el punto de votación.",
-            "html"=>redirect("punto")
+            "html"=>response()->json(view("lugar.punto.listar")->with(["urllistar"=>"punto","urlgeneral"=>url("/"),"listapuntovotacion"=>PuntosVotacion::paginate(10)])->render())
         ]);
       } catch (EvssaException $e) {
           return response()->json([
@@ -192,19 +184,12 @@ class PuntoVotacionController extends Controller
   private function actualizar($punto,array $data)
   {
 
-    try {
+
       $punto->nombre=$data['nombre'];
       $punto->id_ciudad=$data['id_ciudad'];
       $punto->direccion=$data['direccion'];
       $punto->save();
-
-
-    } catch (EvssaException $e) {
-        EvssaUtil::agregarMensajeAlerta($e->getMensaje());
-    }
-    EvssaUtil::agregarMensajeConfirmacion("Se registro correctamente el punto de votacion");
-
-  }
+}
   /**
    * Remove the specified resource from storage.
    *
@@ -260,5 +245,28 @@ class PuntoVotacionController extends Controller
     $ciudad=new Ciudades();
 
     return response()->json(view("combos.despliegue")->with(["lista"=>$ciudad->getListarCiudadDespliegue($request->buscar)])->render());
+  }
+  public function cargarDespliegueComboFinal(Request $request){
+
+        $punto=new PuntosVotacion();
+    return response()->json(view("combos.desplieguepunto")->with(["listapunto"=>$punto->getListarpuntoDespliegueFinal($request)])->render());
+
+  }
+  public function refrescar(Request $request){
+
+    return response()->json(view("lugar.punto.tabla")->with(["urllistar"=>"punto","urlgeneral"=>url("/"),"listapuntovotacion"=>PuntosVotacion::where("direccion","like","%".$request->buscar."%")->paginate(10)])->render());
+  }
+
+
+  public function googleMaps(){
+    JavaScript::put([
+    			'puntos' =>\DB::table('ciudades')->join("puntos_votacions","ciudades.id","puntos_votacions.id_ciudad")
+                                 ->join("mesas_votacions","puntos_votacions.id","mesas_votacions.id_punto")
+                                 ->join("users","mesas_votacions.id","users.id_mesa")
+                                 ->select(\DB::raw('COUNT(puntos_votacions.id) as contar, puntos_votacions.direccion,ciudades.nombre'))
+                                 ->groupBy('puntos_votacions.direccion','ciudades.nombre')
+                                 ->get()
+    		]);
+    return view('maps.mapa');
   }
 }

@@ -74,16 +74,13 @@ class CiudadController extends Controller
     public function insertar(array $data)
     {
 
-      try {
+
         $departamento=new Ciudades();
         $departamento->nombre=$data['nombre'];
         $departamento->id_departamento=$data['id_departamento'];
         $departamento->save();
 
-      } catch (EvssaException $e) {
-          EvssaUtil::agregarMensajeAlerta($e->getMensaje());
-      }
-      EvssaUtil::agregarMensajeConfirmacion("Se registro correctamente la ciudad");
+
 
     }
     /**
@@ -102,7 +99,8 @@ class CiudadController extends Controller
         return response()->json([
             EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
             EvssaConstantes::MSJ=>"Se ha insertado correctamente la ciudad.",
-            "html"=>redirect("ciudad")
+            "html"=>response()->json(view("lugar.ciudad.listar")->with(["urllistar"=>"ciudad","urlgeneral"=>url("/"),"listaciudades"=>Ciudades::paginate(10)])->render())
+
         ]);
       } catch (EvssaException $e) {
           return response()->json([
@@ -138,7 +136,7 @@ class CiudadController extends Controller
      */
     public function edit($id)
     {
-    $ciudad=Ciudades::find($id);
+      $ciudad=Ciudades::find($id);
       return response()->json(view("lugar.ciudad.crear")->with(["formulario"   =>"A",
                                                                 'urldespliegue'=>'listadesplieguedepartamento',
                                                                 'idname'=>'id_departamento',
@@ -164,7 +162,8 @@ class CiudadController extends Controller
           return response()->json([
               EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
               EvssaConstantes::MSJ=>"Se ha actualizado correctamente la Ciudad.",
-              "html"=>redirect("ciudad")
+              "html"=>response()->json(view("lugar.ciudad.listar")->with(["urllistar"=>"ciudad","urlgeneral"=>url("/"),"listaciudades"=>Ciudades::paginate(10)])->render())
+
           ]);
         } catch (EvssaException $e) {
             return response()->json([
@@ -188,15 +187,10 @@ class CiudadController extends Controller
     private function actualizar($ciudad,array $data)
     {
 
-      try {
         $ciudad->nombre=$data['nombre'];
         $ciudad->id_departamento=$data['id_departamento'];
         $ciudad->save();
 
-      } catch (EvssaException $e) {
-          EvssaUtil::agregarMensajeAlerta($e->getMensaje());
-      }
-      EvssaUtil::agregarMensajeConfirmacion("Se registro correctamente la ciudad");
 
     }
     /**
@@ -249,4 +243,22 @@ class CiudadController extends Controller
             "entradaid"=>"entrada-ciudad-id"
         ]);
     }
+    public function cargarDespliegueCombo(Request $request){
+
+      $ciudad=new Ciudades();
+
+      return response()->json(view("combos.despliegue")->with(["lista"=>$ciudad->getListarCiudadDespliegue($request->buscar)])->render());
+    }
+
+    public function cargarDespliegueComboFinal(Request $request){
+
+      $ciudad=new Ciudades();
+      return response()->json(view("combos.desplieguefinal")->with(["listafinal"=>$ciudad->getListarCiudadDespliegueFinal($request)])->render());
+    }
+
+    public function refrescar(Request $request){
+
+      return response()->json(view("lugar.ciudad.tabla")->with(["urllistar"=>"ciudad","urlgeneral"=>url("/"),"listaciudades"=>Ciudades::where("nombre","like","%".$request->buscar."%")->paginate(10)])->render());
+    }
+
 }

@@ -64,3 +64,26 @@ fin
     cursor: pointer;
     z-index: 2 !important;
  }
+ /**
+ *observacion contenedorNotificacion
+ */
+ .container-observation{
+  background-color: whitesmoke;
+  border-radius: 0px 10px 10px 10px;
+  -moz-border-radius: 0px 10px 10px 10px;
+  -webkit-border-radius: 0px 10px 10px 10px;
+  margin-bottom: 10px;
+  border: 0px solid #000000;
+ }
+ .triandulo-observacion{
+
+  width: 0;
+  z-index:20;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-right: 10px solid #000;
+  border-bottom: 5px solid transparent;
+  position:absolute;
+  left:-10px;
+  top:0;
+ }

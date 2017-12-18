@@ -1,12 +1,24 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-0">
+      <button type="submit" onclick="mostrarSeccionMenu('I','{{$urllistar.'/'.'create'}}','')" class="btn btn-primary">
+          Nuevo
+      </button>
+		</div>
+		<div class="col-md-2">
+      <input id="nombreempresa" type="text"  placeholder="Buscar" class="form-control" name="buscarentabla"  value="" >
 
-<button type="submit" onclick="mostrarseccion('{{$type=='A'?'I':'II'}}','')" class="btn btn-primary">
-    Nuevo
-</button>
-@if (!$usuarioAdmin->isEmpty())
+		</div>
+	</div>
+</div>
+
+<div class="grilla-tabla">
+@if (!$listarusuario->isEmpty())
 <table class="table">
-    <input type="hidden" id="usuario-token" name="_token" value="{{ csrf_token() }}">
-    <input type="hidden" id="usuario-type" name="usuario-name-type" value="{{$type}}">
-    <input type="hidden" id="url-listar" value="listarpaginationtable">
+  <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
+  <input type="hidden" id="url-listar" value="{{$urllistar}}">
+  <input type="hidden" id="url-general" value="{{$urlgeneral}}">
+
     <thead >
 
     <tr>
@@ -18,13 +30,13 @@
     </thead>
     <tbody>
 
-    @foreach($usuarioAdmin as $usuario)
+    @foreach($listarusuario as $usuario)
 
         <tr>
             <td>{{$usuario->id}}</td>
             <td>{{$usuario->name}}</td>
             <td>{{$usuario->email}}</td>
-            <td><input class="btn btn-primary" onclick="mostrarseccion('{{$type=='A'?'A':'AA'}}',{{$usuario->id}})" type="submit" value="Editar"> <input class="btn btn-primary" type="submit" onclick="eliminarDatos('1',{{$usuario->id}})" value="Eliminar"></td>
+            <td><input class="btn btn-primary" onclick="mostrarSeccionMenu('A','{{$urllistar}}','{{$usuario->id}}')" type="submit" value="Editar"> <input class="btn btn-primary" type="submit" onclick="eliminarDatos('1',{{$usuario->id}})" value="Eliminar"></td>
 
         </tr>
 
@@ -44,4 +56,5 @@
         Registre una Persona
     </div>
 @endif
-{{$usuarioAdmin->render(null,[],false) }}
+{{$listarusuario->render(null,[],false) }}
+  </div>

@@ -73,15 +73,10 @@ class DepartamentoController extends Controller
     public function insertar(array $data)
     {
 
-      try {
         $departamento=new Departamentos();
         $departamento->nombre=$data['nombre'];
         $departamento->save();
 
-      } catch (EvssaException $e) {
-          EvssaUtil::agregarMensajeAlerta($e->getMensaje());
-      }
-      EvssaUtil::agregarMensajeConfirmacion("Se registro correctamente el departamento");
 
     }
     /**
@@ -99,7 +94,7 @@ class DepartamentoController extends Controller
         return response()->json([
             EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
             EvssaConstantes::MSJ=>"Se ha insertado correctamente el departamento.",
-            "html"=>redirect("departamento")
+            "html"=>response()->json(view("lugar.departamento.listar")->with(["urllistar"=>"departamento","urlgeneral"=>url("/"),"listadepartamentos"=>Departamentos::paginate(10)])->render())
         ]);
       } catch (EvssaException $e) {
           return response()->json([
@@ -151,12 +146,13 @@ class DepartamentoController extends Controller
     {
         //
       try{
-          $this->validator($request->all())->validate();  
+          $this->validator($request->all())->validate();
           $this->actualizar(Departamentos::find($id),$request->all());
           return response()->json([
               EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
               EvssaConstantes::MSJ=>"Se ha actualizado correctamente el departamento.",
-              "html"=>redirect("departamento")
+              "html"=>response()->json(view("lugar.departamento.listar")->with(["urllistar"=>"departamento","urlgeneral"=>url("/"),"listadepartamentos"=>Departamentos::paginate(10)])->render())
+        
           ]);
         } catch (EvssaException $e) {
             return response()->json([
@@ -180,14 +176,9 @@ class DepartamentoController extends Controller
     private function actualizar($departamento,array $data)
     {
 
-      try {
         $departamento->nombre=$data['nombre'];
         $departamento->save();
 
-      } catch (EvssaException $e) {
-          EvssaUtil::agregarMensajeAlerta($e->getMensaje());
-      }
-      EvssaUtil::agregarMensajeConfirmacion("Se registro correctamente el departamento");
 
     }
     /**

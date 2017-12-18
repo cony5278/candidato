@@ -35,7 +35,7 @@ $(document).on('click','.pagination-table a',function(e){
     var ruta=$(this).attr('href').split('home')[0];
 
       $.ajax({
-          url:ruta+"\\"+$("#url-listar").val(),
+          url:ruta+$("#url-listar").val(),
           data:{
               page:pagina,
               type:$("#usuario-type").val(),
@@ -43,7 +43,7 @@ $(document).on('click','.pagination-table a',function(e){
           type:'GET',
           dataType:'json',
           success:function(data){
-             // console.log(data);
+
               $('.contenedor').html(data);
           }
 
@@ -92,6 +92,34 @@ function paginacion(evento,url){
     }
 }
 
+function buscarEnTabla(evento,url,clase){
+
+          $.ajax({
+              url: url,
+              data: {buscar: $(evento).val()},
+              type: 'GET',
+              dataType: 'json',
+              success: function (data) {
+                  $("."+clase).html();
+                  $("."+clase).html(data);
+              }
+          });
+}
+
+function despliegueComboClass(evento,url,clase,id){
+    // console.log(url);
+          $.ajax({
+              url: url,
+              data: {buscar: $(evento).val(),id:id},
+              type: 'GET',
+              dataType: 'json',
+              success: function (data) {
+                  $("."+clase).html();
+                  $("."+clase).html(data);
+              }
+          });
+}
+
 function despliegueCombo(evento,url){
     // console.log(url);
           $.ajax({
@@ -104,6 +132,29 @@ function despliegueCombo(evento,url){
                   $(".despliegue").html(data);
               }
           });
+}
+
+function despliegueComboFinal(evento,url,elementoInicial,elementoFinal){
+    // console.log($(".despliegue").val());
+          $.ajax({
+              url: url,
+              data: {buscar: $(evento).val(),id:$("."+elementoInicial).val()},
+              type: 'GET',
+              dataType: 'json',
+              success: function (data) {
+                  $("."+elementoFinal).html();
+                  $("."+elementoFinal).html(data);
+              }
+          });
+
+}
+
+function limpiar(dato){
+
+  for (i in dato) {
+     $("."+dato[i]+" option:selected").text("");
+     $("."+dato[i]+" option:selected").val("");
+    }
 
 
 }

@@ -33,7 +33,7 @@ class Departamentos extends Model
     }
 
     public function buscar($nombre){
-        $departamento=$this->where('nombre','like','%'.$nombre.'%')->first();
+        $departamento=collect(\DB::select("select * from departamentos where upper(nombre) = upper('".$nombre."')"))->first();
 
         if(empty($departamento)){
             return $this->crear($nombre);

@@ -11,6 +11,9 @@
 |
 */
 use App\User;
+use App\Ciudades;
+use App\Departamentos;
+use App\Historialobservacion;
 Route::resource('consultareporte','ConsultaController');
 
 Route::get('/consulta', function () {
@@ -26,9 +29,19 @@ Route::get('listadesplieguedepartamento','DepartamentoController@cargarDespliegu
 
 Route::get('listadespliegueciudad','CiudadController@cargarDespliegueCombo');
 
+Route::get('listadespliegueciudadfinal','CiudadController@cargarDespliegueComboFinal');
+
+Route::get('listadesplieguemesa','MesaVotacionController@cargarDespliegueComboMesa');
+
+Route::get('listadesplieguepuntofinal','PuntoVotacionController@cargarDespliegueComboFinal');
+
 Route::get('listadesplieguepunto','MesaVotacionController@cargarDespliegueCombo');
 
 Route::get('datosregistraduria','ConsultarInformacionElectoral@index');
+
+Route::get('location','ConsultarInformacionElectoral@consultarCoordenadas');
+
+Route::get('google','PuntoVotacionController@googleMaps');
 
 Route::get('/', function () {
     return view('welcome');
@@ -40,6 +53,9 @@ Route::get('/prueba', function () {
 });
 Route::get('reporte', 'UsuarioEController@oprimirExcel');
 
+Route::get('/cselect', function () {
+return view('maps.mapa');
+});
 
 Route::get('/select', function () {
   return view("auth.admin.form.formacionacademica");
@@ -53,6 +69,10 @@ Route::group(['middleware'=>'super'],function(){
   Route::get('form_editar_usuario/{id}', 'UsuarioAController@form_editar_usuario');
   Route::resource('usuario', 'UsuarioAController');
   Route::get('form_informe_usurio', 'UsuarioAController@form_informe_usurio');
+  Route::resource('usuarioe', 'UsuarioEController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
+
+  Route::resource('observation', 'HistorialObservacionController');
+
   Route::resource('departamento', 'DepartamentoController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
   Route::resource('ciudad', 'CiudadController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
   Route::resource('punto', 'PuntoVotacionController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
@@ -68,11 +88,15 @@ Route::group(['middleware'=>'comun'],function(){
   Route::resource('departamento', 'DepartamentoController',  ['only' => ['index']]);
   //Ciudad
   Route::resource('ciudad','CiudadController',['only' => ['index']]);
+  Route::get('ciudad/refrescar','CiudadController@refrescar');
   //punto de
   Route::resource('punto', 'PuntoVotacionController',  ['only' => ['index']]);
+    Route::get('punto/refrescar','PuntoVotacionController@refrescar');
   //mesavotacion
   Route::resource('mesa', 'MesaVotacionController',  ['only' => ['index']]);
 
+  //buscar Referido
+  Route::get('listardiferidos', 'UsuarioEController@buscarReferido');
 
 });
 Route::group(['middleware'=>'admin'],function(){

@@ -16,10 +16,10 @@ class MesasVotacion extends Model
     protected $fillable = [
         'numero', 'id','id_punto'
     ];
-    function getListarPuntoDespliegue($buscar){
-        return $this->where('nombre','like','%'.$buscar.'%')->get();
-    }
 
+    public function getListaMesa($buscar){
+            return $this->where("numero","like","".$buscar."%")->get();
+    }
     public function buscar($numero,$puntovotacion){
         $mesa= $this->where("numero","=",$numero)->where("id_punto","=",$puntovotacion->id)->first();
         if(empty($mesa)){

@@ -48,7 +48,7 @@
         <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Inicio">
                 <a class="nav-link" href="index.html">
-                    <i class="fa fa-fw fa-dashboard"></i>
+                    <i class="fa fa-home"></i>
                     <span class="nav-link-text">Inicio</span>
                 </a>
             </li>
@@ -61,11 +61,11 @@
                 <ul class="sidenav-second-level collapse" id="collapseComponents">
                     @if (Auth::user()->type =='S')
                     <li>
-                        <a onclick="menuizquierda(1)">Registrar Aministrador</a>
+                        <a onclick="mostrarSeccionMenu('L','usuario','')">Registrar Aministrador</a>
                     </li>
                     @endif
                     <li>
-                        <a onclick="menuizquierda(2)">Registrar Estandar</a>
+                        <a onclick="mostrarSeccionMenu('L','usuarioe','')">Registrar Estandar</a>
                     </li>
                     <li>
                         <a onclick="">Informes</a>
@@ -74,7 +74,7 @@
             </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Puntos votación">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
-                    <i class="fa fa-fw fa-file"></i>
+                    <i class="fa fa-map-marker"></i>
                     <span class="nav-link-text">Puntos votación</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapseExamplePages">
@@ -88,7 +88,7 @@
             </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Lugar">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
-                    <i class="fa fa-fw fa-sitemap"></i>
+                    <i class="fa fa-globe"></i>
                     <span class="nav-link-text">Lugar</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="collapseMulti">
@@ -106,7 +106,7 @@
             </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Mesa">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#mesavotacion" data-parent="#exampleAccordion">
-                    <i class="fa fa-fw fa-sitemap"></i>
+                    <i class="fa fa-table"></i>
                     <span class="nav-link-text">Mesa de Votación</span>
                 </a>
                 <ul class="sidenav-second-level collapse" id="mesavotacion">
@@ -137,12 +137,13 @@
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
                 <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-                    <i class="fa fa-fw fa-sign-out"></i>{{Auth::user()->name.' '.Auth::user()->name2.' '.Auth::user()->lastname  }}</a>
+                  <img id="imagePreview" width="25" height="25" src="{{Auth::user()->photo=='default.png'?'archivos/\\default.png':'archivos/'.Auth::user()->type.'/'.Auth::user()->id.'/'.Auth::user()->photo}}" class="img-circle" />
+                  {{Auth::user()->name.' '.Auth::user()->name2.' '.Auth::user()->lastname  }}</a>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-                    <i class="fa fa-fw fa-sign-out"></i>Logout</a>
+                    <i class="fa fa-fw fa-sign-out"></i>Cerrar Sesión</a>
             </li>
         </ul>
     </div>
@@ -170,16 +171,16 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">¿Listo para salir?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
                     <a class="btn btn-primary"  href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">Logout</a>
+                                                     document.getElementById('logout-form').submit();">Salir</a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         {{ csrf_field() }}
                     </form>

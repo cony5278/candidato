@@ -44,14 +44,12 @@ function postAjax(url,id){
   $("body").append(htmlCargado());
         var  data = {  _method:"delete",_token : $("#token").attr("value")};
          $.post(url+"/"+id, data,function(resul){
-           if(resul.notificacion==undefined){
-             $(".contenedor").html(resul);
-           }else{
+
              var notificacion = new Notificacion();
              notificacion.crearContenedor();
              notificacion.crearNotificacion(resul.msj,resul.notificacion);
-              $(".contenedor").html(resul.html);
-           }
+              $(".contenedor").html(resul.html.original);
+
          }).done(function( data ) {
            $(".cargando").remove();
          }).fail(function(error) {
@@ -67,14 +65,42 @@ function postAjaxSend(){
   var data=$('.formulario').serializeArray();
     // data.push({ name: "photo", value: formData});
            $.post($('.formulario').attr('action'), data,function(resul){
-           if(resul.notificacion==undefined){
-             $(".contenedor").html(resul);
-           }else{
+
              var notificacion = new Notificacion();
              notificacion.crearContenedor();
              notificacion.crearNotificacion(resul.msj,resul.notificacion);
-              $(".contenedor").html(resul.html);
-           }
+             console.log(resul.html)
+              $(".contenedor").html(resul.html.original);
+
+         }).done(function( data ) {
+           $(".cargando").remove();
+         }).fail(function(error) {
+                 console.log(error);
+            $(".cargando").remove();
+            var data = JSON.parse(error.responseText).errors;
+
+               for(var key in data) {
+
+                       var notificacion = new Notificacion();
+                       notificacion.crearContenedor();
+                       notificacion.crearNotificacion(data[key],"DANGER");
+               }
+
+         });
+}
+
+function postAjaxObservation(){
+  $(".contenedor").html();
+  $("body").append(htmlCargado());
+
+  var data=$('.formulario-observation').serializeArray();
+           $.post($('.formulario-observation').attr('action'), data,function(resul){
+
+             var notificacion = new Notificacion();
+             notificacion.crearContenedor();
+             notificacion.crearNotificacion(resul.msj,resul.notificacion);
+              $(".contenedor").html(resul.html.original);
+
          }).done(function( data ) {
            $(".cargando").remove();
          }).fail(function(error) {
@@ -95,4 +121,9 @@ function postAjaxSend(){
 $(document).on('submit','.formulario',function(e){
     e.preventDefault();
     postAjaxSend();
+});
+
+$(document).on('submit','.formulario-observation',function(e){
+    e.preventDefault();
+    postAjaxObservation();
 });

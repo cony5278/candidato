@@ -74,18 +74,11 @@ class MesaVotacionController extends Controller
   public function insertar(array $data)
   {
 
-    try {
+
       $mesa=new MesasVotacion();
       $mesa->numero=$data['numero'];
       $mesa->id_punto=$data['id_punto'];
       $mesa->save();
-
-
-
-    } catch (EvssaException $e) {
-        EvssaUtil::agregarMensajeAlerta($e->getMensaje());
-    }
-    EvssaUtil::agregarMensajeConfirmacion("Se registro correctamente la ciudad");
 
   }
   /**
@@ -103,8 +96,8 @@ class MesaVotacionController extends Controller
 
       return response()->json([
           EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
-          EvssaConstantes::MSJ=>"Se ha insertado correctamente la punto.",
-          "html"=>redirect("punto")
+          EvssaConstantes::MSJ=>"Se ha registrado correctamente la Mesa votación.",
+          "html"=>response()->json(view("lugar.mesa.listar")->with(["urllistar"=>"mesa","urlgeneral"=>url("/"),"listadesplieguemesa"=>MesasVotacion::paginate(10)])->render())
       ]);
     } catch (EvssaException $e) {
         return response()->json([
@@ -165,8 +158,8 @@ class MesaVotacionController extends Controller
         $this->actualizar(MesasVotacion::find($id),$request->all());
         return response()->json([
             EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
-            EvssaConstantes::MSJ=>"Se ha actualizado correctamente la mesa de votación.",
-            "html"=>redirect("mesa")
+            EvssaConstantes::MSJ=>"Se ha actualizado correctamente la Mesa de votación.",
+            "html"=>response()->json(view("lugar.mesa.listar")->with(["urllistar"=>"mesa","urlgeneral"=>url("/"),"listadesplieguemesa"=>MesasVotacion::paginate(10)])->render())
         ]);
       } catch (EvssaException $e) {
           return response()->json([
@@ -227,5 +220,12 @@ class MesaVotacionController extends Controller
     $punto=new PuntosVotacion();
 
     return response()->json(view("combos.despliegue")->with(["lista"=>$punto->getListarPuntoDespliegue($request->buscar)])->render());
+  }
+
+  public function cargarDespliegueComboMesa(Request $request){
+
+    $mesa=new MesasVotacion();
+
+    return response()->json(view("combos.desplieguemesa")->with(["listamesa"=>$mesa->getListaMesa($request->buscar)])->render());
   }
 }

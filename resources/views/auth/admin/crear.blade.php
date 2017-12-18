@@ -10,7 +10,7 @@
     <button type="submit"  class="btn btn-primary">
         Guardar
     </button>
-     <input class="btn btn-primary" onclick="mostrarseccion('{{$type=='A'?'L':'LL'}}','')"  type="button" value="Cerrar">
+     <input class="btn btn-primary" onclick="mostrarSeccionMenu('I','usuario','')"  type="button" value="Cerrar">
 <p></p>
 <div class="container">
     <div class="row">

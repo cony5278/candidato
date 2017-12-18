@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\ArrayList;
 use App\Ciudades;
 use App\Departamentos;
+use App\PuntosVotacion;
+use App\MesasVotacion;
 use Illuminate\Http\Request;
 use Goutte\Client;
 use function Sodium\add;
@@ -56,21 +58,34 @@ class ConsultarInformacionElectoral extends Controller
                 $ciudad=new Ciudades();
                 $ciudad=$ciudad->buscar($this->lista->item(1),$departamento);
 
+                $punto=new PuntosVotacion();
+                $punto=$punto->getBuscarDireccion($this->lista->item(3),$ciudad);
+
+                $mesa=new MesasVotacion();
+                $mesa=$mesa->buscar($this->lista->item(5),$punto);
                 return response()->json(view("auth.admin.creare")->with([
                     "formulario"=>$request->acme,
                     "nit"=>$request->cedula,
-                    "iddepartamento"=>$departamento->id,
-                    "departamento"=>$this->lista->item(0),
-                    "idciudad"=>$ciudad->id,
-                    "ciudad"=>$this->lista->item(1),
+                    "departamento"=>$departamento,
+                    "ciudad"=>$ciudad,
                     "nombre"=>$this->lista->item(2),
-                    "direccion"=>$this->lista->item(3),
-                    "mesa"=> $this->lista->item(5),
+                    "punto"=>$punto,
+                    "mesa"=>$mesa,
                     "nombre1"=>$nombres[0],
                     "nombre2"=>$nombres[1],
                     "apellido1"=>$apellidos[0],
                     "apellido2"=>$apellidos[1],
-                    "type"=>$request->type
+                    "type"=>$request->type,
+                    "urlpunto"=>"listadesplieguepuntofinal",
+                    "urlmesa"=>"listadesplieguemesa",
+                    "urldesplieguefinal"=>"listadespliegueciudadfinal",
+                    'urldesplieguedepartamento'=>'listadesplieguedepartamento',
+                    "idnamefinal"=>"id_ciudad",
+                    'idname'=>'id_departamento',
+                    'idnamepunto'=>'id_punto',
+                    'idnamemesa'=>'id_mesa',
+                    'idnamereferido'=>'id_referido',
+                    'urlreferido'=>'listardiferidos',
                 ])->with(UsuarioEController::url())->render());
               }else{
                 return response()->json(view("auth.admin.crear")->with([
@@ -80,7 +95,10 @@ class ConsultarInformacionElectoral extends Controller
                     "nombre2"=>$nombres[1],
                     "apellido1"=>$apellidos[0],
                     "apellido2"=>$apellidos[1],
-                    "type"=>$request->type
+                    "type"=>$request->type,
+                    'urlreferido'=>'listardiferidos',
+                    'idnamereferido'=>'id_referido',
+                    'urlreferido'=>'listardiferidos',
                 ])->with(UsuarioEController::url())->render());
               }
             }
@@ -112,8 +130,14 @@ class ConsultarInformacionElectoral extends Controller
         });
 
     }
+    public function consultarCoordenadas(){
+        $client = new Client();
+        $this->googleLocation($client);
+    }
+    private function googleLocation($cliente){
 
-    /**
+
+    }    /**
      * Show the form for creating a nephp artisan ser
      * @return \Illuminate\Http\Response
      */

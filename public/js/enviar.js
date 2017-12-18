@@ -56,7 +56,7 @@ function menu(acme,url,id){
       postAjax(url,id);
     break;
     case "O"://OBSERVACION COMO UN CHAT DE REGISTROS
-          getAjax(url);
+          getAjax(url+"/"+id);
     break;
     default:
       getAjax(url+"/"+id);

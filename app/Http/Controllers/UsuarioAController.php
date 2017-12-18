@@ -7,11 +7,12 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session;
 use App\Archivos;
 use Carbon\Carbon;
-
+use App\EvssaConstantes;
+use App\Evssa\EvssaUtil;
+use App\Evssa\EvssaException;
+use App\Evssa\EvssaPropertie;
 class UsuarioAController extends Controller
 {
-    protected $redirectTo = '/home';
-    private $suario;
 
 
 
@@ -22,25 +23,33 @@ class UsuarioAController extends Controller
      */
     public function __construct()
     {
-        $this -> usuario = new User ( );
+
     }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+
+      $usuario=new User();
+      $listar=$usuario->getAllUsuarioAdmin('A');
+      $listar->setPath(url("home"));
+      return response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'A','urllistar'=>'usuario',"urlgeneral"=>url("/")])->render());
     }
 
     public function registrar(Request $request)
     {
 
+      try {
         $this->validator($request->all())->validate();
-        $this->create($request->all());
-        return  redirect($this->redirectPath());
+        $this->insertar(new User(),$request->all());
 
+      } catch (EvssaException $e) {
+          EvssaUtil::agregarMensajeAlerta($e->getMensaje());
+      }
+      return  redirect($this->redirectPath());
     }
     /**
      * Get the post register / login redirect path.
@@ -69,7 +78,16 @@ class UsuarioAController extends Controller
             'apellido' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'type' => 'required',
-        ]);
+            'password' => 'required|string|min:6|confirmed',
+        ],
+        [
+          'nombre.required'=>str_replace('s$nombre$s','nombre',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+          'apellido.required'=>str_replace('s$nombre$s','nombre',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+          'email.required'=>str_replace('s$nombre$s','Correo Electronico',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+          'email.unique'=>EvssaPropertie::get('TB_EMAIL_UNICO'),
+          'type.required'=>str_replace('s$nombre$s','Tipo De Usuario',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+          ]
+      );
 
     }
 
@@ -79,16 +97,13 @@ class UsuarioAController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    public function create(array $data)
+    public function create()
     {
-
-      $usuario=$this->insertar(new User(),$data);
-      Session::flash("notificacion","SUCCESS");
-      Session::flash("msj","Usuario creado. ");
-      return $usuario;
-
-
-    }
+      return view("auth.admin.crear")->with(["formulario"=>"I",
+                                      "type"=>"A",
+                                      'idnamereferido'=>'id_referido',
+                                      'urlreferido'=>'listardiferidos'])->with(self::url());
+     }
 
     private function insertar($usuario,array $data){
 
@@ -108,15 +123,24 @@ class UsuarioAController extends Controller
       $usuario->telefonomovil=empty($data['movil'])?null:$data['movil'];
       $usuario->sex=empty($data['sexo'])?null:$data['sexo'];
       $usuario->address=empty($data['direccionusuario'])?null:$data['direccionusuario'];
-
+      //si tiene referido
+      if(!empty($data['id_referido'])){
+        $usuario->id_referido=$data['id_referido'];
+      }
+      //crear foto
       if (!empty($data['photo'])) {
           $archivo = new Archivos ($data['photo']);
           $usuario->photo = $archivo -> getArchivoNombreExtension();
+      }
+      if(!empty($data['password'])){
+        $usuario->password= bcrypt($data['password']);
       }
       $usuario->save();
       if (!empty($data['photo'])) {
           $archivo->guardarArchivo($usuario);
       }
+
+
       return $usuario;
     }
 
@@ -150,7 +174,17 @@ class UsuarioAController extends Controller
      */
     public function edit($id)
     {
-        //
+      $usuario=User::find($id);
+      $formacions=$usuario->formacionacademica()->get();
+
+      return view("auth.admin.crear")->with([
+        "formulario"=>"A",
+        "usuario"=>$usuario,
+        "type"=>"A",
+        "referido"=>User::find($usuario->id_referido),
+        'idnamereferido'=>'id_referido',
+        'urlreferido'=>'listardiferidos',
+        ])->with(self::url());
     }
 
     public function changue_password(Request $request, $id){
@@ -215,6 +249,10 @@ class UsuarioAController extends Controller
         if (!empty($data['photo'])) {
             $archivo->guardarArchivo($usuario);
         }
+        //si tiene referido
+      if(!empty($data['id_referido'])){
+        $usuario->id_referido=$data['id_referido'];
+      }
         $usuario->save();
 
     }
@@ -243,20 +281,5 @@ class UsuarioAController extends Controller
             'urldatosregistraduria'=>url("/datosregistraduria"),
            ];
     }
-    public function form_listar_usuario(){
-        $user=\Auth::user();
-        $listar=$this -> usuario->getAllUsuarioAdmin('A');
-        $listar->setPath(url("home"));
-        return view('auth.admin.listar')->with(['usuarioAdmin'=>$listar,'type'=>'A']);
-    }
-    public function form_editar_usuario($id){
-      $usuario=User::find($id);
-      $formacions=$usuario->formacionacademica()->get();
 
-      return view("auth.admin.crear")->with([
-        "formulario"=>"A",
-        "usuario"=>$usuario,
-        "type"=>"A",
-        ])->with(self::url());
-    }
 }

@@ -1,7 +1,17 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-0">
+      <button type="submit" onclick="mostrarSeccionMenu('I','{{$urllistar.'/'.'create'}}','')" class="btn btn-primary">
+          Nuevo
+      </button>
+		</div>
+		<div class="col-md-2">
+      <input id="nombreempresa" type="text"  placeholder="Buscar" class="form-control" name="buscarentabla"  value="" >
 
-<button type="submit" onclick="mostrarSeccionMenu('I','{{$urllistar.'/'.'create'}}','')" class="btn btn-primary">
-    Nuevo
-</button>
+		</div>
+	</div>
+</div>
+<div class="grilla-tabla">
 @if (!empty($listadepartamentos))
 <table class="table">
     <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
@@ -44,3 +54,4 @@
     </div>
 @endif
 {{$listadepartamentos->renderGeneral() }}
+  </div>

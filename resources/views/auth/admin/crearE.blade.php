@@ -10,9 +10,8 @@
     <button type="submit"  class="btn btn-primary">
         Guardar
     </button>
-    <input class="btn btn-primary" onclick="mostrarseccion('{{$type=='A'?'L':'LL'}}','')"  type="button" value="Cerrar">
-    <input class="btn btn-primary" onclick="mostrarSeccionMenu('O','','')"  type="button" value="Adicionar observación">
-
+    <input class="btn btn-primary" onclick="mostrarSeccionMenu('I','usuarioe','')"  type="button" value="Cerrar">
+    <input class="btn btn-primary" onclick="mostrarSeccionMenu('O','observation','{{empty($usuario)?'':$usuario->id}}')"  type="button" value="Observación">
 <div class="row">
         <div class="col-md-3 acordion-personae" >
             @include("auth.admin.form.formheader");
@@ -22,7 +21,8 @@
             {{--CONDICION SOCIOECONOMICA ETIQUETAS--}}
             <h1>Información <span class="small">Detalles del personaje</span></h1>
             <div class="form-group">
-                <div class="col-md-12">
+              <label for="exampleInputEmail1">Condición socioeconomica:</label>
+
                     <select style="height: 35px;" name="condicionsocial" class="form-control">
                         <option value="0">Condición socioeconomica</option>
                         @foreach($condicionsocioeconomicas as $condicion)
@@ -37,10 +37,9 @@
                           @endif
                         @endforeach
                     </select>
-                </div>
             </div>
             <div class="form-group">
-                <div class="col-md-12">
+              <label for="exampleInputEmail1">Poblaciones:</label>
                     <select style="height: 35px;" name="poblacion" class="form-control">
                         <option value="0">Poblaciones</option>
 
@@ -56,10 +55,10 @@
                             @endif
                         @endforeach
                     </select>
-                </div>
+
             </div>
             <div class="form-group">
-                <div class="col-md-12">
+              <label for="exampleInputEmail1">Areas de Conocimiento:</label>
                     <select style="height: 35px;" name="area" class="form-control">
                         <option value="0">Areas de conocimiento</option>
                         @foreach($areasconocimiento as $area)
@@ -74,10 +73,11 @@
                             @endif
                         @endforeach
                     </select>
-                </div>
+
             </div>
             <div class="form-group">
-                <div class="col-md-12">
+              <label for="exampleInputEmail1">Otros:</label>
+
                     <select style="height: 35px;" name="otro" class="form-control">
                         <option value="0">Otros</option>
                         @foreach($otros as $otro)
@@ -92,7 +92,7 @@
                               @endif
                         @endforeach
                     </select>
-                 </div>
+
             </div>
         </div>
         <div class="col-md-3 acordion-personae" style="display:none;">
@@ -173,39 +173,78 @@
         <div class="col-md-3 acordion-personae" style="display:none;">
           <div class="semi-circulo" onclick="acordionFormularioPE(-1)"><p class="h1">1</p></div>
             <h1>Información Electoral <span class="small">Datos electorales</span></h1>
-            <div class="form-group" >
+            <div class="form-group">
+                <label for="exampleInputEmail1">Buscar departamento:</label>
+                <input type="text" onkeyup="despliegueCombo(this,'{{$urldesplieguedepartamento}}');limpiar(['desplieguefinal','desplieguepunto','desplieguemesa'])" class="form-control"  value="{{empty($objeto)?'':$objeto->nombre}}" placeholder="departamento">
+                <small id="emailHelp" class="form-text text-muted">Señor seleccione un Departamento.</small>
+            </div>
 
-                <div class="col-md-10" style="position: relative !important;">
-                    <div class="col-md-14 contenedor-combo"  id="contenedor-combo-departamento" style="z-index:10;background:#fff; display: none; position: absolute; right:100%; top:0%;">
-
-                    </div>
-                    <input type="hidden" name="id_departamento" id="entrada-departamento-id" value="{{empty($iddepartamento)?empty($mesavotacion->id_departamento)?null:$mesavotacion->id_departamento:$iddepartamento}}"/>
-                    <input  id="entrada-departamento"  onclick="fueraFoco()"   onkeyup="paginacion(this,'{{$urldepartamento}}')" type="text"   placeholder="Departamento" class="form-control entrada-combo" name="departamento" value="{{ empty($departamento)?empty($mesavotacion->departamento)?old('departamento'):$mesavotacion->departamento:$departamento }}" required autofocus>
+            <div class="form-group">
+                <div class="col-md-12 ">
+                   <select style="height: 35px;" name="{{$idname}}" class="form-control despliegue">
+                     @if (!empty($objeto))
+                        @include('combos.despliegue');
+                     @elseif (!empty($departamento))
+                        <option value="{{$departamento->id}}">{{$departamento->nombre}}</option>
+                     @endif
+                   </select>
                 </div>
             </div>
 
-            <div class="form-group" >
 
-                <div class="col-md-10" style="position: relative !important;">
-                    <div class="col-md-14 contenedor-combo" id="contenedor-combo-ciudad" style="z-index:10;background:#fff; display: none; position: absolute; right:100%; top:0%;">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Buscar Ciudad:</label>
+                <input type="text" onkeyup="despliegueComboFinal(this,'{{$urldesplieguefinal}}','despliegue','desplieguefinal');limpiar(['desplieguepunto','desplieguemesa'])" class="form-control"  value="{{empty($objetofinal)?'':$objetofinal->nombre}}" placeholder="ciudad">
+                <small id="emailHelp" class="form-text text-muted">Señor seleccione una Ciudad.</small>
+            </div>
 
-                    </div>
-                    <input type="hidden" name="id_ciudad" id="entrada-ciudad-id" value="{{empty($idciudad)?empty($mesavotacion->id_ciudad)?null:$mesavotacion->id_ciudad:$idciudad}}"/>
-                    <input id="entrada-ciudad" onclick="fueraFoco()"    onkeyup="paginacion(this,'{{$urlciudades}}')" type="text"   placeholder="Ciudad" class="form-control entrada-combo" name="ciudad" value="{{empty($ciudad)?empty($mesavotacion->ciudad)?old('ciudad'):$mesavotacion->ciudad:$ciudad }}" required autofocus>
+            <div class="form-group">
+                <div class="col-md-12 ">
+                   <select style="height: 35px;" name="{{$idnamefinal}}" class="form-control desplieguefinal">
+                     @if (!empty($objetofinal))
+                        @include('combos.desplieguefinal');
+                     @elseif (!empty($ciudad))
+                        <option value="{{$ciudad->id}}">{{$ciudad->nombre}}</option>
+                     @endif
+                   </select>
                 </div>
             </div>
 
             <div class="form-group">
-                <div class="col-md-10">
-                    <input id="name" type="text"  placeholder="Direccion" class="form-control" name="direccionvotacion" value="{{ empty($direccion)?empty($mesavotacion->direccion)?old('direccion'):$mesavotacion->direccion:$direccion }}" required autofocus>
-                </div>
+                <label for="exampleInputEmail1">Buscar Punto de votación:</label>
+                <input type="text" style="text-align:center" onkeyup="despliegueComboFinal(this,'{{$urlpunto}}','desplieguefinal','desplieguepunto');limpiar([desplieguemesa'])" class="form-control"  value="{{empty($punto)?'':$punto->direccion}}" placeholder="punto">
+                <small id="emailHelp" class="form-text text-muted">Señor seleccione un punto de votación.</small>
             </div>
+
             <div class="form-group">
-                <div class="col-md-10">
-                  <input type="hidden" name="id_mesa" id="entrada-ciudad-id" value="{{empty($mesavotacion->id_mesa)?null:$mesavotacion->id_mesa}}"/>
-                  <input id="name" type="text"  placeholder="Mesa de votación" class="form-control" name="mesavotacion" value="{{empty($mesa)?empty($mesavotacion->numero)?old('fijo'):$mesavotacion->numero:$mesa }}" required autofocus>
+                <div class="col-md-12 ">
+                   <select style="height: 35px;"  name="{{$idnamepunto}}" class="form-control desplieguepunto">
+                     @if (!empty($punto))
+                      <option value="{{$punto->id}}">{{$punto->direccion}}</option>
+                     @endif
+
+                   </select>
                 </div>
             </div>
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Buscar Mesa de votación:</label>
+                <input type="text" name="mesa" onkeyup="despliegueComboFinal(this,'{{$urlmesa}}','desplieguepunto','desplieguemesa');" class="form-control"  value="{{empty($mesa)?'':$mesa->numero}}" placeholder="numero">
+                <small id="emailHelp" class="form-text text-muted">Señor seleccione la mesa de votación.</small>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-12 ">
+                   <select style="height: 35px;" name="{{$idnamemesa}}" class="form-control desplieguemesa">
+
+                     @if (!empty($mesa))
+                        <option value="{{$mesa->id}}">{{$mesa->numero}}</option>
+                     @endif
+                   </select>
+                </div>
+            </div>
+
+
         </div>
     </div>
 

@@ -24,6 +24,8 @@ use App\Reporteador;
 use App\EvssaConstantes;
 use App\Evssa\EvssaUtil;
 use App\Evssa\EvssaException;
+use App\Evssa\EvssaPropertie;
+
 class UsuarioEController extends Controller
 {
     protected $redirectTo = '/home';
@@ -46,8 +48,10 @@ class UsuarioEController extends Controller
      */
     public function index()
     {
-        //
-        return 'hola';
+      $user=\Auth::user();
+      $listar=$this -> usuario->getAllUsuarioAdmin('E');
+      $listar->setPath(url("home"));
+      return response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'E','urllistar'=>'usuarioe',"urlgeneral"=>url("/")])->render());
 
     }
 
@@ -55,10 +59,8 @@ class UsuarioEController extends Controller
     {
 
         try {
-          EvssaUtil::agregarSeccion("II");
           $this->validator($request->all())->validate();
-          EvssaUtil::borrarSeccion();
-          $this->create($request->all());
+          $this->insertar(new User(),$request->all());
 
         } catch (EvssaException $e) {
             EvssaUtil::agregarMensajeAlerta($e->getMensaje());
@@ -92,13 +94,24 @@ class UsuarioEController extends Controller
         return Validator::make($data, [
             'nombre'            => 'required|string|min:2',
             'apellido'          => 'required|string|min:2',
-            'mesavotacion'      => 'required|string|max:255',
-            'direccionvotacion' => 'required|string|max:255',
-            'ciudad'            => 'required|string',
-            'departamento'      => 'required|string',
+            'id_mesa'           => 'required|string|max:255',
+            'id_punto'          => 'required|string|max:255',
+            'id_ciudad'         => 'required|string',
+            'id_departamento'   => 'required|string',
             'type'              => 'required',
             'email'             => 'required|string|email|max:255|unique:users',
-        ]);
+        ],
+        [
+          'nombre.required'=>str_replace('s$nombre$s','Nombre',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+          'apellido.required'=>str_replace('s$nombre$s','Apellido',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+          'id_mesa.required'=>str_replace('s$nombre$s','Mesa votación',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+          'id_punto.required'=>str_replace('s$nombre$s','Punto De Votación',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+          'id_departamento.required'=>str_replace('s$nombre$s','Departamento',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+          'type.required'=>str_replace('s$nombre$s','Tipo De Usuario',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+          'email.required'=>str_replace('s$nombre$s','Correo Electronico',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+          'email.unique'=>EvssaPropertie::get('TB_EMAIL_UNICO'),
+        ]
+      );
 
     }
 
@@ -114,14 +127,24 @@ class UsuarioEController extends Controller
         return Validator::make($data, [
             'nombre'            => 'required|string|min:2',
             'apellido'          => 'required|string|min:2',
-            'mesavotacion'      => 'required|string|max:255',
-            'direccionvotacion' => 'required|string|max:255',
-            'ciudad'            => 'required|string',
-            'departamento'      => 'required|string',
+            'id_mesa'           => 'required|string|max:255',
+            'id_punto'          => 'required|string|max:255',
+            'id_ciudad'         => 'required|string',
+            'id_departamento'   => 'required|string',
             'type'              => 'required',
-        ]);
+        ],
+        [
+          'nombre.required'=>str_replace('s$nombre$s','Nombre',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+          'apellido.required'=>str_replace('s$nombre$s','Apellido',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+          'id_mesa.required'=>str_replace('s$nombre$s','Mesa votación',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+          'id_punto.required'=>str_replace('s$nombre$s','Punto De Votación',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+          'id_departamento.required'=>str_replace('s$nombre$s','Departamento',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+          'type.required'=>str_replace('s$nombre$s','Tipo De Usuario',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+        ]
+      );
 
     }
+
 
     /**
      * Create a new user instance after a valid registration.
@@ -129,14 +152,20 @@ class UsuarioEController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    public function create(array $data)
+    public function create()
     {
-
-        $usuario=$this->insertar(new User(),$data);
-        Session::flash("notificacion","SUCCESS");
-        Session::flash("msj","Usuario creado. ");
-        return $usuario;
-
+        return view("auth.admin.creare")->with(["formulario"=>"I",
+                                                "type"=>"E",
+                                                "urlpunto"=>"listadesplieguepuntofinal",
+                                                "urlmesa"=>"listadesplieguemesa",
+                                                "urldesplieguefinal"=>"listadespliegueciudadfinal",
+                                                'urldesplieguedepartamento'=>'listadesplieguedepartamento',
+                                                "idnamefinal"=>"id_ciudad",
+                                                'idname'=>'id_departamento',
+                                                'idnamepunto'=>'id_punto',
+                                                'idnamemesa'=>'id_mesa',
+                                                'idnamereferido'=>'id_referido',
+                                                'urlreferido'=>'listardiferidos'  ])->with(self::url());
     }
 
     private function insertar($usuario,array $data){
@@ -163,10 +192,10 @@ class UsuarioEController extends Controller
       }
       //tabla punto de votacion
       $puntoVotacion=new PuntosVotacion();
-      $puntoVotacion=$puntoVotacion->buscar($data['direccionvotacion'],$data['id_ciudad']);
+      $puntoVotacion=$puntoVotacion->buscar($data['id_punto'],$data['id_ciudad']);
       //tabla mesa de votacion
       $mesa=new MesasVotacion();
-      $mesa=$mesa->buscar($data['mesavotacion'],$puntoVotacion);
+      $mesa=$mesa->buscar($data['mesa'],$puntoVotacion);
       $usuario->id_mesa=$mesa->id;
       //tabla opcion
       $opciones=new Opcion();
@@ -180,6 +209,10 @@ class UsuarioEController extends Controller
         $empresa->buscar($data);
         $usuario->id_empresa=$empresa->id;
         }
+        //si tiene referido
+      if(!empty($data['id_referido'])){
+        $usuario->id_referido=$data['id_referido'];
+      }
       $usuario->save();
 
       if(!empty($data['idforomacionacademica'])){
@@ -230,6 +263,36 @@ class UsuarioEController extends Controller
     public function edit($id)
     {
         //
+
+                $usuario=User::find($id);
+                $formacions=$usuario->formacionacademica()->get();
+                $mesa=MesasVotacion::find($usuario->id_mesa);
+                $punto=PuntosVotacion::find($mesa->id_punto);
+                $ciudad=Ciudades::find($punto->id_ciudad);
+                return view("auth.admin.creare")->with([
+                  "formulario"=>"A",
+                  "usuario"=>$usuario,
+                  "formacions"=>$formacions,
+                  "opcion"=>$usuario->opcion(),
+                  "empresa"=>$usuario->empresas(),
+                  "mesa"=>$mesa,
+                  "punto"=>$punto,
+                  "departamento"=>Departamentos::find($ciudad->id_departamento),
+                  "ciudad"=>$ciudad,
+                  "type"=>"E",
+                  "referido"=>User::find($usuario->id_referido),
+                  "urlpunto"=>"listadesplieguepuntofinal",
+                  "urlmesa"=>"listadesplieguemesa",
+                  "urldesplieguefinal"=>"listadespliegueciudadfinal",
+                  'urldesplieguedepartamento'=>'listadesplieguedepartamento',
+                  "idnamefinal"=>"id_ciudad",
+                  'idname'=>'id_departamento',
+                  'idnamepunto'=>'id_punto',
+                  'idnamemesa'=>'id_mesa',
+                  'idnamereferido'=>'id_referido',
+                  'urlreferido'=>'listardiferidos',
+                  ])->with(self::url());
+
     }
 
     /**
@@ -244,16 +307,9 @@ class UsuarioEController extends Controller
 
       $usuario=User::find($id);
       //crear variable de sesion por si las cosas salen mal
-      Session::flash("seccion","AA");
-      Session::flash("seccionid",$usuario->id);
       $this->validatorUpdate($request->all())->validate();
-      //eliminar variables si toda va bien
-      Session::forget('seccion');
-      Session::forget('seccionid');
 
       $usuario=$this->actualizar($usuario,$request->all());
-      Session::flash("notificacion","SUCCESS");
-      Session::flash("msj","Los datos del usuario se actualizaron correctamente. ");
       return  redirect($this->redirectPath());
     }
     private function actualizar($usuario,array $data){
@@ -292,49 +348,30 @@ class UsuarioEController extends Controller
               }
         }
         //tabla departamneto
-        if(empty($data['id_departamento'])){
+        if(!empty($data['id_departamento'])){
          $departamento=Departamentos::find($data['id_departamento']);
-        }else{
-         $departamento=new Departamentos();
         }
-        $departamento->nombre=empty($data['departamento'])?null:$data['departamento'];
-        $departamento->save();
 
         //tabla departamneto
         if(!empty($data['id_ciudad'])){
          $ciudad=Ciudades::find($data['id_ciudad']);
-        }else{
-         $ciudad=new Ciudades();
         }
-        $ciudad->nombre=empty($data['ciudad'])?null:$data['ciudad'];
         $ciudad->id_departamento=$departamento->id;
         $ciudad->save();
 
         //tabla punto de votacion
-        if(!empty($data['direccionvotacion'])){
-          $puntosvotacion=PuntosVotacion::where("direccion","=",empty($data['direccionvotacion'])?null:$data['direccionvotacion'])
-                                          ->where("id_ciudad","=",$ciudad->id)->first();
-          if(empty($puntosvotacion)){
-            $puntosvotacion=new PuntosVotacion();
-            $puntosvotacion->direccion=empty($data['direccionvotacion'])?null:$data['direccionvotacion'];
-            $puntosvotacion->id_ciudad=$ciudad->id;
-          }
-        }else{
-          $puntosvotacion=new PuntosVotacion();
+        if(!empty($data['id_punto'])){
+          $puntosvotacion=PuntosVotacion::find($data['id_punto']);
         }
-        $puntosvotacion->direccion=empty($data['direccionvotacion'])?null:$data['direccionvotacion'];
         $puntosvotacion->id_ciudad=$ciudad->id;
         $puntosvotacion->save();
 
         //tabla mesa de MesasVotacion
         if(!empty($data['id_mesa'])){
           $mesa=MesasVotacion::find($data['id_mesa']);
-        }else{
-          $mesa=new MesasVotacion();
+          $mesa->id_punto=$puntosvotacion->id;
+          $mesa->save();
         }
-        $mesa->numero=empty($data['mesavotacion'])?null:$data['mesavotacion'];
-        $mesa->id_punto=$puntosvotacion->id;
-        $mesa->save();
         $usuario->id_mesa=$mesa->id;
         //tabla usuario
         $usuario->type= $data['type'];
@@ -374,6 +411,10 @@ class UsuarioEController extends Controller
         if (!empty($data['photo'])) {
             $archivo->guardarArchivo($usuario);
         }
+        //si tiene referido
+      if(!empty($data['id_referido'])){
+        $usuario->id_referido=$data['id_referido'];
+      }
         $usuario->save();
 
     }
@@ -401,33 +442,12 @@ class UsuarioEController extends Controller
 
         ];
     }
-    public function form_crear_usuarioe(){
 
-        return view("auth.admin.creare")->with(["formulario"=>"I","type"=>"E"])->with(self::url());
-    }
     public function form_editar_usuario($id){
 
-        $usuario=User::find($id);
-        $formacions=$usuario->formacionacademica()->get();
-
-        return view("auth.admin.creare")->with([
-          "formulario"=>"A",
-          "usuario"=>$usuario,
-          "formacions"=>$formacions,
-          "opcion"=>$usuario->opcion(),
-          "empresa"=>$usuario->empresas(),
-          "mesavotacion"=>$usuario->mesa(),
-          "type"=>"E",
-          ])->with(self::url());
     }
 
-    public function form_listar_usuario(){
 
-        $user=\Auth::user();
-        $listar=$this -> usuario->getAllUsuarioAdmin('E');
-        $listar->setPath(url("home"));
-        return view('auth.admin.listar')->with(['usuarioAdmin'=>$listar,'type'=>'E']);
-    }
     /**
     *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en pdf
     */
@@ -458,5 +478,26 @@ class UsuarioEController extends Controller
               return response()->json(view('auth.admin.listar')->with(['usuarioAdmin'=>$listar,'type'=>$request->type])->render());
           }
     }
+
+    public function buscarReferido(Request $request){
+      if(!empty($request->id)){
+          return response()->json(view("combos.desplieguediferido")
+                      ->with(["listausuario"=> User::where(function ($query) use($request) {
+                                   $query->orWhere("NAME","LIKE","%".$request->buscar."%")
+                                       ->orWhere("NAME2","LIKE","%".$request->buscar."%")
+                                       ->orWhere("LASTNAME","LIKE","%".$request->buscar."%")
+                                       ->orWhere("LASTNAME2","LIKE","%".$request->buscar."%");
+                               })->where("id","<>",$request->id)->get()])->render());
+         }
+         return response()->json(view("combos.desplieguediferido")
+                         ->with(["listausuario"=> User::orWhere("NAME","LIKE","%".$request->buscar."%")
+                                          ->orWhere("NAME2","LIKE","%".$request->buscar."%")
+                                          ->orWhere("LASTNAME","LIKE","%".$request->buscar."%")
+                                          ->orWhere("LASTNAME2","LIKE","%".$request->buscar."%")
+                                          ->get()])->render());
+
+
+    }
+
 
 }

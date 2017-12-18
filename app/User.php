@@ -28,10 +28,10 @@ class User extends Authenticatable
     ];
 
     public function getAllUsuarioAdmin($tipo){
-        return $this->where("type",$tipo)->paginate(2);
+        return $this->where("type",$tipo)->paginate(10);
     }
     public function getAllUsuarioTodo(){
-        return $this->paginate(2);
+        return $this->paginate(10);
     }
     public function actualizar(Request $request, $id){
         $registro=$this->where('id', '=', $id)->first();
@@ -85,4 +85,6 @@ class User extends Authenticatable
                     ->select("empresas.*")
                     ->where("users.id","=",$this->id)->first();
     }
+
+
 }

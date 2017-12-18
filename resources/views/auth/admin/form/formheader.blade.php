@@ -39,46 +39,58 @@
     </div>
 
     <div  class="form-group grupos">
-        <div class="col-md-10">
-            <input id="name" onkeypress="registraduria(event,this,'{{$urldatosregistraduria}}','{{$formulario}}','{{$type}}')" type="text"  placeholder="Cedula" class="form-control" name="nit" value="{{ empty($nit)?empty($usuario->nit)?old('nit'):$usuario->nit:$nit }}" required autofocus>
-        </div>
+         <label for="exampleInputEmail1">Cedula de ciudadania:</label>
+
+          <input id="name" onkeypress="registraduria(event,this,'{{$urldatosregistraduria}}','{{$formulario}}','{{$type}}')" type="text"  placeholder="Cedula" class="form-control" name="nit" value="{{ empty($nit)?empty($usuario->nit)?old('nit'):$usuario->nit:$nit }}" required autofocus>
+
     </div>
 
-    <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-        <div class="col-md-10">
-            <input id="name" type="text"  placeholder="Primer Nombre" class="form-control" name="nombre" value="{{ empty($nombre1)?empty($usuario->name)?old('name'):$usuario->name:$nombre1 }}" required autofocus>
-        </div>
+    <div class="form-group">
+       <label for="exampleInputEmail1">Primer Nombre:</label>
+        <input id="name" type="text"  placeholder="Primer Nombre" class="form-control" name="nombre" value="{{ empty($nombre1)?empty($usuario->name)?old('name'):$usuario->name:$nombre1 }}" required autofocus>
+
     </div>
 
 
     <div class="form-group">
-        <div class="col-md-10">
-            <input id="name" type="text"  placeholder="Segundo Nombre" class="form-control" name="nombre2" value="{{ empty($nombre2)?empty($usuario->name2)?old('name2'):$usuario->name2:$nombre2 }}">
-        </div>
+        <label for="exampleInputEmail1">Segundo Nombre:</label>
+        <input id="name" type="text"  placeholder="Segundo Nombre" class="form-control" name="nombre2" value="{{ empty($nombre2)?empty($usuario->name2)?old('name2'):$usuario->name2:$nombre2 }}">
+
     </div>
 
     <div class="form-group">
-        <div class="col-md-10">
-            <input id="name" type="text"  placeholder="Primer Apellido" class="form-control" name="apellido" value="{{ empty($apellido1)?empty($usuario->lastname)?old('lastname'):$usuario->lastname:$apellido1 }}" required autofocus>
-        </div>
+        <label for="exampleInputEmail1">Primer Apellido:</label>
+        <input id="name" type="text"  placeholder="Primer Apellido" class="form-control" name="apellido" value="{{ empty($apellido1)?empty($usuario->lastname)?old('lastname'):$usuario->lastname:$apellido1 }}" required autofocus>
+
     </div>
 
     <div class="form-group">
-        <div class="col-md-10">
-            <input id="name" type="text"  placeholder="Segundo Apellido" class="form-control" name="apellido2" value="{{ empty($apellido2)?empty($usuario->lastname2)?old('lastname2'):$usuario->lastname2:$apellido2 }}">
-        </div>
+        <label for="exampleInputEmail1">Segundo Apellido:</label>
+        <input id="name" type="text"  placeholder="Segundo Apellido" class="form-control" name="apellido2" value="{{ empty($apellido2)?empty($usuario->lastname2)?old('lastname2'):$usuario->lastname2:$apellido2 }}">
+
     </div>
 
     <div class="form-group">
-        <div class="col-md-10">
-            <input id="email" type="email" placeholder="Correo electronico" class="form-control" name="email" value="{{empty($usuario->email)? old('email') :$usuario->email}}" required>
+         <label for="exampleInputEmail1">Correo electronico:</label>
+         <input id="email" type="email" placeholder="Correo electronico" class="form-control" name="email" value="{{empty($usuario->email)? old('email') :$usuario->email}}" required>
 
-        </div>
+    </div>
+    @if ($type === 'A' and $formulario ==='I')
+    <div class="form-group">
+         <label for="exampleInputEmail1">Contraseña:</label>
+         <input id="password" type="password" class="form-control" name="password" required>
     </div>
 
+    <div class="form-group">
+         <label for="exampleInputEmail1">Confirmar Contraseña:</label>
+         <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+    </div>
+
+    @endif
     <div class="form-group" >
         <div class="bootstrap-iso">
-            <div class="col-md-6 col-sm-6 col-xs-12">
+          <label for="exampleInputEmail1">Fecha De Nacimiento:</label>
+
                 <div class="input-group">
                     <div class="input-group-addon" style="z-index:1000; width: 25px">
                         <i class="fa fa-calendar"  style="z-index:1000;">
@@ -86,7 +98,7 @@
                     </div>
                     <input class="form-control" id="date" name="fechanacimiento" placeholder="MM/DD/YYYY" value="{{empty($usuario->birthdate)?old('birthdate'):Carbon\Carbon::parse($usuario->birthdate)->format('d/m/Y')  }}" type="text">
                 </div>
-            </div>
+
         </div>
         <script>
             $(document).ready(function(){
@@ -105,27 +117,44 @@
 
 
     <div class="form-group">
-        <div class="col-md-10">
+      <label for="exampleInputEmail1">Telefono Movíl:</label>
             <input id="name" type="number"  placeholder="Telefono movil" class="form-control" name="movil" value="{{empty($usuario->telefonomovil)? old('movil'):$usuario->telefonomovil }}" >
-        </div>
+
     </div>
 
     <div class="form-group">
-        <div class="col-md-10">
-            <input id="name" type="number"  placeholder="Telefono Fijo" class="form-control" name="fijo" value="{{empty($usuario->telefonofijo)? old('fijo'):$usuario->telefonofijo }}" >
-        </div>
+        <label for="exampleInputEmail1">Telefono Fijo:</label>
+        <input id="name" type="number"  placeholder="Telefono Fijo" class="form-control" name="fijo" value="{{empty($usuario->telefonofijo)? old('fijo'):$usuario->telefonofijo }}" >
+
     </div>
 
 
     <div class="form-group">
-        <div class="col-md-10">
+         <label for="exampleInputEmail1">Sexo:</label>
           {{Form::select('sexo', array('O'=> 'Sexo', 'F' => 'Femenino','M'=>'Maculino','O'=>'Otro'), empty($usuario->sex)?'D':$usuario->sex,array('class'=>'form-control','style'=>'height:35px'))}}
 
-        </div>
     </div>
 
     <div class="form-group">
-        <div class="col-md-10">
-            <input  id="name"  type="text"  placeholder="Direccion Residencia" class="form-control" name="direccionusuario" value="{{ empty($usuario->address)?old('address'):$usuario->address }}">
+        <label for="exampleInputEmail1">Dirección de residencia:</label>
+        <input  id="name"  type="text"  placeholder="Direccion Residencia" class="form-control" name="direccionusuario" value="{{ empty($usuario->address)?old('address'):$usuario->address }}">
+
+    </div>
+
+    <div class="form-group">
+        <label for="exampleInputEmail1">Referido por:</label>
+        <input type="text"  onkeyup="despliegueComboClass(this,'{{$urlreferido}}','desplieguereferido','{{empty($usuario)?'':$usuario->id}}');" class="form-control"  value="" placeholder="buscar referido">
+        <small id="emailHelp" class="form-text text-muted">Señor usuario digite el usaurio que lo refiere.</small>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-12 ">
+           <select style="height: 35px;" name="{{$idnamereferido}}" class="form-control desplieguereferido">
+
+             @if (!empty($referido))
+             <option value="{{$referido->id}}">{{(empty($referido->name2)?$referido->name:$referido->name.' '.$referido->name2).' '.(empty($referido->lastname)?$referido->lastname2:$referido->lastname.' '.$referido->lastname2)}}</option>
+
+             @endif
+           </select>
         </div>
     </div>
