@@ -36,9 +36,10 @@ class ConsultaController extends Controller
      */
     public function store(Request $request)
     {
+
         consulta::create([
            'codigo'   => $request->codigo,
-           'consulta' => str_replace(" ",".c*",$request->consulta),
+           'consulta' =>  str_replace("\r\n",".c*",str_replace(" ",".c*",$request->consulta)),
         ]);
         return view("consulta");
 

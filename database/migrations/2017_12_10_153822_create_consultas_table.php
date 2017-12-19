@@ -15,7 +15,7 @@ class CreateConsultasTable extends Migration
     {
         Schema::create('consultas', function (Blueprint $table) {
           $table->string("codigo",25)->primary();
-          $table->string("consulta");
+          $table->longText("consulta");
           $table->timestamps();
         });
     }

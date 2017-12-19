@@ -8,8 +8,10 @@
     <thead >
 
     <tr>
-        <th>Codigo</th>
+        <th>Código</th>
         <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Fecha</th>
         <th>Correo</th>
         <th>Acciones</th>
     </tr>
@@ -20,7 +22,9 @@
 
         <tr>
             <td>{{$usuario->id}}</td>
-            <td>{{$usuario->name}}</td>
+            <td>{{$usuario->name.' '.$usuario->name2.' '.$usuario->lastname.' '.$usuario->lastname2}}</td>
+            <td>{{$usuario->type=='A'?'Administrador':'Votante'}}</td>
+            <td>{{$usuario->created_at->format('d/m/Y')}}</td>
             <td>{{$usuario->email}}</td>
             <td><input class="btn btn-primary" onclick="mostrarSeccionMenu('A','{{$urllistar}}','{{$usuario->id}}')" type="submit" value="Editar"> <input class="btn btn-primary" type="submit" onclick="eliminarDatos('1',{{$usuario->id}})" value="Eliminar"></td>
 

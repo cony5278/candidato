@@ -3,7 +3,7 @@
 namespace App;
 
 
-use App\EvssaConstantes;
+use App\Evssa\EvssaConstantes;
 use JasperPHP\JasperPHP;
 use App\Consulta;
 class Reporteador {
@@ -68,10 +68,12 @@ class Reporteador {
 
 
     public static function resuelveConsulta($codigo , $reemplazos=array()){
+
       $consulta=Consulta::where("codigo","=",$codigo)->first()->consulta;
+
       foreach ($reemplazos as $key => $value){
            $consulta=str_replace('s$'.$key.'$s',$value,$consulta);
-      }  
+      }
       return $consulta;
     }
 }

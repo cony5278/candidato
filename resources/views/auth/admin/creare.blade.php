@@ -1,5 +1,5 @@
 @if ($formulario ==='I')
-<form class="formulario-persona" onsubmit="onCargandoSubmit()" enctype="multipart/form-data" id="form-persona" method="POST" action="{{ route('usuarioe') }}">
+<form class="formulario-persona" onsubmit="onCargandoSubmit()" enctype="multipart/form-data" id="form-persona" method="POST" action="{{ route('usuarioe.store') }}">
 @elseif ($formulario ==='A')
 <form class="formulario-persona" onsubmit="onCargandoSubmit()" enctype="multipart/form-data" id="form-persona" method="POST" action="{{ route('usuarioe.update',$usuario->id) }}">
 <input name="_method" type="hidden" value="PUT">
@@ -229,7 +229,7 @@
 
             <div class="form-group">
                 <label for="exampleInputEmail1">Buscar Mesa de votación:</label>
-                <input type="text" name="mesa" onkeyup="despliegueComboFinal(this,'{{$urlmesa}}','desplieguepunto','desplieguemesa');" class="form-control"  value="{{empty($mesa)?'':$mesa->numero}}" placeholder="numero">
+                <input type="number" name="mesa" onkeyup="despliegueComboFinal(this,'{{$urlmesa}}','desplieguepunto','desplieguemesa');" class="form-control"  value="{{empty($mesa)?'':$mesa->numero}}" placeholder="numero">
                 <small id="emailHelp" class="form-text text-muted">Señor seleccione la mesa de votación.</small>
             </div>
 
@@ -243,8 +243,31 @@
                    </select>
                 </div>
             </div>
+            <div class="form-group">
+                <label style="text-align:center !important;"  for="exampleInputEmail1">Potencial de votos:</label>
+                <input style="text-align:center;"  type="number" name="potencial" class="form-control"  value="{{empty($usuario->potencial)?'':$usuario->potencial}}" placeholder="potencial votante">
+                <small id="emailHelp" class="form-text text-muted">Potencial electoral. <span for="exampleInputEmail1" data-toggle="modal" data-target="#modal-potencial" style="color:#007bff !important;" onclick="calcularPotencial('{{empty($usuario)?'':$usuario->id}}')">Ver.</span></small>
 
+            </div>
 
+            <div class="modal fade" id="modal-potencial" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Potencial electoral</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body modal-potencial-cantidad">
+
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+              </div>
+            </div>
         </div>
     </div>
 

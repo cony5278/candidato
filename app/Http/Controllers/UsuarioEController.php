@@ -128,6 +128,7 @@ class UsuarioEController extends Controller
      */
     public function create()
     {
+
         return view("auth.admin.creare")->with(["formulario"=>"I",
                                                 "type"=>"E",
                                                 "urlpunto"=>"listadesplieguepuntofinal",
@@ -187,6 +188,10 @@ class UsuarioEController extends Controller
         //si tiene referido
       if(!empty($data['id_referido'])){
         $usuario->id_referido=$data['id_referido'];
+      }
+      //si tiene una cantidad de potencial electoral
+      if(!empty($data['potencial'])){
+        $usuario->potencial=$data['potencial'];
       }
       $usuario->save();
 
@@ -436,9 +441,13 @@ class UsuarioEController extends Controller
             $archivo->guardarArchivo($usuario);
         }
         //si tiene referido
-      if(!empty($data['id_referido'])){
-        $usuario->id_referido=$data['id_referido'];
-      }
+        if(!empty($data['id_referido'])){
+          $usuario->id_referido=$data['id_referido'];
+        }
+        //si tiene una cantidad de potencial electoral
+        if(!empty($data['potencial'])){
+          $usuario->potencial=$data['potencial'];
+        }
         $usuario->save();
 
     }
@@ -530,5 +539,10 @@ class UsuarioEController extends Controller
       return response()->json(view('auth.admin.tabla')->with(['listarusuario'=>$listar,'type'=>'E','urllistar'=>'usuarioe',"urlgeneral"=>url("/")])->render());
     }
 
+    public function mostrarpotencial(Request $request){
+        $usuario=new User();
+        $usuario=$usuario->cantidadPotencialElectoral($request);
+        return response()->json(view('cuerpotencial')->with(['usuario'=>$usuario])->render());
+    }
 
 }

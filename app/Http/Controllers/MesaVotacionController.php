@@ -9,7 +9,9 @@ use App\Evssa\EvssaPropertie;
 use App\Evssa\EvssaConstantes;
 use App\Evssa\EvssaUtil;
 use App\Evssa\EvssaException;
+use App\Departamentos;
 use Illuminate\Support\Facades\Validator;
+use App\Reporteador;
 
 class MesaVotacionController extends Controller
 {
@@ -21,7 +23,23 @@ class MesaVotacionController extends Controller
   public function index(Request $request)
   {
 
-    return response()->json(view("lugar.mesa.listar")->with(["urllistar"=>"mesa","urlgeneral"=>url("/"),"listadesplieguemesa"=>MesasVotacion::paginate(10)])->render());
+    return response()->json(view("lugar.mesa.listar")->with(["urllistar"=>"mesa","urlgeneral"=>url("/"),"listadesplieguemesa"=>$this->cargarListaMesa()])->render());
+  }
+
+  private function cargarListaMesa(){
+    return Departamentos::join("ciudades","departamentos.id","ciudades.id_departamento")
+                        ->join("puntos_votacions","ciudades.id","puntos_votacions.id_ciudad")
+                        ->join("mesas_votacions","puntos_votacions.id","mesas_votacions.id_punto")
+                        ->join("users","mesas_votacions.id","users.id_mesa")
+                        ->select("departamentos.nombre as departamento",
+                                 "ciudades.nombre as ciudad",
+                                 "puntos_votacions.direccion",
+                                 "mesas_votacions.numero",
+                                 "mesas_votacions.id",
+                                 "users.name",
+                                 "users.name2",
+                                 "users.lastname",
+                                 "users.lastname2")->paginate(10);
   }
   /**
    * Get a validator for an incoming registration request.
@@ -97,7 +115,7 @@ class MesaVotacionController extends Controller
       return response()->json([
           EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
           EvssaConstantes::MSJ=>"Se ha registrado correctamente la Mesa votación.",
-          "html"=>response()->json(view("lugar.mesa.listar")->with(["urllistar"=>"mesa","urlgeneral"=>url("/"),"listadesplieguemesa"=>MesasVotacion::paginate(10)])->render())
+          "html"=>response()->json(view("lugar.mesa.listar")->with(["urllistar"=>"mesa","urlgeneral"=>url("/"),"listadesplieguemesa"=>$this->cargarListaMesa()])->render())
       ]);
     } catch (EvssaException $e) {
         return response()->json([
@@ -159,7 +177,7 @@ class MesaVotacionController extends Controller
         return response()->json([
             EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
             EvssaConstantes::MSJ=>"Se ha actualizado correctamente la Mesa de votación.",
-            "html"=>response()->json(view("lugar.mesa.listar")->with(["urllistar"=>"mesa","urlgeneral"=>url("/"),"listadesplieguemesa"=>MesasVotacion::paginate(10)])->render())
+            "html"=>response()->json(view("lugar.mesa.listar")->with(["urllistar"=>"mesa","urlgeneral"=>url("/"),"listadesplieguemesa"=>$this->cargarListaMesa()])->render())
         ]);
       } catch (EvssaException $e) {
           return response()->json([
@@ -231,6 +249,52 @@ class MesaVotacionController extends Controller
 
   public function refrescar(Request $request){
 
-    return response()->json(view("lugar.mesa.tabla")->with(["urllistar"=>"mesa","urlgeneral"=>url("/"),"listadesplieguemesa"=>MesasVotacion::where("numero","like","".$request->buscar."%")->paginate(10)])->render());
+    return response()->json(view("lugar.mesa.tabla")->with(["urllistar"=>"mesa","urlgeneral"=>url("/"),"listadesplieguemesa"=>    Departamentos::join("ciudades","departamentos.id","ciudades.id_departamento")
+                            ->join("puntos_votacions","ciudades.id","puntos_votacions.id_ciudad")
+                            ->join("mesas_votacions","puntos_votacions.id","mesas_votacions.id_punto")
+                            ->join("users.id","mesas_votacions.id","users.id_mesa")
+                            ->orWhere("mesas_votacions.numero","like","".$request->buscar."%")
+                            ->orWhere("puntos_votacions.direccion","like","".$request->buscar."%")
+                            ->orWhere("ciudades.nombre","like","".$request->buscar."%")
+                            ->orWhere("departamentos.nombre","like","".$request->buscar."%")
+                            ->orWhere(function ($query) use($request) {
+                                         $query->orWhere("users.name","LIKE","%".$request->buscar."%")
+                                             ->orWhere("users.name2","LIKE","%".$request->buscar."%")
+                                             ->orWhere("users.lastname","LIKE","%".$request->buscar."%")
+                                             ->orWhere("users.lastname2","LIKE","%".$request->buscar."%");
+                                           })
+                            ->select("departamentos.nombre as departamento",
+                                     "ciudades.nombre as ciudad",
+                                     "puntos_votacions.direccion",
+                                     "mesas_votacions.numero",
+                                     "mesas_votacions.id",
+                                     "users.name",
+                                     "users.name2",
+                                     "users.lastname",
+                                     "users.lastname2")->paginate(10)])->render());
+  }
+
+  /**
+  *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en pdf
+  */
+  public function oprimirPdf(){
+    $reemplazos=array(
+      "buscar"=>"Cl"
+    );
+    $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0001MESAGENERAL",$reemplazos));
+    // dd($param['PR_STRSQL']);
+    Reporteador::exportar("0001MESAGENERAL",EvssaConstantes::PDF,$param);
+  }
+
+  /**
+  *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en excel
+  */
+  public function oprimirExcel(Request $request){
+    $reemplazos=array(
+      "buscar"=>"Cl"
+    );
+    $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0001MESAGENERAL",$reemplazos));
+
+    Reporteador::exportar("0001MESAGENERAL",EvssaConstantes::EXCEL,$param);
   }
 }

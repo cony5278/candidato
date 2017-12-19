@@ -41,7 +41,7 @@ Route::get('datosregistraduria','ConsultarInformacionElectoral@index');
 
 Route::get('location','ConsultarInformacionElectoral@consultarCoordenadas');
 
-Route::get('google','PuntoVotacionController@googleMaps');
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -54,7 +54,18 @@ Route::get('/prueba', function () {
 Route::get('reporte', 'UsuarioEController@oprimirExcel');
 
 Route::get('/cselect', function () {
-return view('maps.mapa');
+return \DB::table('ciudades')->join("puntos_votacions","ciudades.id","puntos_votacions.id_ciudad")
+                       ->join("mesas_votacions","puntos_votacions.id","mesas_votacions.id_punto")
+                       ->join("users","mesas_votacions.id","users.id_mesa")
+                       ->select(\DB::raw('COUNT(puntos_votacions.id) as contar, puntos_votacions.direccion,ciudades.nombre,users.name,users.name2,users.lastname,users.lastname2'))
+                       ->groupBy('puntos_votacions.direccion','ciudades.nombre','users.name','users.name2','users.lastname','users.lastname2')
+                       ->get();
+});
+
+Route::get('/otra',function(){
+
+return Departamentos::join("ciudades","departamentos.id","ciudades.id_departamento")->select("ciudades.id","ciudades.nombre as ciudad","departamentos.nombre as departamento")->paginate(10);
+
 });
 
 Route::get('/select', function () {
@@ -63,13 +74,8 @@ Route::get('/select', function () {
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware'=>'super'],function(){
-
   Route::resource('usuario', 'UsuarioAController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
-
-  Route::resource('usuarioe', 'UsuarioEController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
-
   Route::resource('observation', 'HistorialObservacionController');
-
   Route::resource('departamento', 'DepartamentoController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
   Route::resource('ciudad', 'CiudadController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
   Route::resource('punto', 'PuntoVotacionController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
@@ -82,6 +88,7 @@ Route::group(['middleware'=>'comun'],function(){
   Route::get('usuario/refrescar', 'UsuarioAController@refrescar');
 
   Route::resource('usuario', 'UsuarioAController',  ['only' => ['index']]);
+  Route::resource('usuarioe', 'UsuarioEController',  ['only' => ['index','create', 'store', 'update', 'destroy','edit']]);
 
   //Departamentos
   Route::resource('departamento', 'DepartamentoController',  ['only' => ['index']]);
@@ -95,16 +102,15 @@ Route::group(['middleware'=>'comun'],function(){
   //mesavotacion
   Route::resource('mesa', 'MesaVotacionController',  ['only' => ['index']]);
   Route::get('mesa/refrescar', 'MesaVotacionController@refrescar');
+  Route::get('oprimirpdf', 'MesaVotacionController@oprimirPdf');
+  Route::get('oprimirexcel', 'MesaVotacionController@oprimirExcel');
+
 
   //buscar Referido
   Route::get('listardiferidos', 'UsuarioEController@buscarReferido');
-
+  Route::get('google','PuntoVotacionController@googleMaps');
+  Route::get('potencial','UsuarioEController@mostrarpotencial');
 });
 Route::group(['middleware'=>'admin'],function(){
-    Route::get('form_crear_usuarioe', 'UsuarioEController@form_crear_usuarioe');
-    Route::post('registrare', 'UsuarioEController@registrar')->name('registrare');
-    Route::get('form_editar_usuarioe/{id}', 'UsuarioEController@form_editar_usuario');
-    Route::resource('usuarioe', 'UsuarioEController');
-    Route::get('form_informe_usurioe', 'InformePersonaE@form_informe_usurioe');
 
 });

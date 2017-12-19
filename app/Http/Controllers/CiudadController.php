@@ -22,7 +22,12 @@ class CiudadController extends Controller
     public function index(Request $request)
     {
 
-      return response()->json(view("lugar.ciudad.listar")->with(["urllistar"=>"ciudad","urlgeneral"=>url("/"),"listaciudades"=>Ciudades::paginate(10)])->render());
+      return response()->json(view("lugar.ciudad.listar")->with(["urllistar"=>"ciudad","urlgeneral"=>url("/"),"listaciudades"=>$this->cargarListaCiudad()])->render());
+    }
+
+    private function cargarListaCiudad()
+    {
+      return Departamentos::join("ciudades","departamentos.id","ciudades.id_departamento")->select("ciudades.id","ciudades.nombre as ciudad","departamentos.nombre as departamento")->paginate(10);
     }
     /**
      * Get a validator for an incoming registration request.
@@ -99,7 +104,7 @@ class CiudadController extends Controller
         return response()->json([
             EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
             EvssaConstantes::MSJ=>"Se ha insertado correctamente la ciudad.",
-            "html"=>response()->json(view("lugar.ciudad.listar")->with(["urllistar"=>"ciudad","urlgeneral"=>url("/"),"listaciudades"=>Ciudades::paginate(10)])->render())
+            "html"=>response()->json(view("lugar.ciudad.listar")->with(["urllistar"=>"ciudad","urlgeneral"=>url("/"),"listaciudades"=>$this->cargarListaCiudad()])->render())
 
         ]);
       } catch (EvssaException $e) {
@@ -162,7 +167,7 @@ class CiudadController extends Controller
           return response()->json([
               EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
               EvssaConstantes::MSJ=>"Se ha actualizado correctamente la Ciudad.",
-              "html"=>response()->json(view("lugar.ciudad.listar")->with(["urllistar"=>"ciudad","urlgeneral"=>url("/"),"listaciudades"=>Ciudades::paginate(10)])->render())
+              "html"=>response()->json(view("lugar.ciudad.listar")->with(["urllistar"=>"ciudad","urlgeneral"=>url("/"),"listaciudades"=>$this->cargarListaCiudad()])->render())
 
           ]);
         } catch (EvssaException $e) {
@@ -260,7 +265,8 @@ class CiudadController extends Controller
 */
     public function refrescar(Request $request){
 
-      return response()->json(view("lugar.ciudad.tabla")->with(["urllistar"=>"ciudad","urlgeneral"=>url("/"),"listaciudades"=>Ciudades::where("nombre","like","%".$request->buscar."%")->paginate(10)])->render());
+      return response()->json(view("lugar.ciudad.tabla")->with(["urllistar"=>"ciudad","urlgeneral"=>url("/"),"listaciudades"=>
+        Departamentos::join("ciudades","departamentos.id","ciudades.id_departamento")->orWhere("ciudades.nombre","like","%".$request->buscar."%")->orWhere("departamentos.nombre","like","%".$request->buscar."%")->select("ciudades.id","ciudades.nombre as ciudad","departamentos.nombre as departamento")->paginate(10)])->render());
     }
 
 }

@@ -7,8 +7,9 @@
     <thead >
 
     <tr>
-        <th>Codigo</th>
-        <th>Nombre</th>
+        <th>Código</th>
+        <th>Ciudad</th>
+        <th>Departamento</th>
         <th>Acciones</th>
     </tr>
     </thead>
@@ -18,7 +19,8 @@
 
         <tr>
             <td>{{$ciudad->id}}</td>
-            <td>{{$ciudad->nombre}}</td>
+            <td>{{$ciudad->ciudad}}</td>
+            <td>{{$ciudad->departamento}}</td>
             <td><input class="btn btn-primary" onclick="mostrarSeccionMenu('A','{{$urllistar}}','{{$ciudad->id}}')" type="submit" value="Editar"> <input class="btn btn-primary" type="submit" onclick="mostrarSeccionMenu('D','{{$urllistar}}','{{$ciudad->id}}')" value="Eliminar"></td>
 
         </tr>

@@ -32,9 +32,14 @@ class UsuarioAController extends Controller
     {
 
       $usuario=new User();
-      $listar=$usuario->getAllUsuarioAdmin('A');
+      $listar=$this->cargarListaPersona();
       $listar->setPath(url("home"));
       return response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'A','urllistar'=>'usuario',"urlgeneral"=>url("/")])->render());
+    }
+
+    private function cargarListaPersona(){
+        $usuario=new User();
+      return $usuario->getAllUsuarioAdmin('A');
     }
 
     public function registrar(Request $request)
@@ -43,8 +48,8 @@ class UsuarioAController extends Controller
 
         $this->validator($request->all())->validate();
         $this->insertar(new User(),$request);
-        $usuario=new User();
-        $listar=$usuario->getAllUsuarioAdmin('A');
+
+        $listar=$this->cargarListaPersona();
         return response()->json([
             EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
             EvssaConstantes::MSJ=>"Se ha registrado correctamente el administrador.",
@@ -212,8 +217,8 @@ class UsuarioAController extends Controller
         $usuario=User::find($id);
         $this->validatorUpdate($request->all())->validate();
         $usuario=$this->actualizar($usuario,$request);
-        $usuario=new User();
-        $listar=$usuario->getAllUsuarioAdmin('A');
+
+        $listar=$this->cargarListaPersona();
         $listar->setPath(url("home"));
           return response()->json([
               EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,

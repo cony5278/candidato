@@ -9,6 +9,10 @@
       <input id="nombreempresa" type="text" onkeyup="buscarEnTabla(this,'{{$urllistar.'/refrescar'}}','grilla-tabla')"  placeholder="Buscar" class="form-control" name="buscarentabla"  value="" >
 
 		</div>
+		<div class="col-md-2">
+			<a href="#"><img src="archivos/pdf.jpg"  width="50" height="50" /></a>
+			<a href="#"><img src="archivos/excel.png"  width="50" height="50" /></a>
+		</div>
 	</div>
 </div>
 <div class="grilla-tabla">

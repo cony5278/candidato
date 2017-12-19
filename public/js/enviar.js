@@ -144,3 +144,10 @@ function agregarSeleccionFormacion(elemento)
         $(".agregar-formacion").append(agregarHtml('',texto,$(elemento).val(),""));
   }
 }
+
+/*
+*calcula el potencial real y el potecial
+*/
+function calcularPotencial (id_referido){
+    getAjaxContenedor("potencial","modal-potencial-cantidad",id_referido);
+}

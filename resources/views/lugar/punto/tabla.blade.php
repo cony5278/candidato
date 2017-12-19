@@ -10,6 +10,7 @@
         <th>Codigo</th>
         <th>Nombre</th>
         <th>Dirección</th>
+        <th>Ciudad</th>
         <th>Acciones</th>
     </tr>
     </thead>
@@ -21,6 +22,7 @@
             <td>{{$punto->id}}</td>
             <td>{{$punto->nombre}}</td>
             <td>{{$punto->direccion}}</td>
+            <td>{{$punto->ciudad}}</td>
             <td><input class="btn btn-primary" onclick="mostrarSeccionMenu('A','{{$urllistar}}','{{$punto->id}}')" type="submit" value="Editar"> <input class="btn btn-primary" type="submit" onclick="mostrarSeccionMenu('D','{{$urllistar}}','{{$punto->id}}')" value="Eliminar"></td>
 
         </tr>

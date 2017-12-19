@@ -40,6 +40,18 @@ function getAjax(url){
     });
 }
 
+function getAjaxContenedor(url,elemento,id_referido){
+    $("."+elemento).html();
+    $("body").append(htmlCargado());
+    $.get(url,{id_referido:id_referido},function(resul){
+        $("."+elemento).html(resul);
+    }) .done(function( data ) {
+      $(".cargando").remove();
+    }).fail(function(error) {
+        $(".cargando").remove();
+    });
+}
+
 /**
 	 * funcion que envia los archivos al controlador
 	 * @param formulario

@@ -7,8 +7,12 @@
     <thead >
 
     <tr>
-        <th>Codigo</th>
-        <th>Numero</th>
+        <th>Código</th>
+        <th>Número</th>
+        <th>Dirección</th>
+        <th>Ciudad</th>
+        <th>Departamento</th>
+        <th>Nombre</th>
         <th>Acciones</th>
     </tr>
     </thead>
@@ -19,6 +23,10 @@
         <tr>
             <td>{{$mesa->id}}</td>
             <td>{{$mesa->numero}}</td>
+            <td>{{$mesa->direccion}}</td>
+            <td>{{$mesa->ciudad}}</td>
+            <td>{{$mesa->departamento}}</td>
+            <td>{{$mesa->name.' '.$mesa->name2.' '.$mesa->lastname.' '.$mesa->lastname2}}</td>
             <td><input class="btn btn-primary" onclick="mostrarSeccionMenu('A','{{$urllistar}}','{{$mesa->id}}')" type="submit" value="Editar"> <input class="btn btn-primary" type="submit" onclick="mostrarSeccionMenu('D','{{$urllistar}}','{{$mesa->id}}')" value="Eliminar"></td>
 
         </tr>

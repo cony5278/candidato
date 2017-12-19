@@ -95,6 +95,13 @@ class User extends Authenticatable
                     ->select("empresas.*")
                     ->where("users.id","=",$this->id)->first();
     }
+    public function cantidadPotencialElectoral(Request $request){
+
+      return $this->where("id_referido","=",$request->id_referido)
+                  ->select(\DB::raw('COUNT(*)-1 as cantidadreal,potencial as cantidad'))
+                  ->groupBy('id_referido','potencial')
+                  ->first();
+    }
 
 
 }

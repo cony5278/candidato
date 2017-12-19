@@ -43,6 +43,7 @@ class CreateUsersTable extends Migration
             $table->foreign('id_referido')
                 ->references('id')
                 ->on('users');
+            $table->integer('potencial')->nullable();
             $table->rememberToken();
             $table->timestamps();
             $table->string('address',40)->nullable();

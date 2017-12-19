@@ -72,20 +72,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Puntos votación">
-                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
-                    <i class="fa fa-map-marker"></i>
-                    <span class="nav-link-text">Puntos votación</span>
-                </a>
-                <ul class="sidenav-second-level collapse" id="collapseExamplePages">
-                    <li>
-                        <a onclick="mostrarSeccionMenu('I','punto','')">Rergistrar</a>
-                    </li>
-                    <li>
-                        <a href="register.html">Informe</a>
-                    </li>
-                </ul>
-            </li>
+
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Lugar">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseMulti" data-parent="#exampleAccordion">
                     <i class="fa fa-globe"></i>
@@ -102,6 +89,20 @@
                         <a href="#">Informe</a>
                     </li>
 
+                </ul>
+            </li>
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Puntos votación">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseExamplePages" data-parent="#exampleAccordion">
+                    <i class="fa fa-map-marker"></i>
+                    <span class="nav-link-text">Puntos votación</span>
+                </a>
+                <ul class="sidenav-second-level collapse" id="collapseExamplePages">
+                    <li>
+                        <a onclick="mostrarSeccionMenu('I','punto','')">Rergistrar</a>
+                    </li>
+                    <li>
+                        <a href="register.html">Informe</a>
+                    </li>
                 </ul>
             </li>
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Mesa">
