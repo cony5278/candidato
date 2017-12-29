@@ -98,14 +98,14 @@ class DepartamentoController extends Controller
         ]);
       } catch (EvssaException $e) {
           return response()->json([
-              EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+              EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
               EvssaConstantes::MSJ=>$e->getMensaje(),
-          ]);
+          ],400);
       } catch (\Illuminate\Database\QueryException $e) {
            return response()->json([
-               EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+               EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
                EvssaConstantes::MSJ=>"Registro secundario encontrado",
-           ]);
+           ],400);
       }
 
     }
@@ -156,14 +156,14 @@ class DepartamentoController extends Controller
           ]);
         } catch (EvssaException $e) {
             return response()->json([
-                EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+                EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
                 EvssaConstantes::MSJ=>$e->getMensaje(),
-            ]);
+            ],400);
         } catch (\Illuminate\Database\QueryException $e) {
              return response()->json([
-                 EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+                 EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
                  EvssaConstantes::MSJ=>"Registro secundario encontrado",
-             ]);
+             ],400);
         }
     }
 
@@ -200,14 +200,14 @@ class DepartamentoController extends Controller
            ]);
           } catch (EvssaException $e) {
               return response()->json([
-                  EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+                  EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
                   EvssaConstantes::MSJ=>$e->getMensaje(),
-              ]);
+              ],400);
           } catch (\Illuminate\Database\QueryException $e) {
                return response()->json([
-                   EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+                   EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
                    EvssaConstantes::MSJ=>"Registro secundario encontrado",
-               ]);
+               ],400);
           }
 
     }

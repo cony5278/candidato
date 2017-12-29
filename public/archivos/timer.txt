@@ -1,0 +1,42 @@
+       
+
+ const getremaintime=deadline =>{
+
+  let now = new Date(),
+  remainTime= ( new  Date(deadline)-now+1000)/1000,
+    remainseconds= ('0'+Math.floor(remainTime % 60)).slice(-2),
+    remainmunutos= ('0'+Math.floor(remainTime /60 % 60)).slice(-2),
+    remainhours= ('0'+Math.floor(remainTime /3600 % 24)).slice(-2),
+    remadays= Math.floor(remainTime /(3600*24));
+
+    return{
+
+      remainTime,
+      remainseconds,
+      remainmunutos,
+      remainhours,
+       remadays
+    }
+
+ };
+ console.log(getremaintime('Jan 1 2018 22:38:51 GMT-0500'));
+
+
+
+
+ const countdown=(deadline) =>{
+//const el=document.getElementById("elem");
+const timerupdate=setInterval(()=>{
+  let t=getremaintime(deadline);
+  numeros(t);
+  console.log(t.remainmunutos+" sec "+t.remainseconds);
+  if(t.remainTime<1){
+
+    clearInterval(timerupdate);
+  }
+  
+}, 1000)
+};
+countdown('Dec 18 2017 24:36:32 GMT-0500');
+
+

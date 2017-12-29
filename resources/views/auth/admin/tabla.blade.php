@@ -26,7 +26,7 @@
             <td>{{$usuario->type=='A'?'Administrador':'Votante'}}</td>
             <td>{{$usuario->created_at->format('d/m/Y')}}</td>
             <td>{{$usuario->email}}</td>
-            <td><input class="btn btn-primary" onclick="mostrarSeccionMenu('A','{{$urllistar}}','{{$usuario->id}}')" type="submit" value="Editar"> <input class="btn btn-primary" type="submit" onclick="eliminarDatos('1',{{$usuario->id}})" value="Eliminar"></td>
+            <td><input class="btn btn-primary" onclick="mostrarSeccionMenu('A','{{$urllistar}}','{{$usuario->id}}')" type="submit" value="Editar"> <input class="btn btn-primary" type="submit" onclick="eliminarDatos('{{$urllistar}}',{{$usuario->id}})" value="Eliminar"></td>
 
         </tr>
 

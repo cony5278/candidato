@@ -16,9 +16,9 @@
 
         <div class="col-xs-10 col-sm-10 col-lg-10">
             <div class="panel panel-default">
-                <div class="panel-heading"><h1>Ingresar los datos ciudades:</h1></div>
+                <div class="panel-heading"><h1>Ingresar los datos Generales:</h1></div>
                 <div class="panel-body">
-                      @include("lugar.ciudad.formulario.formulario")
+                      @include("compania.formulario.formulario")
                 </div>
             </div>
         </div>

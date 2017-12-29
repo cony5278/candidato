@@ -2,18 +2,14 @@ function Notificacion(){
 	this.contador=-1;
 	this.crearContenedor=function(){
 
-		if($('.notificacion').css('display') == 'none'){
-			$('.notificacion').fadeIn(300).animate({top:"0"},700);
-			$('.notificacion').show();
-		}
-		 this.ocultarContenedor();
+
+
 	}
 	this.ocultarContenedor=function(){
 		var objeto=this;
 		var intervalo=setInterval(function (){
 			if(objeto.esVacio("notificacion-mensajes")){
-				$('.notificacion').empty();
-				$('.notificacion').hide();
+				$('.notificacion').css("display","none");
 				clearInterval(intervalo);
 			}
 		},1000);
@@ -31,7 +27,8 @@ function Notificacion(){
 		this.contador++;
 		var id=this.contador;
 		$('.notificacion').append(this.html(mensaje,contenedorNotificacion));
-		$('#notificacion-'+id).fadeIn(300);
+		$('.notificacion').css("display","block");
+		$('.notificacion div:last-child').fadeIn(300).animate({top:"0"},700);
 		 this.ocultarNotificacion(id);
 	}
 	this.ocultarNotificacion=function(id){
@@ -45,10 +42,10 @@ function Notificacion(){
 		switch(contenedorNotificacion) {
 		    case "DANGER":
 	            codigo="<div class='notificacion-mensajes col-xs-12 col-sm-12 col-md-12' id='notificacion-"+this.contador+"'>";
-		        codigo+="    <div class='alert alert-danger'>";
+		        codigo+="    <div class='alert p-3 mb-2 bg-danger text-white cambiar-notificacion'>";
 		        codigo+="        <button  type='button' class='close' data-dismiss='alert' aria-hidden='true'>";
 		        codigo+="            ×</button>";
-		        codigo+="        <span class='glyphicon glyphicon-hand-right'></span> <strong>Mensaje de peligro</strong>";
+		        codigo+="        <i class='fa fa-hand-o-right' aria-hidden='true'></i></span> <strong>Evssa Software</strong>";
 		        codigo+="        <hr class='message-inner-separator'>";
 		        codigo+="        <p>";
 		        codigo+=mensaje;
@@ -59,10 +56,10 @@ function Notificacion(){
 	        break;
 			case "WARNING":
 	            codigo="<div class='notificacion-mensajes col-xs-12 col-sm-12 col-md-12' id='notificacion-"+this.contador+"'>";
-		        codigo+="    <div class='alert alert-warning'>";
+		        codigo+="    <div class='alert p-3 mb-2 bg-warning text-dark cambiar-notificacion'>";
 		        codigo+="        <button  type='button' class='close' data-dismiss='alert' aria-hidden='true'>";
 		        codigo+="            ×</button>";
-		        codigo+="        <span class='glyphicon glyphicon-record'></span> <strong>Mensaje de advertencia</strong>";
+		        codigo+="        <i class='fa fa-dot-circle-o' aria-hidden='true'></i> <strong>Evssa Software</strong>";
 		        codigo+="        <hr class='message-inner-separator'>";
 		        codigo+="        <p>";
 		        codigo+=mensaje;
@@ -74,10 +71,10 @@ function Notificacion(){
 	        break;
 	        case "INFO":
 	            codigo="<div class='notificacion-mensajes col-xs-12 col-sm-12 col-md-12' id='notificacion-"+this.contador+"'>";
-		        codigo+="    <div class='alert alert-info'>";
+		        codigo+="    <div class='alert p-3 mb-2 bg-info text-white cambiar-notificacion'>";
 		        codigo+="        <button  type='button' class='close' data-dismiss='alert' aria-hidden='true'>";
 		        codigo+="            ×</button>";
-		        codigo+="        <span class='glyphicon glyphicon-info-sign'></span> <strong>Mensaje informativo</strong>";
+		        codigo+="        <i class='fa fa-info-circle' aria-hidden='true'></i> <strong>Evssa Software</strong>";
 		        codigo+="        <hr class='message-inner-separator'>";
 		        codigo+="        <p>";
 		        codigo+=mensaje;
@@ -88,11 +85,11 @@ function Notificacion(){
 
 	        break;
 	        case "SUCCESS":
-	            codigo="<div class='notificacion-mensajes col-xs-12 col-sm-12 col-md-12' id='notificacion-"+this.contador+"'>";
-		        codigo+="    <div class='alert alert-success'>";
+	          codigo="<div class='notificacion-mensajes col-xs-12 col-sm-12 col-md-12' id='notificacion-"+this.contador+"'>";
+		        codigo+="    <div class='alert p-3 mb-2 bg-success text-white cambiar-notificacion'>";
 		        codigo+="        <button  type='button' class='close' data-dismiss='alert' aria-hidden='true'>";
 		        codigo+="            ×</button>";
-		        codigo+="        <span class='glyphicon glyphicon-ok'></span> <strong>Mensaje exitoso</strong>";
+		        codigo+="        <i class='fa fa-check-circle' aria-hidden='true'></i> <strong>Mensaje exitoso</strong>";
 		        codigo+="        <hr class='message-inner-separator'>";
 		        codigo+="        <p>";
 		        codigo+=mensaje;

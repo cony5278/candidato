@@ -31,7 +31,21 @@ function getAjax(url){
     }) .done(function( data ) {
       $(".cargando").remove();
     }).fail(function(error) {
-          //alert(error); // or whatever
-          $(".cargando").remove();
+      $(".cargando").remove();
+      var data = JSON.parse(error.responseText).errors;
+      if(data!=undefined){
+         for(var key in data) {
+
+                 var notificacion = new Notificacion();
+                 notificacion.crearContenedor();
+                 notificacion.crearNotificacion(data[key],"DANGER");
+         }
+
+       }else{
+         data = JSON.parse(error.responseText);
+         var notificacion = new Notificacion();
+         notificacion.crearContenedor();
+         notificacion.crearNotificacion(data.msj,data.notificacion);
+       }
     });
 }

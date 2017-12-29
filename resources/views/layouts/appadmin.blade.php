@@ -47,11 +47,30 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Inicio">
-                <a class="nav-link" href="index.html">
-                    <i class="fa fa-home"></i>
+                <a class="nav-link" href="{{url('/')}}">
+                    <i class="fa fa-clock-o"></i>
                     <span class="nav-link-text">Inicio</span>
                 </a>
             </li>
+
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="General">
+                <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#general" data-parent="#exampleAccordion">
+                    <i class="fa fa-table"></i>
+                    <span class="nav-link-text">Configuración</span>
+                </a>
+                <ul class="sidenav-second-level collapse" id="general">
+                    <li>
+                        <a onclick="mostrarSeccionMenu('A','compania','001')">General</a>
+                    </li>
+                    <li>
+                        <a onclick="mostrarSeccionMenu('I','ano','')">Ano</a>
+                    </li>
+                    <li>
+                        <a onclick="mostrarSeccionMenu('I','mes','')">Mes</a>
+                    </li>
+                </ul>
+            </li>
+
 
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Persona">
                 <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
@@ -65,7 +84,7 @@
                     </li>
                     @endif
                     <li>
-                        <a onclick="mostrarSeccionMenu('L','usuarioe','')">Registrar Estandar</a>
+                        <a onclick="mostrarSeccionMenu('L','usuarioe','')">Registrar Votante</a>
                     </li>
                     <li>
                         <a onclick="">Informes</a>
@@ -121,6 +140,8 @@
                 </ul>
             </li>
 
+
+
             <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
                 <a class="nav-link" href="#">
                     <i class="fa fa-fw fa-link"></i>
@@ -137,7 +158,7 @@
         </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+                <a class="nav-link" data-toggle="modal" onclick="getAjaxModal('usuario/'+{{Auth::user()->id}}+'/edit','modal-edicion',null)" data-target="#modal-edicion">
                   <img  width="25" height="25" src="{{Auth::user()->photo=='default.png'?'archivos/\\default.png':'archivos/'.Auth::user()->type.'/'.Auth::user()->id.'/'.Auth::user()->photo}}" class="img-circle" />
                   {{Auth::user()->name.' '.Auth::user()->name2.' '.Auth::user()->lastname  }}</a>
             </li>
@@ -189,6 +210,9 @@
             </div>
         </div>
     </div>
+
+
+
     <link href="{{ asset('css/sb-admin.css') }}" rel="stylesheet">
     <!-- Bootstrap core JavaScript-->
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>

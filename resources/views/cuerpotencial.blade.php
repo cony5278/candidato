@@ -1,1 +1,1 @@
-<label  for="exampleInputEmail1">Potencial electoral:  {{empty($usuario->cantidad)?'':$usuario->cantidad}} Potencial real:{{empty($usuario->cantidadreal)?'':$usuario->cantidadreal}}</label>
+<label  for="exampleInputEmail1">Potencial electoral:  {{empty($usuario->potencialelectoral)?0:$usuario->potencialelectoral}} Potencial real:{{empty($usuario->cantidadreal)?0:$usuario->cantidadreal}}</label>

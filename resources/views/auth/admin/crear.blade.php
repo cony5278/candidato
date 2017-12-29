@@ -17,7 +17,7 @@
 
         <div class="col-xs-10 col-sm-10 col-lg-10">
             <div class="panel panel-default">
-                <div class="panel-heading"><h1>Ingresar los datos para el usaurio administrador:</h1></div>
+                <div class="panel-heading"><h1>Ingresar los datos para el usuario administrador:</h1></div>
                 <div class="panel-body">
                           @include("auth.admin.form.formheader");
                 </div>
@@ -25,4 +25,5 @@
             </div>
         </div>
     </div>
+  </div>
 </form>

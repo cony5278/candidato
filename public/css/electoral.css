@@ -4,7 +4,11 @@
     width: 20%;
     position: absolute;
     left: 80%;
-    top: 50%;
+    top: 0%;
+}
+.notificacion-mensajes {
+  position: relative;
+  top: 80%;
 }
 .form-control{
     margin-bottom: 5px;
@@ -92,4 +96,10 @@ fin
    }
  .table td{
    text-align: center;
+ }
+ .cambiar-notificacion{
+   border-radius: 5px 5px 5px 5px;
+  -moz-border-radius: 5px 5px 5px 5px;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border: 0px solid #000000;
  }

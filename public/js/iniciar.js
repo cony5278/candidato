@@ -36,7 +36,22 @@ function getAjax(url){
     }) .done(function( data ) {
       $(".cargando").remove();
     }).fail(function(error) {
-        $(".cargando").remove();
+      $(".cargando").remove();
+      var data = JSON.parse(error.responseText).errors;
+      if(data!=undefined){
+         for(var key in data) {
+
+                 var notificacion = new Notificacion();
+                 notificacion.crearContenedor();
+                 notificacion.crearNotificacion(data[key],"DANGER");
+         }
+
+       }else{
+         data = JSON.parse(error.responseText);
+         var notificacion = new Notificacion();
+         notificacion.crearContenedor();
+         notificacion.crearNotificacion(data.msj,data.notificacion);
+       }
     });
 }
 
@@ -48,9 +63,53 @@ function getAjaxContenedor(url,elemento,id_referido){
     }) .done(function( data ) {
       $(".cargando").remove();
     }).fail(function(error) {
-        $(".cargando").remove();
+      $(".cargando").remove();
+      var data = JSON.parse(error.responseText).errors;
+      if(data!=undefined){
+         for(var key in data) {
+
+                 var notificacion = new Notificacion();
+                 notificacion.crearContenedor();
+                 notificacion.crearNotificacion(data[key],"DANGER");
+         }
+
+       }else{
+         data = JSON.parse(error.responseText);
+         var notificacion = new Notificacion();
+         notificacion.crearContenedor();
+         notificacion.crearNotificacion(data.msj,data.notificacion);
+       }
     });
 }
+function getAjaxModal(url,elemento,dato){
+    $("."+elemento).html();
+    $("body").append(htmlCargado());
+    $.get(url,{dato:dato},function(resul){
+      $("body").append(resul);
+      $('#'+elemento).modal('show');
+    }) .done(function( data ) {
+      $(".cargando").remove();
+    }).fail(function(error) {
+      $(".cargando").remove();
+      var data = JSON.parse(error.responseText).errors;
+      if(data!=undefined){
+         for(var key in data) {
+
+                 var notificacion = new Notificacion();
+                 notificacion.crearContenedor();
+                 notificacion.crearNotificacion(data[key],"DANGER");
+         }
+
+       }else{
+         data = JSON.parse(error.responseText);
+         var notificacion = new Notificacion();
+         notificacion.crearContenedor();
+         notificacion.crearNotificacion(data.msj,data.notificacion);
+       }
+    });
+}
+
+
 
 /**
 	 * funcion que envia los archivos al controlador
@@ -73,17 +132,25 @@ function getAjaxContenedor(url,elemento,id_referido){
         notificacion.crearContenedor();
         notificacion.crearNotificacion(resul.msj,resul.notificacion);
          $(".contenedor").html(resul.html.original);
+         $(".modal").modal("hide");
 			},
 			error: function (error) {
         $(".cargando").remove();
         var data = JSON.parse(error.responseText).errors;
-
+        if(data!=undefined){
            for(var key in data) {
 
                    var notificacion = new Notificacion();
                    notificacion.crearContenedor();
                    notificacion.crearNotificacion(data[key],"DANGER");
            }
+
+         }else{
+           data = JSON.parse(error.responseText);
+           var notificacion = new Notificacion();
+           notificacion.crearContenedor();
+           notificacion.crearNotificacion(data.msj,data.notificacion);
+         }
 			}
 		});
 	}
@@ -113,7 +180,22 @@ function postAjax(url,id){
          }).done(function( data ) {
            $(".cargando").remove();
          }).fail(function(error) {
-            $(".cargando").remove();
+           $(".cargando").remove();
+           var data = JSON.parse(error.responseText).errors;
+           if(data!=undefined){
+              for(var key in data) {
+
+                      var notificacion = new Notificacion();
+                      notificacion.crearContenedor();
+                      notificacion.crearNotificacion(data[key],"DANGER");
+              }
+
+            }else{
+              data = JSON.parse(error.responseText);
+              var notificacion = new Notificacion();
+              notificacion.crearContenedor();
+              notificacion.crearNotificacion(data.msj,data.notificacion);
+            }
          });
 }
 
@@ -136,15 +218,22 @@ function postAjaxSend(){
            $(".cargando").remove();
          }).fail(function(error) {
 
-            $(".cargando").remove();
-            var data = JSON.parse(error.responseText).errors;
+           $(".cargando").remove();
+           var data = JSON.parse(error.responseText).errors;
+           if(data!=undefined){
+              for(var key in data) {
 
-               for(var key in data) {
+                      var notificacion = new Notificacion();
+                      notificacion.crearContenedor();
+                      notificacion.crearNotificacion(data[key],"DANGER");
+              }
 
-                       var notificacion = new Notificacion();
-                       notificacion.crearContenedor();
-                       notificacion.crearNotificacion(data[key],"DANGER");
-               }
+            }else{
+              data = JSON.parse(error.responseText);
+              var notificacion = new Notificacion();
+              notificacion.crearContenedor();
+              notificacion.crearNotificacion(data.msj,data.notificacion);
+            }
 
          });
 }
@@ -164,16 +253,22 @@ function postAjaxObservation(){
          }).done(function( data ) {
            $(".cargando").remove();
          }).fail(function(error) {
-                 console.log(error);
-            $(".cargando").remove();
-            var data = JSON.parse(error.responseText).errors;
+           $(".cargando").remove();
+           var data = JSON.parse(error.responseText).errors;
+           if(data!=undefined){
+              for(var key in data) {
 
-               for(var key in data) {
+                      var notificacion = new Notificacion();
+                      notificacion.crearContenedor();
+                      notificacion.crearNotificacion(data[key],"DANGER");
+              }
 
-                       var notificacion = new Notificacion();
-                       notificacion.crearContenedor();
-                       notificacion.crearNotificacion(data[key],"DANGER");
-               }
+            }else{
+              data = JSON.parse(error.responseText);
+              var notificacion = new Notificacion();
+              notificacion.crearContenedor();
+              notificacion.crearNotificacion(data.msj,data.notificacion);
+            }
 
          });
 }
@@ -183,6 +278,10 @@ $(document).on('submit','.formulario-persona',function(e){
     envioDatos("formulario-persona");
 });
 
+$(document).on('submit','.formulario-general',function(e){
+    e.preventDefault();
+    envioDatos("formulario-general");
+});
 $(document).on('submit','.formulario',function(e){
     e.preventDefault();
     postAjaxSend();
@@ -192,3 +291,37 @@ $(document).on('submit','.formulario-observation',function(e){
     e.preventDefault();
     postAjaxObservation();
 });
+
+function oprimirHref(url,elemento){
+
+  var valor=$("#"+elemento).val()==""?".c*":$("#"+elemento).val();
+  window.location = url+"/"+valor;
+}
+
+function tipoCampo(elemento,tipo,decimales,caracteres,digitos){
+    var campo=$(elemento);
+
+    var dato=null;
+    switch (tipo) {
+    case "double":
+
+      break;
+    case "entero":
+          dato=campo.val();
+            console.log(dato);
+          if(campo.val().length>=digitos){
+            campo.val(dato.slice(0,digitos));
+          }
+      break;
+    case "porcentaje":
+
+      break;
+    case "double":
+
+      break;
+
+
+      default:
+
+    }
+}

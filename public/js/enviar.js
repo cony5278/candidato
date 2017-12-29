@@ -69,22 +69,25 @@ function formulario(url,nombreFormulario){
     postAjax(url,nombreFormulario);
 }
 
-function eliminarDatos(opcion,id){
-    switch (opcion)
-    {
-        case "1":
-           var  data = {  _method:"delete",_token : $("#usuario-token").attr("value")};
-            $.post("usuario/"+id, data,function(resul){
-                $(".contenedor").html(resul);
-            })
-            break;
-        case "2":
-            getAjax();
-            break;
-        case "3":
-            getAjax();
-            break;
-    }
+function eliminarDatos(url,id){
+    $("body").append(htmlCargado());
+     var  data = {  _method:"delete",_token : $("#token").attr("value")};
+      $.post(url+"/"+id, data,function(resul){
+
+          $(".contenedor").html();
+          $(".contenedor").html(resul);
+      }).done(function( data ) {
+        $(".cargando").remove();
+      }).fail(function(error) {
+
+          $(".cargando").remove();
+          var data = JSON.parse(error.responseText);
+          // undefined
+          var notificacion = new Notificacion();
+          notificacion.crearContenedor();
+          notificacion.crearNotificacion(data.msj,data.notificacion);
+
+      });
 
 }
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="0001MESAGENERAL" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="352402d9-1b13-4acc-b7f7-28c3e9c5b207">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="0001MESAGENERAL" language="groovy" pageWidth="510" pageHeight="842" columnWidth="470" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="352402d9-1b13-4acc-b7f7-28c3e9c5b207">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="37"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="PR_STRSQL" class="java.lang.String"/>
 	<parameter name="PR_STRSQLAUX" class="java.lang.String">
 		<defaultValueExpression><![CDATA[$P{PR_STRSQL}.replace(".c*"," ")]]></defaultValueExpression>
@@ -27,65 +27,131 @@
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<title>
-		<band height="79" splitType="Stretch"/>
-	</title>
 	<pageHeader>
-		<band height="98" splitType="Stretch">
+		<band height="103" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="157" height="96" uuid="7899454d-c934-4b44-b51f-4d467f44b595"/>
 				<imageExpression><![CDATA["F:\\electoral\\electoral\\public\\archivos\\logoaux.png"]]></imageExpression>
 			</image>
+			<staticText>
+				<reportElement x="157" y="53" width="284" height="30" uuid="68301776-97eb-4909-8fb5-993b28293b44"/>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MESAS DE VOTACIÓN]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="157" y="0" width="80" height="20" uuid="bbd06dfa-673f-4e47-8b1c-058ab98d0623"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="237" y="0" width="40" height="20" uuid="547ff196-6159-46c1-9f19-d3b13f6e05bd"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="302" y="0" width="168" height="20" uuid="30e55839-6d3c-470a-9eec-8917bb4b6b87"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="61" splitType="Stretch">
+		<band height="37" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="41" width="70" height="20" isRemoveLineWhenBlank="true" uuid="bdd57c56-f3bc-4543-8571-cc353eded3da"/>
-				<textElement>
+				<reportElement x="0" y="16" width="70" height="20" isRemoveLineWhenBlank="true" uuid="bdd57c56-f3bc-4543-8571-cc353eded3da"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
 					<font fontName="Tahoma" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Código]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="70" y="41" width="100" height="20" uuid="6cf4b821-1921-40b4-b802-11f4b4f50ef5"/>
+				<reportElement x="70" y="16" width="100" height="20" uuid="6cf4b821-1921-40b4-b802-11f4b4f50ef5"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
 				<text><![CDATA[DIrección]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="170" y="41" width="100" height="20" uuid="af3c5f9b-c03b-43d4-8378-4143d49749ac"/>
+				<reportElement x="170" y="16" width="100" height="20" uuid="af3c5f9b-c03b-43d4-8378-4143d49749ac"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
 				<text><![CDATA[Mesa]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="270" y="41" width="100" height="20" uuid="f13e846a-44af-434f-9bf4-c432ef8ab87e"/>
+				<reportElement x="270" y="16" width="100" height="20" uuid="f13e846a-44af-434f-9bf4-c432ef8ab87e"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
 				<text><![CDATA[Departamento]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="370" y="41" width="100" height="20" uuid="495336ab-fb49-4434-80a7-f36c3602c9a6"/>
+				<reportElement x="370" y="16" width="100" height="20" uuid="495336ab-fb49-4434-80a7-f36c3602c9a6"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="Tahoma" isBold="true"/>
+				</textElement>
 				<text><![CDATA[CIudad]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="125" splitType="Stretch">
+		<band height="36" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="70" height="20" uuid="bbab4571-18c9-45d5-aa36-640a7cb5ebd9"/>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="70" height="20" uuid="bbab4571-18c9-45d5-aa36-640a7cb5ebd9"/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{ID}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="70" y="0" width="100" height="20" uuid="5acaefd0-29f1-4466-a088-58b6b30b188d"/>
-				<textFieldExpression><![CDATA[$F{DIRECCION}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="170" y="0" width="100" height="20" uuid="7552435a-6008-405a-b0b9-0d7c28b6389f"/>
+				<reportElement stretchType="RelativeToBandHeight" x="170" y="0" width="100" height="20" uuid="7552435a-6008-405a-b0b9-0d7c28b6389f"/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{NUMERO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="270" y="0" width="100" height="20" uuid="f341f2a5-f1ac-4483-bc88-0be118e11504"/>
+				<reportElement stretchType="RelativeToBandHeight" x="270" y="0" width="100" height="20" uuid="f341f2a5-f1ac-4483-bc88-0be118e11504"/>
 				<textFieldExpression><![CDATA[$F{DEPARTAMENTO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="370" y="0" width="100" height="20" uuid="31b1f365-e78d-44b2-bff2-0fd74ab976ec"/>
+				<reportElement stretchType="RelativeToBandHeight" x="370" y="0" width="100" height="20" uuid="31b1f365-e78d-44b2-bff2-0fd74ab976ec"/>
 				<textFieldExpression><![CDATA[$F{CIUDAD}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="70" y="0" width="100" height="20" uuid="5acaefd0-29f1-4466-a088-58b6b30b188d"/>
+				<textFieldExpression><![CDATA[$F{DIRECCION}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

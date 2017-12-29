@@ -42,7 +42,7 @@
     <div  class="form-group grupos">
          <label for="exampleInputEmail1">Cedula de ciudadania:</label>
 
-          <input id="name" onkeypress="registraduria(event,this,'{{$urldatosregistraduria}}','{{$formulario}}','{{$type}}')" type="text"  placeholder="Cedula" class="form-control" name="nit" value="{{ empty($nit)?empty($usuario->nit)?old('nit'):$usuario->nit:$nit }}" required autofocus>
+          <input id="name" onkeypress="registraduria(event,this,'{{$urldatosregistraduria}}','{{$formulario}}','{{$type}}')" type="number"  placeholder="Cedula" class="form-control" name="nit" value="{{ empty($nit)?empty($usuario->nit)?old('nit'):$usuario->nit:$nit }}" required autofocus>
 
     </div>
 
@@ -76,15 +76,21 @@
          <input id="email" type="email" placeholder="Correo electronico" class="form-control" name="email" value="{{empty($usuario->email)? old('email') :$usuario->email}}" required>
 
     </div>
-    @if ($type === 'A' and $formulario ==='I')
+    @if (($type === 'A' || $type === 'S') && $formulario ==='A')
     <div class="form-group">
-         <label for="exampleInputEmail1">Contraseña:</label>
-         <input id="password" type="password" class="form-control" name="password" required>
+         <label for="exampleInputEmail1">Contraseña anterior:</label>
+         <input id="password" type="password" class="form-control" name="passwordold" {{$formulario !='A'?'required':''}}>
+    </div>
+    @endif
+    @if (($type === 'A' || $type === 'S'))
+    <div class="form-group">
+         <label for="exampleInputEmail1">{{($type == 'A' || $type == 'S') && ($formulario =='A')?'Nueva Contraseña':'Contraseña:'}}</label>
+         <input id="password" type="password" class="form-control" name="password" {{$formulario !='A'?'required':''}}>
     </div>
 
     <div class="form-group">
          <label for="exampleInputEmail1">Confirmar Contraseña:</label>
-         <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+         <input id="password-confirm" type="password" class="form-control" name="password_confirmation" {{$formulario !='A'?'required':''}}>
     </div>
 
     @endif

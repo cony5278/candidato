@@ -14,6 +14,9 @@ use App\User;
 use App\Ciudades;
 use App\Departamentos;
 use App\Historialobservacion;
+use App\Compania;
+use App\Ano;
+use App\Mes;
 Route::resource('consultareporte','ConsultaController');
 
 Route::get('/consulta', function () {
@@ -44,7 +47,19 @@ Route::get('location','ConsultarInformacionElectoral@consultarCoordenadas');
 
 
 Route::get('/', function () {
-    return view('welcome');
+    $compania=Compania::find(1);
+    $usuario=NULL;
+
+      $usuario=new User();
+      $usuario=$usuario->cantidadPotencialElectoralTodo();
+
+
+    return view('welcome')->with([
+      "general"=>$compania,
+      "ano"=>Ano::find($compania->id_ano),
+      "mes"=>Mes::find($compania->id_mes),
+      "usuario"=>$usuario,
+  ]);
 });
 Route::get('/prueba', function () {
   $usuario=User::find(8);
@@ -80,7 +95,11 @@ Route::group(['middleware'=>'super'],function(){
   Route::resource('ciudad', 'CiudadController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
   Route::resource('punto', 'PuntoVotacionController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
   Route::resource('mesa', 'MesaVotacionController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
-
+  Route::resource('compania', 'CompaniaController',  ['only' => ['create', 'store', 'update', 'destroy','edit','index']]);
+  Route::resource('ano', 'AnoController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
+  Route::resource('mes', 'MesController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
+  Route::get('listaano','AnoController@cargarListaAno');
+  Route::get('listames','MesController@cargarListaMes');
 });
 
 Route::group(['middleware'=>'comun'],function(){
@@ -102,14 +121,21 @@ Route::group(['middleware'=>'comun'],function(){
   //mesavotacion
   Route::resource('mesa', 'MesaVotacionController',  ['only' => ['index']]);
   Route::get('mesa/refrescar', 'MesaVotacionController@refrescar');
-  Route::get('oprimirpdf', 'MesaVotacionController@oprimirPdf');
-  Route::get('oprimirexcel', 'MesaVotacionController@oprimirExcel');
+  Route::get('oprimirpdf/{buscar}', 'MesaVotacionController@oprimirPdf');
+  Route::get('oprimirexcel/{buscar}', 'MesaVotacionController@oprimirExcel');
 
 
   //buscar Referido
   Route::get('listardiferidos', 'UsuarioEController@buscarReferido');
   Route::get('google','PuntoVotacionController@googleMaps');
   Route::get('potencial','UsuarioEController@mostrarpotencial');
+  //ano
+  Route::resource('ano', 'AnoController',  ['only' => ['index']]);
+  Route::get('ano/refrescar','AnoController@refrescar');
+  //mes
+  Route::resource('mes', 'mesController',  ['only' => ['index']]);
+  Route::get('mes/refrescar','MesController@refrescar');
+
 });
 Route::group(['middleware'=>'admin'],function(){
 

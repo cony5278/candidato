@@ -74,6 +74,7 @@ class UsuarioEController extends Controller
             'id_departamento'   => 'required|string',
             'type'              => 'required',
             'email'             => 'required|string|email|max:255|unique:users',
+
         ],
         [
           'nombre.required'=>str_replace('s$nombre$s','Nombre',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
@@ -84,6 +85,7 @@ class UsuarioEController extends Controller
           'type.required'=>str_replace('s$nombre$s','Tipo De Usuario',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
           'email.required'=>str_replace('s$nombre$s','Correo Electronico',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
           'email.unique'=>EvssaPropertie::get('TB_EMAIL_UNICO'),
+
         ]
       );
 
@@ -114,12 +116,21 @@ class UsuarioEController extends Controller
           'id_punto.required'=>str_replace('s$nombre$s','Punto De Votación',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
           'id_departamento.required'=>str_replace('s$nombre$s','Departamento',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
           'type.required'=>str_replace('s$nombre$s','Tipo De Usuario',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
-        ]
+              ]
       );
 
     }
 
 
+    private function validatePhoto(array $data){
+          return Validator::make($data, [
+              'photo' =>'mimes:jpeg,jpg,png,gif'
+            ],
+             [
+                'photo.mimes'=>EvssaPropertie::get('TB_FORMATO'),
+            ]
+            );
+        }
     /**
      * Create a new user instance after a valid registration.
      *
@@ -163,6 +174,7 @@ class UsuarioEController extends Controller
       $usuario->address=empty($data['direccionusuario'])?null:$data['direccionusuario'];
 
       if (!empty($request->file('photo'))) {
+
           $archivo = new Archivos ($request->file('photo'));
           $usuario->photo = $archivo -> getArchivoNombreExtension();
       }
@@ -224,6 +236,9 @@ class UsuarioEController extends Controller
       try{
 
         $this->validator($request->all())->validate();
+        if (!empty($request->file('photo'))) {
+          $this->validatePhoto($request->all())->validate();
+        }
         $this->insertar(new User(),$request);
         $usuario=new User();
         $listar=$usuario->getAllUsuarioAdmin('E');
@@ -236,14 +251,14 @@ class UsuarioEController extends Controller
             ]);
       } catch (EvssaException $e) {
           return response()->json([
-              EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+              EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
               EvssaConstantes::MSJ=>$e->getMensaje(),
-          ]);
+          ],400);
       } catch (\Illuminate\Database\QueryException $e) {
            return response()->json([
-               EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+               EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
                EvssaConstantes::MSJ=>"Registro secundario encontrado",
-           ]);
+           ],400);
       }
 
     }
@@ -316,7 +331,9 @@ class UsuarioEController extends Controller
         $usuario=User::find($id);
         //crear variable de sesion por si las cosas salen mal
         $this->validatorUpdate($request->all())->validate();
-
+        if (!empty($request->file('photo'))) {
+          $this->validatePhoto($request->all())->validate();
+        }
         $usuario=$this->actualizar($usuario,$request);
         $usuario=new User();
         $listar=$usuario->getAllUsuarioAdmin('E');
@@ -330,14 +347,14 @@ class UsuarioEController extends Controller
           ]);
         } catch (EvssaException $e) {
             return response()->json([
-                EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+                EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
                 EvssaConstantes::MSJ=>$e->getMensaje(),
-            ]);
+            ],400);
         } catch (\Illuminate\Database\QueryException $e) {
              return response()->json([
-                 EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+                 EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
                  EvssaConstantes::MSJ=>"Registro secundario encontrado",
-             ]);
+             ],400);
         }
 
     }
@@ -434,6 +451,7 @@ class UsuarioEController extends Controller
         $usuario->id_empresa=empty($empresa->id)?null:$empresa->id;
 
         if (!empty($request->file('photo'))) {
+
             $archivo = new Archivos ($request->file('photo'));
             $usuario->photo = $archivo -> getArchivoNombreExtension();
         }
@@ -460,7 +478,48 @@ class UsuarioEController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+      try{
+        $usuario=User::find($id);
+        if($usuario->formacionacademica()->delete() >= 0){
+
+          if(\DB::table("historialobservacions")->where("id_user","=",$usuario->id)->delete() >= 0){
+
+              $usuario->delete();
+              $usuario=new User();
+              $listar=$usuario->getAllUsuarioAdmin('E');
+
+                return response()->json([
+                    EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
+                    EvssaConstantes::MSJ=>"Se ha eliminado correctamente el usuario.",
+                    "html"=>response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'E','urllistar'=>'usuarioe',"urlgeneral"=>url("/")])->render())
+
+                ],400);
+          }else{
+            return response()->json([
+                EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
+                EvssaConstantes::MSJ=>"Error al eliminar el usuario, registro secundario encontrado",
+            ],400);
+          }
+        }else{
+          return response()->json([
+              EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
+              EvssaConstantes::MSJ=>"Error al eliminar el usuario, registro secundario encontrado",
+          ],400);
+        }
+
+
+      } catch (EvssaException $e) {
+          return response()->json([
+              EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
+              EvssaConstantes::MSJ=>$e->getMensaje(),
+          ],400);
+      } catch (\Illuminate\Database\QueryException $e) {
+           return response()->json([
+               EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
+               EvssaConstantes::MSJ=>"Error al eliminar el usuario, registro secundario encontrado",
+           ],400);
+      }
     }
     public static function  url(){
         return [

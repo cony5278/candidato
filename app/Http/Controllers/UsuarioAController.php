@@ -11,6 +11,8 @@ use App\Evssa\EvssaConstantes;
 use App\Evssa\EvssaUtil;
 use App\Evssa\EvssaException;
 use App\Evssa\EvssaPropertie;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 class UsuarioAController extends Controller
 {
 
@@ -47,6 +49,9 @@ class UsuarioAController extends Controller
       try{
 
         $this->validator($request->all())->validate();
+        if (!empty($request->file('photo'))) {
+          $this->validatePhoto($request->all())->validate();
+        }
         $this->insertar(new User(),$request);
 
         $listar=$this->cargarListaPersona();
@@ -57,14 +62,14 @@ class UsuarioAController extends Controller
               ]);
       } catch (EvssaException $e) {
           return response()->json([
-              EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+              EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
               EvssaConstantes::MSJ=>$e->getMensaje(),
-          ]);
+          ],400);
       } catch (\Illuminate\Database\QueryException $e) {
            return response()->json([
-               EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+               EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
                EvssaConstantes::MSJ=>"Registro secundario encontrado",
-           ]);
+           ],400);
       }
 
     }
@@ -83,6 +88,7 @@ class UsuarioAController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'type' => 'required',
             'password' => 'required|string|min:6|confirmed',
+
         ],
         [
           'nombre.required'=>str_replace('s$nombre$s','nombre',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
@@ -90,6 +96,7 @@ class UsuarioAController extends Controller
           'email.required'=>str_replace('s$nombre$s','Correo Electronico',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
           'email.unique'=>EvssaPropertie::get('TB_EMAIL_UNICO'),
           'type.required'=>str_replace('s$nombre$s','Tipo De Usuario',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+
           ]
       );
 
@@ -134,6 +141,7 @@ class UsuarioAController extends Controller
       }
       //crear foto
       if (!empty($request->file('photo'))) {
+
           $archivo = new Archivos ($request->file('photo'));
           $usuario->photo = $archivo -> getArchivoNombreExtension();
       }
@@ -179,10 +187,11 @@ class UsuarioAController extends Controller
      */
     public function edit($id)
     {
+
       $usuario=User::find($id);
       $formacions=$usuario->formacionacademica()->get();
-
-      return view("auth.admin.crear")->with([
+      $vista=Auth::user()->id!=$usuario->id?"auth.admin.crear":"auth.admin.modal";
+        return view($vista)->with([
         "formulario"=>"A",
         "usuario"=>$usuario,
         "type"=>"A",
@@ -190,6 +199,7 @@ class UsuarioAController extends Controller
         'idnamereferido'=>'id_referido',
         'urlreferido'=>'listardiferidos',
         ])->with(self::url());
+
     }
 
     public function changue_password(Request $request, $id){
@@ -197,11 +207,27 @@ class UsuarioAController extends Controller
     }
     public function validatorUpdate(array $data)
     {
-        return Validator::make($data, [
+      return Validator::make($data, [
           'nombre' => 'required|string|max:255',
           'apellido' => 'required|string|max:255',
           'type' => 'required',
-        ]);
+      ],
+      [
+        'nombre.required'=>str_replace('s$nombre$s','nombre',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+        'apellido.required'=>str_replace('s$nombre$s','nombre',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+        'type.required'=>str_replace('s$nombre$s','Tipo De Usuario',EvssaPropertie::get('TB_OBLIGATORIO_MENSAJE')),
+        ]
+    );
+    }
+
+    private function validatePhoto(array $data){
+      return Validator::make($data, [
+          'photo' =>'mimes:jpeg,jpg,png,gif'
+        ],
+         [
+            'photo.mimes'=>EvssaPropertie::get('TB_FORMATO'),
+        ]
+        );
     }
     /**
      * Update the specified resource in storage.
@@ -216,6 +242,9 @@ class UsuarioAController extends Controller
 
         $usuario=User::find($id);
         $this->validatorUpdate($request->all())->validate();
+        if (!empty($request->file('photo'))) {
+          $this->validatePhoto($request->all())->validate();
+        }
         $usuario=$this->actualizar($usuario,$request);
 
         $listar=$this->cargarListaPersona();
@@ -228,14 +257,14 @@ class UsuarioAController extends Controller
           ]);
         } catch (EvssaException $e) {
             return response()->json([
-                EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+                EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
                 EvssaConstantes::MSJ=>$e->getMensaje(),
-            ]);
+            ],400);
         } catch (\Illuminate\Database\QueryException $e) {
              return response()->json([
-                 EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+                 EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
                  EvssaConstantes::MSJ=>"Registro secundario encontrado",
-             ]);
+             ],400);
         }
 
     }
@@ -262,6 +291,7 @@ class UsuarioAController extends Controller
         $usuario->address=$data['direccionusuario'];
 
         if (!empty($request->file('photo'))) {
+
             $archivo = new Archivos ($request->file('photo'));
             $usuario->photo = $archivo -> getArchivoNombreExtension();
         }
@@ -272,7 +302,8 @@ class UsuarioAController extends Controller
       if(!empty($data['id_referido'])){
         $usuario->id_referido=$data['id_referido'];
       }
-        $usuario->save();
+      $this->cambiarcontrasena($usuario,$request);
+      $usuario->save();
 
     }
 
@@ -306,6 +337,13 @@ class UsuarioAController extends Controller
       $usuario=new User();
       $listar=$usuario->getAllUsuarioRefresh($request,'A');
       return response()->json(view('auth.admin.tabla')->with(['listarusuario'=>$listar,'type'=>'A','urllistar'=>'usuario',"urlgeneral"=>url("/")])->render());
+    }
+    public function cambiarcontrasena($usuario,Request $request){
+      if(!empty($request->passwordold)&&!empty($request->password)&&!empty($request->password_confirmation)){
+        if(Hash::check($request->passwordold,$usuario->password)  && $request->password == $request->password_confirmation){
+            $usuario->password= bcrypt($request->password);
+        }
+      }
     }
 
 }

@@ -66,7 +66,7 @@
           if (status === 'OK') {
             resultsMap.setCenter(results[0].geometry.location);
             var contentString =  "<div class='modal-dialog' role='document'>"+
-                "<div class='modal-content' style='border-radius: 10px 10px 10px 10px;-moz-border-radius: 10px 10px 10px 10px;-webkit-border-radius: 10px 10px 10px 10px;'>"+                
+                "<div class='modal-content' style='border-radius: 10px 10px 10px 10px;-moz-border-radius: 10px 10px 10px 10px;-webkit-border-radius: 10px 10px 10px 10px;'>"+
                     "<div class='col-md-12'>"+
                       "<h5>Dirección: "+puntos[key].direccion+"</h5>  "+
                     "</div>"+
@@ -74,7 +74,7 @@
                       "<h6>Cantidad de votantes:"+puntos[key].contar+"</h6>"+
                     "</div>"+
 
-                  "<div class='modal-body'>"+
+                  "<div class='modal-body' style='height:300px !important;overflow-y:scroll !important;'>"+
                   "<ul class='list-group'>"+listausuarios
 
                   "</ul>"+

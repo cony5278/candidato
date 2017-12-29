@@ -62,8 +62,8 @@ class Reporteador {
       $file = file_get_contents($file);
       self::cabeceras($nombre,$formato,$path);
       flush();
-      readfile($path);
       unlink($path);
+      readfile($path);
     }
 
 

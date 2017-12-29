@@ -42,4 +42,8 @@ class Historialobservacion extends Model
                           )
                 ->get();
             }
+
+    public function nivel(){
+        return $this->belongsTo('App\User');
+    }
 }

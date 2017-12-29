@@ -98,10 +98,20 @@ class User extends Authenticatable
     public function cantidadPotencialElectoral(Request $request){
 
       return $this->where("id_referido","=",$request->id_referido)
-                  ->select(\DB::raw('COUNT(*)-1 as cantidadreal,potencial as cantidad'))
+                  ->select(\DB::raw('COUNT(*)-1 as cantidadreal,potencial as potencialelectoral'))
                   ->groupBy('id_referido','potencial')
                   ->first();
     }
+
+    public function cantidadPotencialElectoralTodo(){
+      return $this->select(\DB::raw('COUNT(id_referido) as cantidadreal,SUM(potencial)as potencialelectoral'))
+                  ->first();
+    }
+
+    public function historial(){
+          return $this->hasMany('App\Historialobservacion');
+    }
+
 
 
 }

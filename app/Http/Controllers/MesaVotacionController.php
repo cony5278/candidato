@@ -119,14 +119,14 @@ class MesaVotacionController extends Controller
       ]);
     } catch (EvssaException $e) {
         return response()->json([
-            EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+            EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
             EvssaConstantes::MSJ=>$e->getMensaje(),
-        ]);
+        ],400);
     } catch (\Illuminate\Database\QueryException $e) {
          return response()->json([
-             EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+             EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
              EvssaConstantes::MSJ=>"Registro secundario encontrado",
-         ]);
+         ],400);
     }
 
   }
@@ -181,14 +181,14 @@ class MesaVotacionController extends Controller
         ]);
       } catch (EvssaException $e) {
           return response()->json([
-              EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+              EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
               EvssaConstantes::MSJ=>$e->getMensaje(),
-          ]);
+          ],400);
       } catch (\Illuminate\Database\QueryException $e) {
            return response()->json([
-               EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+               EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
                EvssaConstantes::MSJ=>"Registro secundario encontrado",
-           ]);
+           ],400);
       }
   }
 
@@ -222,14 +222,14 @@ class MesaVotacionController extends Controller
          ]);
         } catch (EvssaException $e) {
             return response()->json([
-                EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+                EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
                 EvssaConstantes::MSJ=>$e->getMensaje(),
-            ]);
+            ],400);
         } catch (\Illuminate\Database\QueryException $e) {
              return response()->json([
-                 EvssaConstantes::NOTIFICACION=> EvssaConstantes::WARNING,
+                 EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
                  EvssaConstantes::MSJ=>"Registro secundario encontrado",
-             ]);
+             ],400);
         }
   }
 
@@ -249,10 +249,11 @@ class MesaVotacionController extends Controller
 
   public function refrescar(Request $request){
 
-    return response()->json(view("lugar.mesa.tabla")->with(["urllistar"=>"mesa","urlgeneral"=>url("/"),"listadesplieguemesa"=>    Departamentos::join("ciudades","departamentos.id","ciudades.id_departamento")
+    return response()->json(view("lugar.mesa.tabla")->with(["urllistar"=>"mesa","urlgeneral"=>url("/"),"listadesplieguemesa"=>
+              Departamentos::join("ciudades","departamentos.id","ciudades.id_departamento")
                             ->join("puntos_votacions","ciudades.id","puntos_votacions.id_ciudad")
                             ->join("mesas_votacions","puntos_votacions.id","mesas_votacions.id_punto")
-                            ->join("users.id","mesas_votacions.id","users.id_mesa")
+                            ->join("users","mesas_votacions.id","users.id_mesa")
                             ->orWhere("mesas_votacions.numero","like","".$request->buscar."%")
                             ->orWhere("puntos_votacions.direccion","like","".$request->buscar."%")
                             ->orWhere("ciudades.nombre","like","".$request->buscar."%")
@@ -277,21 +278,21 @@ class MesaVotacionController extends Controller
   /**
   *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en pdf
   */
-  public function oprimirPdf(){
+  public function oprimirPdf($buscar){
     $reemplazos=array(
-      "buscar"=>"Cl"
+      "buscar"=>str_replace(" ",".c*",$buscar)
     );
     $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0001MESAGENERAL",$reemplazos));
-    // dd($param['PR_STRSQL']);
+
     Reporteador::exportar("0001MESAGENERAL",EvssaConstantes::PDF,$param);
   }
 
   /**
   *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en excel
   */
-  public function oprimirExcel(Request $request){
+  public function oprimirExcel($buscar){
     $reemplazos=array(
-      "buscar"=>"Cl"
+      "buscar"=>str_replace(" ",".c*",$buscar)
     );
     $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0001MESAGENERAL",$reemplazos));
 
