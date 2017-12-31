@@ -51,7 +51,7 @@ class UsuarioEController extends Controller
       $user=\Auth::user();
       $listar=$this -> usuario->getAllUsuarioAdmin('E');
       $listar->setPath(url("home"));
-      return response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'E','urllistar'=>'usuarioe',"urlgeneral"=>url("/")])->render());
+      return response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'E','urllistar'=>'usuarioe',"urlgeneral"=>url("/"),'urlreportepdfgeneral'=>'oprimirusuarioegeneralpdf','urlreporteexcelgeneral'=>'oprimirusuarioegeneralexcel'])->render());
 
     }
 
@@ -178,6 +178,7 @@ class UsuarioEController extends Controller
           $archivo = new Archivos ($request->file('photo'));
           $usuario->photo = $archivo -> getArchivoNombreExtension();
       }
+
       //tabla punto de votacion
       $puntoVotacion=new PuntosVotacion();
       $puntoVotacion=$puntoVotacion->buscar($data['id_punto'],$data['id_ciudad']);
@@ -205,6 +206,7 @@ class UsuarioEController extends Controller
       if(!empty($data['potencial'])){
         $usuario->potencial=$data['potencial'];
       }
+
       $usuario->save();
 
       if(!empty($data['idforomacionacademica'])){
@@ -239,7 +241,9 @@ class UsuarioEController extends Controller
         if (!empty($request->file('photo'))) {
           $this->validatePhoto($request->all())->validate();
         }
+
         $this->insertar(new User(),$request);
+
         $usuario=new User();
         $listar=$usuario->getAllUsuarioAdmin('E');
         $listar->setPath(url("home"));
@@ -247,7 +251,7 @@ class UsuarioEController extends Controller
         return response()->json([
             EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
             EvssaConstantes::MSJ=>"Se ha registrado correctamente el usuario.",
-            "html"=> response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'E','urllistar'=>'usuarioe',"urlgeneral"=>url("/")])->render())
+            "html"=> response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'E','urllistar'=>'usuarioe',"urlgeneral"=>url("/"),'urlreportepdfgeneral'=>'oprimirusuarioegeneralpdf','urlreporteexcelgeneral'=>'oprimirusuarioegeneralexcel'])->render())
             ]);
       } catch (EvssaException $e) {
           return response()->json([
@@ -342,7 +346,7 @@ class UsuarioEController extends Controller
           return response()->json([
               EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
               EvssaConstantes::MSJ=>"Se ha actualizado correctamente el usuario.",
-              "html"=>response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'E','urllistar'=>'usuarioe',"urlgeneral"=>url("/")])->render())
+              "html"=>response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'E','urllistar'=>'usuarioe',"urlgeneral"=>url("/"),'urlreportepdfgeneral'=>'oprimirusuarioegeneralpdf','urlreporteexcelgeneral'=>'oprimirusuarioegeneralexcel'])->render())
 
           ]);
         } catch (EvssaException $e) {
@@ -492,9 +496,9 @@ class UsuarioEController extends Controller
                 return response()->json([
                     EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
                     EvssaConstantes::MSJ=>"Se ha eliminado correctamente el usuario.",
-                    "html"=>response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'E','urllistar'=>'usuarioe',"urlgeneral"=>url("/")])->render())
+                    "html"=>response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'E','urllistar'=>'usuarioe',"urlgeneral"=>url("/"),'urlreportepdfgeneral'=>'oprimirusuarioegeneralpdf','urlreporteexcelgeneral'=>'oprimirusuarioegeneralexcel'])->render())
 
-                ],400);
+                ]);
           }else{
             return response()->json([
                 EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
@@ -540,26 +544,7 @@ class UsuarioEController extends Controller
     }
 
 
-    /**
-    *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en pdf
-    */
-    public function oprimirPdf(){
-      $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0001PERSONALPRUEBA"));
-      Reporteador::exportar("0001PERSONALPRUEBA",EvssaConstantes::PDF,$param);
-    }
 
-    /**
-    *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en excel
-    */
-    public function oprimirExcel(){
-      $reemplazos=array(
-        "id"=>6,
-        "nombre"=>"CO",
-      );
-      $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0002PERSONAE",$reemplazos));
-
-      Reporteador::exportar("0002PERSONA",EvssaConstantes::PDF,$param);
-    }
 
     public function listarpaginationtable(Request $request){
 
@@ -567,7 +552,7 @@ class UsuarioEController extends Controller
               $user=\Auth::user();
               $listar=$this -> usuario->getAllUsuarioAdmin($request->type);
               $listar->setPath(url("home"));
-              return response()->json(view('auth.admin.listar')->with(['usuarioAdmin'=>$listar,'type'=>$request->type])->render());
+              return response()->json(view('auth.admin.listar')->with(['usuarioAdmin'=>$listar,'type'=>$request->type,'urlreportepdfgeneral'=>'oprimirusuarioegeneralpdf','urlreporteexcelgeneral'=>'oprimirusuarioegeneralexcel'])->render());
           }
     }
 
@@ -595,13 +580,36 @@ class UsuarioEController extends Controller
       $usuario=new User();
       $listar=$usuario->getAllUsuarioRefresh($request,'E');
 
-      return response()->json(view('auth.admin.tabla')->with(['listarusuario'=>$listar,'type'=>'E','urllistar'=>'usuarioe',"urlgeneral"=>url("/")])->render());
+      return response()->json(view('auth.admin.tabla')->with(['listarusuario'=>$listar,'type'=>'E','urllistar'=>'usuarioe',"urlgeneral"=>url("/"),'urlreportepdfgeneral'=>'oprimirusuarioegeneralpdf','urlreporteexcelgeneral'=>'oprimirusuarioegeneralexcel'])->render());
     }
 
     public function mostrarpotencial(Request $request){
         $usuario=new User();
         $usuario=$usuario->cantidadPotencialElectoral($request);
-        return response()->json(view('cuerpotencial')->with(['usuario'=>$usuario])->render());
+        return response()->json(view('cuerpotencial')->with(['usuario'=>$usuario,'potencial'=>User::find($request->id_referido)->potencial])->render());
+    }
+    /**
+    *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en pdf
+    */
+    public function oprimirPdf($buscar){
+
+      $reemplazos=array(
+        "buscar"=>$buscar==".c*"?"":str_replace(" ",".c*",$buscar)
+      );
+      $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0007VOTANTE",$reemplazos));
+
+      Reporteador::exportar("0007VOTANTE",EvssaConstantes::PDF,$param);
     }
 
+    /**
+    *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en excel
+    */
+    public function oprimirExcel($buscar){
+      $reemplazos=array(
+        "buscar"=>$buscar==".c*"?"":str_replace(" ",".c*",$buscar)
+      );
+      $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0007VOTANTE",$reemplazos));
+
+      Reporteador::exportar("0007VOTANTE",EvssaConstantes::EXCEL,$param);
+    }
 }

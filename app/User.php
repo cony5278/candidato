@@ -32,6 +32,7 @@ class User extends Authenticatable
         return $this->where("type",$tipo)->paginate(2);
     }
     public function getAllUsuarioRefresh(Request $request,$type){
+
       return $this->where(function ($query) use($request) {
                    $query->orWhere("NAME","LIKE","%".$request->buscar."%")
                        ->orWhere("NAME2","LIKE","%".$request->buscar."%")
@@ -98,8 +99,8 @@ class User extends Authenticatable
     public function cantidadPotencialElectoral(Request $request){
 
       return $this->where("id_referido","=",$request->id_referido)
-                  ->select(\DB::raw('COUNT(*)-1 as cantidadreal,potencial as potencialelectoral'))
-                  ->groupBy('id_referido','potencial')
+                  ->select(\DB::raw('COUNT(*)-1 as cantidadreal'))
+                  ->groupBy('id_referido')
                   ->first();
     }
 

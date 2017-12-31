@@ -18,7 +18,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><h1>Ingresar los datos Generales:</h1></div>
                 <div class="panel-body">
-                      @include("compania.formulario.formulario")
+                      @include("lugar.ciudad.formulario.formulario")
                 </div>
             </div>
         </div>

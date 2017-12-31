@@ -88,6 +88,7 @@ class ConsultarInformacionElectoral extends Controller
                     'urlreferido'=>'listardiferidos',
                 ])->with(UsuarioEController::url())->render());
               }else{
+              
                 return response()->json(view("auth.admin.crear")->with([
                     "formulario"=>$request->acme,
                     "nit"=>$request->cedula,

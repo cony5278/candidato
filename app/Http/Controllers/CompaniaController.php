@@ -127,6 +127,9 @@ class CompaniaController extends Controller
 
   try{
       $this->validator($request->all())->validate();
+      if (!empty($request->file('photo'))) {
+        $this->validatePhoto($request->all())->validate();
+      }
       $compania=Compania::find($id);
       $this->actualizar($compania,$request);
       return response()->json([
@@ -154,6 +157,15 @@ class CompaniaController extends Controller
          ],400);
     }
   }
+  private function validatePhoto(array $data){
+    return Validator::make($data, [
+        'photo' =>'mimes:jpeg,jpg,png,gif'
+      ],
+       [
+          'photo.mimes'=>EvssaPropertie::get('TB_FORMATO'),
+      ]
+      );
+  }
   /**
    * Create a new user instance after a valid registration.
    *
@@ -166,13 +178,6 @@ class CompaniaController extends Controller
       $data=$request->all();
 
       if (!empty($request->file('photo'))) {
-          return Validator::make($data, [
-              'photo' =>'image|mimes:jpeg,png,gif'
-            ],
-             [
-                'photo.mimes'=>EvssaPropertie::get('TB_FORMATO'),
-            ]
-        )->validate();
           $archivo = new Archivos ($request->file('photo'));
           $compania->imagen = $archivo -> getArchivoNombreExtension();
       }
@@ -185,6 +190,9 @@ class CompaniaController extends Controller
       $compania->id_ano=$data['id_ano'];
       $compania->id_mes=$data['id_mes'];
       $compania->dia=$data['dia'];
+      $compania->ancho=$data['ancho'];
+      $compania->alto=$data['alto'];
+      $compania->elecciones=$data['elecciones'];
 
       $compania->save();
 

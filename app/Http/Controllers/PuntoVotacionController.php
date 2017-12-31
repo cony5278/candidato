@@ -10,6 +10,7 @@ use App\Evssa\EvssaUtil;
 use App\Evssa\EvssaException;
 use Illuminate\Support\Facades\Validator;
 use App\Ciudades;
+use App\Reporteador;
 use JavaScript;
 class PuntoVotacionController extends Controller
 {
@@ -207,7 +208,7 @@ class PuntoVotacionController extends Controller
          return response()->json([
              EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
              EvssaConstantes::MSJ=>"Se ha eliminado correctamente el registro.",
-             "html"=>redirect("punto")
+             "html"=>response()->json(view("lugar.punto.listar")->with(["urllistar"=>"punto","urlgeneral"=>url("/"),"listapuntovotacion"=>$this->cargarListaPunto()])->render())
          ]);
         } catch (EvssaException $e) {
             return response()->json([
@@ -257,9 +258,8 @@ class PuntoVotacionController extends Controller
 
   }
   public function refrescar(Request $request){
-
     return response()->json(view("lugar.punto.tabla")->with(["urllistar"=>"punto","urlgeneral"=>url("/"),"listapuntovotacion"=>Ciudades::join("puntos_votacions","ciudades.id","puntos_votacions.id_ciudad")->orWhere("puntos_votacions.nombre","like","%".$request->buscar."%")->orWhere("puntos_votacions.direccion","like","%".$request->buscar."%")->orWhere("ciudades.nombre","like","%".$request->buscar."%")->select("puntos_votacions.direccion","puntos_votacions.id","puntos_votacions.nombre","ciudades.nombre as ciudad")->paginate(10)
-])->render());
+    ])->render());
   }
 
 
@@ -285,5 +285,29 @@ class PuntoVotacionController extends Controller
                              ->get()
       ]);
     return view('maps.mapa');
+  }
+  /**
+  *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en pdf
+  */
+  public function oprimirPdf($buscar){
+
+    $reemplazos=array(
+      "buscar"=>str_replace(" ",".c*",$buscar)
+    );
+    $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("002PUNTOSVOTACION",$reemplazos));
+
+    Reporteador::exportar("002PUNTOSVOTACION",EvssaConstantes::PDF,$param);
+  }
+
+  /**
+  *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en excel
+  */
+  public function oprimirExcel($buscar){
+    $reemplazos=array(
+      "buscar"=>str_replace(" ",".c*",$buscar)
+    );
+    $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("002PUNTOSVOTACION",$reemplazos));
+
+    Reporteador::exportar("002PUNTOSVOTACION",EvssaConstantes::EXCEL,$param);
   }
 }

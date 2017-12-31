@@ -14,7 +14,9 @@ class Compania extends Seeder
       DB::table('companias')->delete();
       \App\Compania::create([
           'id'=>1,
-          'imagen'	   =>	'logo.jpg',
+          'imagen'	   =>	'default.png',
+          'ancho'=>200,
+          'alto'=>200,
       ]);
     }
 }

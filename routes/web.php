@@ -105,19 +105,31 @@ Route::group(['middleware'=>'super'],function(){
 Route::group(['middleware'=>'comun'],function(){
   Route::get('usuarioe/refrescar', 'UsuarioEController@refrescar');
   Route::get('usuario/refrescar', 'UsuarioAController@refrescar');
+  Route::get('oprimirusuariogeneralpdf/{buscar}', 'UsuarioAController@oprimirPdf');
+  Route::get('oprimirusuariogeneralexcel/{buscar}', 'UsuarioAController@oprimirExcel');
 
   Route::resource('usuario', 'UsuarioAController',  ['only' => ['index']]);
   Route::resource('usuarioe', 'UsuarioEController',  ['only' => ['index','create', 'store', 'update', 'destroy','edit']]);
+  Route::get('oprimirusuarioegeneralpdf/{buscar}', 'UsuarioEController@oprimirPdf');
+  Route::get('oprimirusuarioegeneralexcel/{buscar}', 'UsuarioEController@oprimirExcel');
 
   //Departamentos
   Route::resource('departamento', 'DepartamentoController',  ['only' => ['index']]);
   Route::get('departamento/refrescar','DepartamentoController@refrescar');
+  Route::get('oprimirdepartamentogeneralpdf/{buscar}', 'DepartamentoController@oprimirPdf');
+  Route::get('oprimirdepartamentogeneralexcel/{buscar}', 'DepartamentoController@oprimirExcel');
+
   //Ciudad
   Route::resource('ciudad','CiudadController',['only' => ['index']]);
   Route::get('ciudad/refrescar','CiudadController@refrescar');
+  Route::get('oprimirciudadgeneralpdf/{buscar}', 'CiudadController@oprimirPdf');
+  Route::get('oprimirciudadgeneralexcel/{buscar}', 'CiudadController@oprimirExcel');
+
   //punto de
   Route::resource('punto', 'PuntoVotacionController',  ['only' => ['index']]);
   Route::get('punto/refrescar','PuntoVotacionController@refrescar');
+  Route::get('oprimirpuntogeneralpdf/{buscar}', 'PuntoVotacionController@oprimirPdf');
+  Route::get('oprimirpuntogeneralexcel/{buscar}', 'PuntoVotacionController@oprimirExcel');
   //mesavotacion
   Route::resource('mesa', 'MesaVotacionController',  ['only' => ['index']]);
   Route::get('mesa/refrescar', 'MesaVotacionController@refrescar');

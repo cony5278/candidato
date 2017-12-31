@@ -10,7 +10,7 @@ use App\Evssa\EvssaUtil;
 use App\Evssa\EvssaException;
 use Illuminate\Support\Facades\Validator;
 use App\Departamentos;
-
+use App\Reporteador;
 
 class CiudadController extends Controller
 {
@@ -211,7 +211,8 @@ class CiudadController extends Controller
            return response()->json([
                EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
                EvssaConstantes::MSJ=>"Se ha eliminado correctamente el registro.",
-               "html"=>redirect("departamento")
+               "html"=> response()->json(view("lugar.ciudad.listar")->with(["urllistar"=>"ciudad","urlgeneral"=>url("/"),"listaciudades"=>$this->cargarListaCiudad()])->render())
+
            ]);
           } catch (EvssaException $e) {
               return response()->json([
@@ -264,9 +265,33 @@ class CiudadController extends Controller
 *refrescar la tabla
 */
     public function refrescar(Request $request){
-
-      return response()->json(view("lugar.ciudad.tabla")->with(["urllistar"=>"ciudad","urlgeneral"=>url("/"),"listaciudades"=>
+        return response()->json(view("lugar.ciudad.tabla")->with(["urllistar"=>"ciudad","urlgeneral"=>url("/"),"listaciudades"=>
         Departamentos::join("ciudades","departamentos.id","ciudades.id_departamento")->orWhere("ciudades.nombre","like","%".$request->buscar."%")->orWhere("departamentos.nombre","like","%".$request->buscar."%")->select("ciudades.id","ciudades.nombre as ciudad","departamentos.nombre as departamento")->paginate(10)])->render());
+    }
+
+    /**
+    *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en pdf
+    */
+    public function oprimirPdf($buscar){
+
+      $reemplazos=array(
+        "buscar"=>$buscar==".c*"?"":str_replace(" ",".c*",$buscar)
+      );
+      $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0004CIUDADES",$reemplazos));
+
+      Reporteador::exportar("0004CIUDADES",EvssaConstantes::PDF,$param);
+    }
+
+    /**
+    *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en excel
+    */
+    public function oprimirExcel($buscar){
+      $reemplazos=array(
+        "buscar"=>$buscar==".c*"?"":str_replace(" ",".c*",$buscar)
+      );
+      $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0004CIUDADES",$reemplazos));
+
+      Reporteador::exportar("0004CIUDADES",EvssaConstantes::EXCEL,$param);
     }
 
 }

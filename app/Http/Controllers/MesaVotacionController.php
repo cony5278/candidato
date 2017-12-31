@@ -218,7 +218,7 @@ class MesaVotacionController extends Controller
          return response()->json([
              EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
              EvssaConstantes::MSJ=>"Se ha eliminado correctamente el registro.",
-             "html"=>redirect("punto")
+             "html"=> response()->json(view("lugar.mesa.listar")->with(["urllistar"=>"mesa","urlgeneral"=>url("/"),"listadesplieguemesa"=>$this->cargarListaMesa()])->render())
          ]);
         } catch (EvssaException $e) {
             return response()->json([
@@ -255,9 +255,9 @@ class MesaVotacionController extends Controller
                             ->join("mesas_votacions","puntos_votacions.id","mesas_votacions.id_punto")
                             ->join("users","mesas_votacions.id","users.id_mesa")
                             ->orWhere("mesas_votacions.numero","like","".$request->buscar."%")
-                            ->orWhere("puntos_votacions.direccion","like","".$request->buscar."%")
-                            ->orWhere("ciudades.nombre","like","".$request->buscar."%")
-                            ->orWhere("departamentos.nombre","like","".$request->buscar."%")
+                            ->orWhere("puntos_votacions.direccion","like","%".$request->buscar."%")
+                            ->orWhere("ciudades.nombre","like","%".$request->buscar."%")
+                            ->orWhere("departamentos.nombre","like","%".$request->buscar."%")
                             ->orWhere(function ($query) use($request) {
                                          $query->orWhere("users.name","LIKE","%".$request->buscar."%")
                                              ->orWhere("users.name2","LIKE","%".$request->buscar."%")
@@ -279,6 +279,7 @@ class MesaVotacionController extends Controller
   *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en pdf
   */
   public function oprimirPdf($buscar){
+
     $reemplazos=array(
       "buscar"=>str_replace(" ",".c*",$buscar)
     );

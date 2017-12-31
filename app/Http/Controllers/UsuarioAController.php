@@ -13,6 +13,7 @@ use App\Evssa\EvssaException;
 use App\Evssa\EvssaPropertie;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Reporteador;
 class UsuarioAController extends Controller
 {
 
@@ -36,7 +37,7 @@ class UsuarioAController extends Controller
       $usuario=new User();
       $listar=$this->cargarListaPersona();
       $listar->setPath(url("home"));
-      return response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'A','urllistar'=>'usuario',"urlgeneral"=>url("/")])->render());
+      return response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'A','urllistar'=>'usuario',"urlgeneral"=>url("/"),'urlreportepdfgeneral'=>'oprimirusuariogeneralpdf','urlreporteexcelgeneral'=>'oprimirusuariogeneralexcel'])->render());
     }
 
     private function cargarListaPersona(){
@@ -46,30 +47,32 @@ class UsuarioAController extends Controller
 
     public function registrar(Request $request)
     {
+
       try{
 
         $this->validator($request->all())->validate();
         if (!empty($request->file('photo'))) {
           $this->validatePhoto($request->all())->validate();
         }
+
         $this->insertar(new User(),$request);
 
         $listar=$this->cargarListaPersona();
         return response()->json([
             EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
             EvssaConstantes::MSJ=>"Se ha registrado correctamente el administrador.",
-            "html"=> response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'A','urllistar'=>'usuario',"urlgeneral"=>url("/")])->render())
+            "html"=> response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'A','urllistar'=>'usuario',"urlgeneral"=>url("/"),'urlreportepdfgeneral'=>'oprimirusuariogeneralpdf','urlreporteexcelgeneral'=>'oprimirusuariogeneralexcel'])->render())
               ]);
       } catch (EvssaException $e) {
           return response()->json([
               EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
               EvssaConstantes::MSJ=>$e->getMensaje(),
-          ],400);
+          ]);
       } catch (\Illuminate\Database\QueryException $e) {
            return response()->json([
                EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
                EvssaConstantes::MSJ=>"Registro secundario encontrado",
-           ],400);
+           ]);
       }
 
     }
@@ -148,6 +151,7 @@ class UsuarioAController extends Controller
       if(!empty($data['password'])){
         $usuario->password= bcrypt($data['password']);
       }
+
       $usuario->save();
       if (!empty($request->file('photo'))) {
           $archivo->guardarArchivo($usuario);
@@ -252,7 +256,7 @@ class UsuarioAController extends Controller
           return response()->json([
               EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
               EvssaConstantes::MSJ=>"Se ha actualizado correctamente el usuario.",
-              "html"=>response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'A','urllistar'=>'usuario',"urlgeneral"=>url("/")])->render())
+              "html"=>response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'A','urllistar'=>'usuario',"urlgeneral"=>url("/"),'urlreportepdfgeneral'=>'oprimirusuariogeneralpdf','urlreporteexcelgeneral'=>'oprimirusuariogeneralexcel'])->render())
 
           ]);
         } catch (EvssaException $e) {
@@ -315,12 +319,31 @@ class UsuarioAController extends Controller
      */
     public function destroy($id)
     {
+      try{
+          User::find($id)->delete();
+          $usuario=new User();
+          $listar=$usuario->getAllUsuarioAdmin('A');
+          $listar->setPath(url("home"));
 
-        User::find($id)->delete();
-        $user=\Auth::user();
-        $listar=$this -> usuario->getAllUsuarioAdmin($user->type=='S'?'A':'E');
-        $listar->setPath(url("home"));
-        return view('auth.admin.listar')->with(['usuarioAdmin'=>$listar,'type'=>'A']);
+            return response()->json([
+                EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
+                EvssaConstantes::MSJ=>"Se ha eliminado correctamente el usuario.",
+                "html"=>response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'A','urllistar'=>'usuario',"urlgeneral"=>url("/"),'urlreportepdfgeneral'=>'oprimirusuariogeneralpdf','urlreporteexcelgeneral'=>'oprimirusuariogeneralexcel'])->render())
+
+            ]);
+
+
+      } catch (EvssaException $e) {
+        return response()->json([
+            EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
+            EvssaConstantes::MSJ=>$e->getMensaje(),
+        ],400);
+      } catch (\Illuminate\Database\QueryException $e) {
+         return response()->json([
+             EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
+             EvssaConstantes::MSJ=>"Error al eliminar el usuario, registro secundario encontrado",
+         ],400);
+      }
     }
 
     public function form_crear_usuario(){
@@ -335,8 +358,9 @@ class UsuarioAController extends Controller
     public function refrescar(Request $request){
 
       $usuario=new User();
+
       $listar=$usuario->getAllUsuarioRefresh($request,'A');
-      return response()->json(view('auth.admin.tabla')->with(['listarusuario'=>$listar,'type'=>'A','urllistar'=>'usuario',"urlgeneral"=>url("/")])->render());
+      return response()->json(view('auth.admin.tabla')->with(['listarusuario'=>$listar,'type'=>'A','urllistar'=>'usuario',"urlgeneral"=>url("/"),'urlreportepdfgeneral'=>'oprimirusuariogeneralpdf','urlreporteexcelgeneral'=>'oprimirusuariogeneralexcel'])->render());
     }
     public function cambiarcontrasena($usuario,Request $request){
       if(!empty($request->passwordold)&&!empty($request->password)&&!empty($request->password_confirmation)){
@@ -346,4 +370,28 @@ class UsuarioAController extends Controller
       }
     }
 
+    /**
+    *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en pdf
+    */
+    public function oprimirPdf($buscar){
+
+      $reemplazos=array(
+        "buscar"=>$buscar==".c*"?"":str_replace(" ",".c*",$buscar)
+      );
+      $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0006ADMINISTRADOR",$reemplazos));
+
+      Reporteador::exportar("0006ADMINISTRADOR",EvssaConstantes::PDF,$param);
+    }
+
+    /**
+    *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en excel
+    */
+    public function oprimirExcel($buscar){
+      $reemplazos=array(
+        "buscar"=>$buscar==".c*"?"":str_replace(" ",".c*",$buscar)
+      );
+      $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0006ADMINISTRADOR",$reemplazos));
+
+      Reporteador::exportar("0006ADMINISTRADOR",EvssaConstantes::EXCEL,$param);
+    }
 }

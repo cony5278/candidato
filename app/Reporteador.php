@@ -16,6 +16,7 @@ class Reporteador {
 
     }
     private static function cabeceras($nombre,$formato,$file){
+
        header('Content-Description: File Transfer');
        header('Content-Type: application/octet-stream');
        header('Content-Disposition: attachment; filename="'.$nombre.'.'.$formato.'"');
@@ -61,9 +62,9 @@ class Reporteador {
       }
       $file = file_get_contents($file);
       self::cabeceras($nombre,$formato,$path);
+      readfile($path);
       flush();
       unlink($path);
-      readfile($path);
     }
 
 

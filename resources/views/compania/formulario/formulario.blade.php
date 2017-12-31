@@ -31,8 +31,24 @@
         </script>
     </div>
 </div>
+
 <div class="form-group">
   <img id="imagePreview" width="200" height="200" src="{{$compania->imagen=='default.png'?'archivos/\\default.png':'archivos/'.Auth::user()->type.'/'.Auth::user()->id.'/'.$compania->imagen}}" class="img-thumbnail" />
+</div>
+<div class="form-group">
+    <label for="exampleInputEmail1">Ancho de la imagen:</label>
+    <input type="number" class="form-control" name="ancho"  value="{{$compania->ancho}}" placeholder="ancho">
+    <small id="emailHelp" class="form-text text-muted">Señor usuario digite un ancho para la imagen.</small>
+</div>
+<div class="form-group">
+    <label for="exampleInputEmail1">Alto de la imagen:</label>
+    <input type="number" class="form-control" name="alto"  value="{{$compania->alto}}" placeholder="alto">
+    <small id="emailHelp" class="form-text text-muted">Señor usuario digite un alto para la imagen.</small>
+</div>
+<div class="form-group">
+    <label for="exampleInputEmail1">Elecciones para:</label>
+    <input type="text" class="form-control" name="elecciones"  value="{{$compania->elecciones}}" placeholder="elecciones">
+    <small id="emailHelp" class="form-text text-muted">Señor usuario digite el nombre de la convocatoria ejemplo(senado,camara...) .</small>
 </div>
 <div class="form-group">
     <label for="exampleInputEmail1">Buscar Año:</label>

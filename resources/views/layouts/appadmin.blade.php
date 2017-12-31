@@ -40,7 +40,13 @@
 
 <!-- Navigation-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="index.html">Electoral</a>
+
+
+    <a class="nav-link" href="{{url('/')}}">
+        <img id="imagePreview" width="70" height="50" src="{{'archivos/\\logo.png'}}" class="img-fluid img-fluid img-thumbnail" />
+        <span class="nav-link-text" style="font-size:18px;">ELECCIONES {{strtoupper($compania->elecciones)}} {{$ano->numero}}</span>
+    </a>
+
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -86,9 +92,7 @@
                     <li>
                         <a onclick="mostrarSeccionMenu('L','usuarioe','')">Registrar Votante</a>
                     </li>
-                    <li>
-                        <a onclick="">Informes</a>
-                    </li>
+
                 </ul>
             </li>
 
@@ -104,9 +108,7 @@
                     <li>
                         <a onclick="mostrarSeccionMenu('I','ciudad','')">Ciudad</a>
                     </li>
-                    <li>
-                        <a href="#">Informe</a>
-                    </li>
+
 
                 </ul>
             </li>
@@ -118,9 +120,6 @@
                 <ul class="sidenav-second-level collapse" id="collapseExamplePages">
                     <li>
                         <a onclick="mostrarSeccionMenu('I','punto','')">Rergistrar</a>
-                    </li>
-                    <li>
-                        <a href="register.html">Informe</a>
                     </li>
                 </ul>
             </li>
@@ -157,11 +156,15 @@
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="modal" onclick="getAjaxModal('usuario/'+{{Auth::user()->id}}+'/edit','modal-edicion',null)" data-target="#modal-edicion">
-                  <img  width="25" height="25" src="{{Auth::user()->photo=='default.png'?'archivos/\\default.png':'archivos/'.Auth::user()->type.'/'.Auth::user()->id.'/'.Auth::user()->photo}}" class="img-circle" />
-                  {{Auth::user()->name.' '.Auth::user()->name2.' '.Auth::user()->lastname  }}</a>
-            </li>
+          <li class="nav-item">
+                <img id="imagePreview" width="{{$compania->ancho}}" height="$compania->alto" src="{{$compania->imagen=='default.png'?'archivos/\\default.png':'archivos/'.Auth::user()->type.'/'.Auth::user()->id.'/'.$compania->imagen}}" class="img-thumbnail" />
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" data-toggle="modal" onclick="getAjaxModal('usuario/'+{{Auth::user()->id}}+'/edit','modal-edicion',null)" data-target="#modal-edicion">
+                <img  width="25" height="25" src="{{Auth::user()->photo=='default.png'?'archivos/\\default.png':'archivos/'.Auth::user()->type.'/'.Auth::user()->id.'/'.Auth::user()->photo}}" class="img-circle" />
+                {{Auth::user()->name.' '.Auth::user()->name2.' '.Auth::user()->lastname  }}</a>
+          </li>
+
 
             <li class="nav-item">
                 <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
@@ -198,7 +201,7 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Seleccione "Cerrar sesión" a continuación si está listo para finalizar su sesión actual.</div>
+                <div class="modal-body">Esta seguro de cerrar la sesión actual, oprima salir</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
                     <a class="btn btn-primary"  href="{{ route('logout') }}" onclick="event.preventDefault();

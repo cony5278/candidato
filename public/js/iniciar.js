@@ -211,7 +211,7 @@ function postAjaxSend(){
              var notificacion = new Notificacion();
              notificacion.crearContenedor();
              notificacion.crearNotificacion(resul.msj,resul.notificacion);
-             console.log(resul.html)
+
               $(".contenedor").html(resul.html.original);
 
          }).done(function( data ) {

@@ -73,9 +73,12 @@ function eliminarDatos(url,id){
     $("body").append(htmlCargado());
      var  data = {  _method:"delete",_token : $("#token").attr("value")};
       $.post(url+"/"+id, data,function(resul){
+          var notificacion = new Notificacion();
+          notificacion.crearContenedor();
+          notificacion.crearNotificacion(resul.msj,resul.notificacion);
 
-          $(".contenedor").html();
-          $(".contenedor").html(resul);
+         $(".contenedor").html(resul.html.original);
+
       }).done(function( data ) {
         $(".cargando").remove();
       }).fail(function(error) {

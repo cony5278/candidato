@@ -9,6 +9,7 @@ use App\Evssa\EvssaUtil;
 use App\Evssa\EvssaException;
 use Illuminate\Support\Facades\Validator;
 use App\Evssa\EvssaPropertie;
+use App\Reporteador;
 
 class DepartamentoController extends Controller
 {
@@ -196,7 +197,8 @@ class DepartamentoController extends Controller
            return response()->json([
                EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
                EvssaConstantes::MSJ=>"Se ha eliminado correctamente el registro.",
-               "html"=>redirect("departamento")
+               "html"=> response()->json(view("lugar.departamento.listar")->with(["urllistar"=>"departamento","urlgeneral"=>url("/"),"listadepartamentos"=>Departamentos::paginate(10)])->render())
+
            ]);
           } catch (EvssaException $e) {
               return response()->json([
@@ -255,5 +257,30 @@ class DepartamentoController extends Controller
         public function refrescar(Request $request){
 
           return response()->json(view("lugar.departamento.tabla")->with(["urllistar"=>"departamento","urlgeneral"=>url("/"),"listadepartamentos"=>Departamentos::where("nombre","like","%".$request->buscar."%")->paginate(10)])->render());
+      }
+
+      /**
+      *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en pdf
+      */
+      public function oprimirPdf($buscar){
+
+        $reemplazos=array(
+          "buscar"=>str_replace(" ",".c*",$buscar)
+        );
+        $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0003DEPARTAMENTOS",$reemplazos));
+
+        Reporteador::exportar("0003DEPARTAMENTOS",EvssaConstantes::PDF,$param);
+      }
+
+      /**
+      *metodo que al oprimir el boton pdf se descarga el listado de personas o reporte en excel
+      */
+      public function oprimirExcel($buscar){
+        $reemplazos=array(
+          "buscar"=>str_replace(" ",".c*",$buscar)
+        );
+        $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0003DEPARTAMENTOS",$reemplazos));
+
+        Reporteador::exportar("0003DEPARTAMENTOS",EvssaConstantes::EXCEL,$param);
       }
 }
