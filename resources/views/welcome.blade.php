@@ -81,7 +81,6 @@
                         <a href="{{ url('/home') }}">Casa</a>
                     @else
                         <a href="{{ route('login') }}">Iniciar Sesión</a>
-                        <a href="{{ route('register') }}">Registrarse</a>
                     @endauth
                 </div>
             @endif
@@ -161,7 +160,7 @@
                         countdown: true,
                         callbacks: {
                           stop: function() {
-                          
+
                           }
                         }
       				});
