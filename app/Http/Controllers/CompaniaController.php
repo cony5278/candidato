@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Archivos;
 use App\Ano;
 use App\Mes;
+use Illuminate\Support\Facades\Session;
 class CompaniaController extends Controller
 {
   /**
@@ -135,10 +136,9 @@ class CompaniaController extends Controller
       }
       $compania=Compania::find($id);
       $this->actualizar($compania,$request);
-      return response()->json([
-          EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
-          EvssaConstantes::MSJ=>str_replace('s$tabla$s','configuración general',EvssaPropertie::get('TB_ACTUALIZAR')),
-          "html"=> response()->json(view("compania.crear")->with([
+      Session::flash("notificacion","SUCCESS");
+      Session::flash("msj","Se actualizo correctamente los datos generales.");
+      return back()->with([
           "formulario"=>"A",
           "compania"=>$compania,
           "idano"=>"id_ano",
@@ -146,18 +146,15 @@ class CompaniaController extends Controller
           "urldespliegue"=>"listaano",
           "urldesplieguefinal"=>"listames",
           "ano"=>Ano::find($compania->id_ano),
-          "mes"=>Mes::find($compania->id_mes)])->render())
-      ]);
+          "mes"=>Mes::find($compania->id_mes)]);
     } catch (EvssaException $e) {
-        return response()->json([
-            EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
-            EvssaConstantes::MSJ=>$e->getMensaje(),
-        ],400);
+      Session::flash("notificacion","DANGER");
+      Session::flash("msj","Hubo un problema al actualizar los datos generales.");
+      return back();
     } catch (\Illuminate\Database\QueryException $e) {
-         return response()->json([
-             EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
-             EvssaConstantes::MSJ=>"Registro secundario encontrado",
-         ],400);
+      Session::flash("notificacion","DANGER");
+      Session::flash("msj","Registro secundario encontrado.");
+      return back();
     }
   }
   private function validatePhoto(array $data){

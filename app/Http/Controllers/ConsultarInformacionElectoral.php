@@ -10,6 +10,10 @@ use App\MesasVotacion;
 use Illuminate\Http\Request;
 use Goutte\Client;
 use function Sodium\add;
+use App\Evssa\EvssaConstantes;
+use App\Evssa\EvssaUtil;
+use App\Evssa\EvssaException;
+use App\Evssa\EvssaPropertie;
 
 class ConsultarInformacionElectoral extends Controller
 {
@@ -30,28 +34,42 @@ class ConsultarInformacionElectoral extends Controller
      */
     public function index(Request $request)
     {
-
-        //
-
         $client = new Client();
 
-        /**
-         * metodo que me trae la direccion de votacion lugar mesa en la pagina de la registraduria
-         */
-        $this->registraduriaMesa($request,$client);
-        /**
-         * metodo que extrae los nombre y apellidos de las personas
-         */
-        $this->sisbenNombre($request,$client);
-
             if($request->ajax()) {
-
-                $nombres=explode(' ', $this->lista->item(9));
-                $apellidos=explode(' ', $this->lista->item(10));
-                //dd($this->lista->getArray());
-
                 if($request->type=='E'){
 
+                  $this->registraduriaMesa($request,$client);
+                  if(empty($this->lista->getArray())){
+                    return response()->json([
+                      EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
+                      EvssaConstantes::MSJ=>"Error al consultar la información con la cédula suministrada.",
+                    ],404);
+                  }
+
+
+                if(!array_key_exists(0,$this->lista->getArray())){
+                  return response()->json([
+                      EvssaConstantes::NOTIFICACION=> EvssaConstantes::INFO,
+                      EvssaConstantes::MSJ=>"No se encuentran datos del número de cédula ingresado.",
+                  ],400);
+                }
+
+                  $this->sisbenNombre($request,$client);
+                if(empty($this->lista->getArray())){
+                    return response()->json([
+                      EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
+                      EvssaConstantes::MSJ=>"Error al consultar la información con la cédula suministrada.",
+                    ],404);
+                  }
+                if(!array_key_exists(9,$this->lista->getArray())){
+                  return response()->json([
+                      EvssaConstantes::NOTIFICACION=> EvssaConstantes::INFO,
+                      EvssaConstantes::MSJ=>"No se encuentran datos del número de cédula ingresado.",
+                  ],400);
+                }
+                $nombres=explode(' ', $this->lista->item(9));
+                $apellidos=explode(' ', $this->lista->item(10));
                 $departamento=new Departamentos();
                 $departamento=$departamento->buscar($this->lista->item(0));
 
@@ -88,20 +106,31 @@ class ConsultarInformacionElectoral extends Controller
                     'urlreferido'=>'listardiferidos',
                 ])->with(UsuarioEController::url())->render());
               }else{
-              
-                return response()->json(view("auth.admin.crear")->with([
-                    "formulario"=>$request->acme,
-                    "nit"=>$request->cedula,
-                    "nombre1"=>$nombres[0],
-                    "nombre2"=>$nombres[1],
-                    "apellido1"=>$apellidos[0],
-                    "apellido2"=>$apellidos[1],
-                    "type"=>$request->type,
-                    'urlreferido'=>'listardiferidos',
-                    'idnamereferido'=>'id_referido',
-                    'urlreferido'=>'listardiferidos',
-                ])->with(UsuarioEController::url())->render());
-              }
+                $this->sisbenNombre($request,$client);
+
+                if(array_key_exists(9,$this->lista->getArray())){
+                      $nombres=explode(' ', $this->lista->item(3));
+                      $apellidos=explode(' ', $this->lista->item(4));
+
+                      return response()->json(view("auth.admin.crear")->with([
+                          "formulario"=>$request->acme,
+                          "nit"=>$request->cedula,
+                          "nombre1"=>$nombres[0],
+                          "nombre2"=>$nombres[1],
+                          "apellido1"=>$apellidos[0],
+                          "apellido2"=>$apellidos[1],
+                          "type"=>$request->type,
+                          'urlreferido'=>'listardiferidos',
+                          'idnamereferido'=>'id_referido',
+                          'urlreferido'=>'listardiferidos',
+                      ])->with(UsuarioEController::url())->render());
+                  }else{
+                    return response()->json([
+                        EvssaConstantes::NOTIFICACION=> EvssaConstantes::INFO,
+                        EvssaConstantes::MSJ=>"No se encuentran datos del número de cédula ingresado.",
+                    ],400);
+                  }
+               }
             }
     }
     private function registraduriaMesa(Request $request,$client){

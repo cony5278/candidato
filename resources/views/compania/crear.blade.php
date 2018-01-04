@@ -1,5 +1,5 @@
 
-<form class="formulario-general"  enctype="multipart/form-data" id="form-persona" method="POST" action="{{ route('compania.update',$compania->id) }}">
+<form class="formulario-ge" onsubmit="onCargandoSubmit()"  enctype="multipart/form-data" id="form-persona" method="POST" action="{{ route('compania.update',$compania->id) }}">
 <input name="_method" type="hidden" value="PUT">
   <input type="hidden" id="token" name="_token" value="{{ csrf_token() }}">
 

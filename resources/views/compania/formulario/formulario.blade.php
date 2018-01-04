@@ -6,7 +6,7 @@
                 Subir Imagen&hellip; <input id="imageUpload" type="file" name="photo" style="display: none;" multiple>
             </span>
             </label>
-            <input id="valor-img" type="text"  align="rigth" value="{{empty($compania)?'':$compania->imagen}}" style="position: relative;
+            <input id="valor-img-general" type="text"  align="rigth" value="{{empty($compania)?'':$compania->imagen}}" style="position: relative;
                                          left: 79px;max-width:55% !important; height: 25px !important;" class="form-control" disabled>
 
         </div>
@@ -19,8 +19,8 @@
                         reader.onload = (function(theFile) {
                             return function(e) {
                                   photo[0]=theFile;
-                                $('#imagePreview').attr('src', e.target.result);
-                                $('#valor-img').attr('value', theFile.name);
+                                $('#imagePreview-general').attr('src', e.target.result);
+                                $('#valor-img-general').attr('value', theFile.name);
                             };
                         })(input.files[0]);
 
@@ -33,7 +33,7 @@
 </div>
 
 <div class="form-group">
-  <img id="imagePreview" width="200" height="200" src="{{$compania->imagen=='default.png'?'archivos/\\default.png':'archivos/'.Auth::user()->type.'/'.Auth::user()->id.'/'.$compania->imagen}}" class="img-thumbnail" />
+  <img id="imagePreview-general" width="200" height="200" src="{{$compania->imagen=='default.png'?'archivos/\\default.png':'archivos/'.Auth::user()->type.'/'.Auth::user()->id.'/'.$compania->imagen}}" class="img-thumbnail" />
 </div>
 <div class="form-group">
     <label for="exampleInputEmail1">Ancho de la imagen:</label>

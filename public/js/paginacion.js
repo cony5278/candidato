@@ -163,16 +163,36 @@ function registraduria(event,evento,url,acme,type){
     if(acme!='A'){
       var keycode = (event.keyCode ? event.keyCode : event.which);
       if(keycode == 13) {
+          $("body").append(htmlCargado());
           $.ajax({
               url: url,
               data: {cedula: $(evento).val(),acme:acme,type:type},
               type: 'GET',
               dataType: 'json',
               success: function (data) {
-
+                  $(".cargando").remove();
                   $(".contenedor").html();
                   $(".contenedor").html(data);
-              }
+              },
+             error: function(error){
+            
+               $(".cargando").remove();
+               var data = JSON.parse(error.responseText).errors;
+               if(data!=undefined){
+                  for(var key in data) {
+
+                          var notificacion = new Notificacion();
+                          notificacion.crearContenedor();
+                          notificacion.crearNotificacion(data[key],"DANGER");
+                  }
+
+                }else{
+                  data = JSON.parse(error.responseText);
+                  var notificacion = new Notificacion();
+                  notificacion.crearContenedor();
+                  notificacion.crearNotificacion(data.msj,data.notificacion);
+                }
+             },
           });
         }
     }
