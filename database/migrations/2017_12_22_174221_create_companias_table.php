@@ -19,6 +19,7 @@ class CreateCompaniasTable extends Migration
             $table->string('elecciones',35)->nullable();
             $table->integer('ancho')->nullable()->default(0);
             $table->integer('alto')->nullable()->default(0);
+            $table->integer('meta')->nullable()->default(0);
             $table->integer('id_ano')->unsigned()->nullable();
             $table->foreign('id_ano')
                 ->references('id')

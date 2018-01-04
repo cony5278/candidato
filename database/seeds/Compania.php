@@ -17,6 +17,7 @@ class Compania extends Seeder
           'imagen'	   =>	'default.png',
           'ancho'=>200,
           'alto'=>200,
+          'meta'=>0,
       ]);
     }
 }

@@ -177,6 +177,7 @@
     <div class="porro"></div>
     <div class="container-fluid contenedor">
         <!-- incluye todo -->
+        @include('compania.crear')
     </div>
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->

@@ -91,17 +91,23 @@
     -moz-border-radius: 200px 200px 200px 200px;
     -webkit-border-radius: 200px 200px 200px 200px;
     border: 0px solid #000000;background:#f79625;color:#fff;font-weight:bold; font-size:20px;">
-	                      <div class="col-md-6" style="position:abosolute !important;left:10px;top:30px;">
+	                      <div class="col-md-8" style="position:abosolute !important;left:17px;top:23px;">
                           <h6 >Potencial electoral:</h6>
                         </div>
-                        <div class="col-md-6" style="position:abosolute !important;left:58px;top:-4px;">
+                        <div class="col-md-6" style="position:abosolute !important;left:82px;top:-14px;">
                             {{$usuario->potencialelectoral}}
                         </div>
-                        <div class="col-md-6" style="position:abosolute !important;left:10px;top:5px;">
+                        <div class="col-md-6" style="position:abosolute !important;left:33px;top:-10px;">
                           <h6 >Potencial real:</h6>
                         </div>
-                        <div class="col-md-12" style="position:abosolute !important;left:4px;top:-33px;">
+                        <div class="col-md-12" style="position:abosolute !important;left:26px;top:-47px;">
                            {{$usuario->cantidadreal}}
+                        </div>
+                        <div class="col-md-6" style="position:abosolute !important;left:22px;top:-41px;">
+                          <h6 >Porcentaje cumplimiento de la meta:</h6>
+                        </div>
+                        <div class="col-md-12" style="position:abosolute !important;left:28px;top:-74px;">
+                           {{$porcentaje}}%
                         </div>
                     </div>
                 @endauth

@@ -28,8 +28,8 @@ return [
     | the Mailgun mail service which will provide reliable deliveries.
     |
     */
-
-    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    // 'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+    'host' => env('MAIL_HOST', 'smtp.gmail.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -54,9 +54,12 @@ return [
     | used globally for all e-mails that are sent by your application.
     |
     */
-
+    // 'from' => [
+    //     'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+    //     'name' => env('MAIL_FROM_NAME', 'Example'),
+    // ],
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+        'address' => env('MAIL_FROM_ADDRESS', 'nuevojuanchaco67@gmail.com'),
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
@@ -83,10 +86,13 @@ return [
     | connection. You may also set the "password" value below this one.
     |
     */
+    'username' => 'nuevojuanchaco67@gmail.com',
 
-    'username' => env('MAIL_USERNAME'),
+    'password' => 'dhjwjhbroglnlndt',
 
-    'password' => env('MAIL_PASSWORD'),
+    // 'username' => env('MAIL_USERNAME'),
+    //
+    // 'password' => env('MAIL_PASSWORD'),
 
     /*
     |--------------------------------------------------------------------------
@@ -120,4 +126,11 @@ return [
         ],
     ],
 
+    'stream' => [
+    'ssl' => [
+        'allow_self_signed' => true,
+        'verify_peer' => false,
+        'verify_peer_name' => false,
+    ],
+    ],
 ];

@@ -88,3 +88,9 @@
     <input type="number" name="dia" class="form-control"  value="{{empty($compania)?'':$compania->dia}}" placeholder="dia">
     <small id="emailHelp" class="form-text text-muted">Señor usuario digite un dia.</small>
 </div>
+
+<div class="form-group">
+    <label for="exampleInputEmail1">Meta:</label>
+    <input type="number" name="meta" class="form-control"  value="{{empty($compania)?'':$compania->meta}}" placeholder="numero meta">
+    <small id="emailHelp" class="form-text text-muted">Señor usuario digite la meta.</small>
+</div>

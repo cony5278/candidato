@@ -22,17 +22,20 @@ class CompaniaController extends Controller
    */
   public function index()
   {
-    $compania=Compania::find(1);
+    return response()->json(view("compania.crear")->with(self::url())->render());
+  }
 
-    return response()->json(view("compania.crear")->with([
-      "idano"=>"id_ano",
-      "idmes"=>"id_mes",
-      "urldespliegue"=>"listaano",
-      "urldesplieguefinal"=>"listames",
-      "ano"=>Ano::find($compania->id_ano),
-      "mes"=>Mes::find($compania->id_mes)
-      ])->render());
-
+  public final static function url(){
+      $compania=Compania::find(1);
+      return [
+        "compania"=>$compania,
+        "idano"=>"id_ano",
+        "idmes"=>"id_mes",
+        "urldespliegue"=>"listaano",
+        "urldesplieguefinal"=>"listames",
+        "ano"=>Ano::find($compania->id_ano),
+        "mes"=>Mes::find($compania->id_mes)
+      ];
   }
   /**
    * Get a validator for an incoming registration request.
@@ -193,7 +196,7 @@ class CompaniaController extends Controller
       $compania->ancho=$data['ancho'];
       $compania->alto=$data['alto'];
       $compania->elecciones=$data['elecciones'];
-
+      $compania->meta=$data['meta'];
       $compania->save();
 
 

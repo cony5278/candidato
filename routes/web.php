@@ -59,6 +59,7 @@ Route::get('/', function () {
       "ano"=>Ano::find($compania->id_ano),
       "mes"=>Mes::find($compania->id_mes),
       "usuario"=>$usuario,
+      "porcentaje"=> round((100*$usuario->cantidadreal)/$compania->meta,2),
   ]);
 });
 Route::get('/prueba', function () {

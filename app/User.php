@@ -6,6 +6,9 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use App\Notifications\RestablecerContrasenaNotification;
+
+
 class User extends Authenticatable
 {
     use Notifiable;
@@ -113,6 +116,15 @@ class User extends Authenticatable
           return $this->hasMany('App\Historialobservacion');
     }
 
-
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new RestablecerContrasenaNotification($token));
+    }
 
 }
