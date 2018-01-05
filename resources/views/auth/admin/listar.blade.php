@@ -10,8 +10,8 @@
 
 		</div>
 		<div class="col-md-2">
-			<a onclick="oprimirHref('{{$urlreportepdfgeneral}}','nombreempresa')"><img src="archivos/pdf.jpg"  width="50" height="50" /></a>
-			<a onclick="oprimirHref('{{$urlreporteexcelgeneral}}','nombreempresa')"><img src="archivos/excel.png"  width="50" height="50" /></a>
+			<a style="cursor:pointer;" onclick="oprimirHref('{{$urlreportepdfgeneral}}','nombreempresa')"><img src="archivos/pdf.jpg"  width="50" height="50" /></a>
+			<a style="cursor:pointer;" onclick="oprimirHref('{{$urlreporteexcelgeneral}}','nombreempresa')"><img src="archivos/excel.png"  width="50" height="50" /></a>
 		</div>
 	</div>
 </div>

@@ -9,8 +9,8 @@
       <input id="nombreempresa" type="text" onkeyup="buscarEnTabla(this,'{{$urllistar.'/refrescar'}}','grilla-tabla')"   placeholder="Buscar por dirección" class="form-control" name="buscarentabla"  value="" >
 		</div>
 		<div class="col-md-2">
-			<a onclick="oprimirHref('{{url('oprimirpuntogeneralpdf')}}','nombreempresa')"><img src="archivos/pdf.jpg"  width="50" height="50" /></a>
-			<a onclick="oprimirHref('{{url('oprimirpuntogeneralexcel')}}','nombreempresa')"><img src="archivos/excel.png"  width="50" height="50" /></a>
+			<a style="cursor:pointer;" onclick="oprimirHref('{{url('oprimirpuntogeneralpdf')}}','nombreempresa')"><img src="archivos/pdf.jpg"  width="50" height="50" /></a>
+			<a style="cursor:pointer;" onclick="oprimirHref('{{url('oprimirpuntogeneralexcel')}}','nombreempresa')"><img src="archivos/excel.png"  width="50" height="50" /></a>
 		</div>
 
 	</div>
