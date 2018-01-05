@@ -23,6 +23,9 @@ Route::get('/consulta', function () {
     return view('consulta');
 });
 
+Route::get('/cargando', function () {
+    return view('layouts.cargando');
+});
 Route::get('listadepartamentos','DepartamentoController@cargarListaCombo');
 
 Route::get('listaciudades','CiudadController@cargarListaCombo');
@@ -59,7 +62,7 @@ Route::get('/', function () {
       "ano"=>Ano::find($compania->id_ano),
       "mes"=>Mes::find($compania->id_mes),
       "usuario"=>$usuario,
-      "porcentaje"=> round((100*$usuario->cantidadreal)/$compania->meta,2),
+      "porcentaje"=>$compania->meta==0?0:round((100*$usuario->cantidadreal)/$compania->meta,2),
   ]);
 });
 Route::get('/prueba', function () {
@@ -90,6 +93,7 @@ Route::get('/select', function () {
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware'=>'super'],function(){
+  Route::resource('usuarioe', 'UsuarioEController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
   Route::resource('usuario', 'UsuarioAController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);
   Route::resource('observation', 'HistorialObservacionController');
   Route::resource('departamento', 'DepartamentoController',  ['only' => ['create', 'store', 'update', 'destroy','edit']]);

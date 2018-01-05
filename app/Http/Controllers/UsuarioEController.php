@@ -180,11 +180,10 @@ class UsuarioEController extends Controller
       }
 
       //tabla punto de votacion
-      $puntoVotacion=new PuntosVotacion();
-      $puntoVotacion=$puntoVotacion->buscar($data['id_punto'],$data['id_ciudad']);
+
+      $puntoVotacion=PuntosVotacion::find($data['id_punto']);
       //tabla mesa de votacion
-      $mesa=new MesasVotacion();
-      $mesa=$mesa->buscar($data['mesa'],$puntoVotacion);
+      $mesa=MesasVotacion::find($data['id_mesa']);
       $usuario->id_mesa=$mesa->id;
       //tabla opcion
       $opciones=new Opcion();
@@ -405,16 +404,18 @@ class UsuarioEController extends Controller
         //tabla departamneto
         if(!empty($data['id_ciudad'])){
          $ciudad=Ciudades::find($data['id_ciudad']);
+         $ciudad->id_departamento=$departamento->id;
+         $ciudad->save();
         }
-        $ciudad->id_departamento=$departamento->id;
-        $ciudad->save();
+
 
         //tabla punto de votacion
         if(!empty($data['id_punto'])){
           $puntosvotacion=PuntosVotacion::find($data['id_punto']);
+          $puntosvotacion->id_ciudad=$ciudad->id;
+          $puntosvotacion->save();
         }
-        $puntosvotacion->id_ciudad=$ciudad->id;
-        $puntosvotacion->save();
+
 
         //tabla mesa de MesasVotacion
         if(!empty($data['id_mesa'])){

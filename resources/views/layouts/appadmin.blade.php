@@ -43,7 +43,7 @@
 
 
     <a class="nav-link" href="{{url('/')}}">
-        <img id="imagePreview-header" width="70" height="50" src="{{'archivos/\\logo.png'}}" class="img-fluid img-fluid img-thumbnail" />
+        <img id="imagePreview-header" width="40" height="25" src="{{'archivos/\\logo.png'}}" class="img-fluid img-fluid img-thumbnail" />
         <span class="nav-link-text" style="font-size:18px;">ELECCIONES {{strtoupper($compania->elecciones)}} {{$ano->numero}}</span>
     </a>
 
@@ -160,7 +160,7 @@
                 <img id="imagePreview-header-logo-campana" width="{{$compania->ancho}}" height="$compania->alto" src="{{$compania->imagen=='default.png'?'archivos/\\default.png':'archivos/'.Auth::user()->type.'/'.Auth::user()->id.'/'.$compania->imagen}}" class="img-thumbnail" />
           </li>
           <li class="nav-item">
-              <a class="nav-link" data-toggle="modal" onclick="getAjaxModal('usuario/'+{{Auth::user()->id}}+'/edit','modal-edicion',null)" data-target="#modal-edicion">
+              <a class="nav-link" data-toggle="modal" onclick="mostrarSeccionMenu('A','compania','001');getAjaxModal('usuario/'+{{Auth::user()->id}}+'/edit','modal-edicion',null)" data-target="#modal-edicion">
                 <img  width="25" height="25" src="{{Auth::user()->photo=='default.png'?'archivos/\\default.png':'archivos/'.Auth::user()->type.'/'.Auth::user()->id.'/'.Auth::user()->photo}}" class="img-circle" />
                 {{Auth::user()->name.' '.Auth::user()->name2.' '.Auth::user()->lastname  }}</a>
           </li>

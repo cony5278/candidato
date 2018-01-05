@@ -102,7 +102,7 @@ class User extends Authenticatable
     public function cantidadPotencialElectoral(Request $request){
 
       return $this->where("id_referido","=",$request->id_referido)
-                  ->select(\DB::raw('COUNT(*)-1 as cantidadreal'))
+                  ->select(\DB::raw('COUNT(*) as cantidadreal'))
                   ->groupBy('id_referido')
                   ->first();
     }

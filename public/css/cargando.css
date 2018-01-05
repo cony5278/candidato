@@ -18,8 +18,8 @@
   position: relative;
   left: 40%;
   top: 30%;
-  width: 190px;
-  height: 190px;
+  width: 290px;
+  height: 290px;
   background: #fff;
   z-index: 1501;
   border-radius: 200px 200px 200px 200px;
@@ -27,8 +27,24 @@
   -webkit-border-radius: 200px 200px 200px 200px;
   border: 0px solid #000000;
 }
+.titulo-cargando{
+  position: absolute;
+  left:33%;
+  top:10%;
+  font-size: 20px;
+}
+.logo-empresa-cargando{
+  position: absolute;
+  left:33%;
+  top:24%;
+}
+.gif-cargando{
+  position: absolute;
+  left:24%;
+  top:65%;
+}
 .contenedor-cargando-body{
   position: absolute;
-  left: 10%;
-  Top:40%;
+  left: 24%;
+  Top:60%;
 }

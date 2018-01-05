@@ -13,51 +13,51 @@ class Mes extends Seeder
     {
       DB::table('mes')->delete();
       \App\Mes::create([
-          'id'=>0,
+          'id'=>1,
           'nombre'=>	'Enero',
       ]);
       \App\Mes::create([
-          'id'=>1,
+          'id'=>2,
           'nombre'=>	'Febrero',
       ]);
       \App\Mes::create([
-          'id'=>2,
+          'id'=>3,
           'nombre'=>	'Marzo',
       ]);
       \App\Mes::create([
-          'id'=>3,
+          'id'=>4,
           'nombre'=>	'Abril',
       ]);
       \App\Mes::create([
-          'id'=>4,
+          'id'=>5,
           'nombre'=>	'Mayo',
       ]);
       \App\Mes::create([
-          'id'=>5,
+          'id'=>6,
           'nombre'=>	'Junio',
       ]);
       \App\Mes::create([
-          'id'=>6,
+          'id'=>7,
           'nombre'=>	'Julio',
       ]);
       \App\Mes::create([
-          'id'=>7,
+          'id'=>8,
           'nombre'=>	'Agosto',
       ]);
       \App\Mes::create([
-          'id'=>8,
+          'id'=>9,
           'nombre'=>	'Septiembre',
       ]);
       \App\Mes::create([
-          'id'=>9,
+          'id'=>10,
           'nombre'=>	'Octubre',
       ]);
       \App\Mes::create([
-          'id'=>10,
+          'id'=>11,
           'nombre'=>	'Noviembre',
       ]);
       \App\Mes::create([
-          'id'=>11,
+          'id'=>12,
           'nombre'=>	'Diciembre',
       ]);
     }

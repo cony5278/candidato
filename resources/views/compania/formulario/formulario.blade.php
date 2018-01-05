@@ -3,7 +3,7 @@
         <div class="input-group">
             <label class="input-group-btn">
             <span class="btn btn-primary" >
-                Subir Imagen&hellip; <input id="imageUpload" type="file" name="photo" style="display: none;" multiple>
+                Subir Imagen&hellip; <input id="imageUpload-general" type="file" name="photo" style="display: none;" multiple>
             </span>
             </label>
             <input id="valor-img-general" type="text"  align="rigth" value="{{empty($compania)?'':$compania->imagen}}" style="position: relative;
@@ -11,7 +11,7 @@
 
         </div>
         <script>
-            $('#imageUpload').change(function(){
+            $('#imageUpload-general').change(function(){
                 readImgUrlAndPreview(this);
                 function readImgUrlAndPreview(input){
                     if (input.files && input.files[0]) {

@@ -15,8 +15,11 @@ class Compania extends Seeder
       \App\Compania::create([
           'id'=>1,
           'imagen'	   =>	'default.png',
-          'ancho'=>200,
-          'alto'=>200,
+          'ancho'=>50,
+          'alto'=>50,
+          'id_ano'=>117,
+          'id_mes'=>12,
+          'dia'=>30,
           'meta'=>0,
       ]);
     }

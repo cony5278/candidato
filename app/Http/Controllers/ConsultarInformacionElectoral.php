@@ -77,10 +77,12 @@ class ConsultarInformacionElectoral extends Controller
                 $ciudad=$ciudad->buscar($this->lista->item(1),$departamento);
 
                 $punto=new PuntosVotacion();
+
                 $punto=$punto->getBuscarDireccion($this->lista->item(3),$ciudad);
 
                 $mesa=new MesasVotacion();
                 $mesa=$mesa->buscar($this->lista->item(5),$punto);
+
                 return response()->json(view("auth.admin.creare")->with([
                     "formulario"=>$request->acme,
                     "nit"=>$request->cedula,
