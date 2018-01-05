@@ -108,6 +108,17 @@ class Archivos {
             $this -> file -> getClientOriginalName ( ) );
 
     }
+    /**
+     * nombre de la ruta del archivo
+     * @param  $dateServidor
+     * @return string
+     */
+    private function nombreRutaArchivoSuper ()
+    {
+
+        return  'S'. '/' .$this -> file -> getClientOriginalName ( );
+
+    }
 
     /**
      * metodo que guarda el archivo en la ruta especifica
@@ -117,6 +128,18 @@ class Archivos {
 
         Storage :: disk ( EvssaConstantes :: LOCAL ) -> put (
             $this -> nombreRutaArchivo ( $usuario ),
+            File :: get ( $this -> file ) );
+
+    }
+
+    /**
+     * metodo que guarda el archivo en la ruta especifica
+     */
+    public function guardarArchivoSuper ()
+    {
+
+        Storage :: disk ( EvssaConstantes :: LOCAL ) -> put (
+            $this -> nombreRutaArchivoSuper (  ),
             File :: get ( $this -> file ) );
 
     }

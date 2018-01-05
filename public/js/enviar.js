@@ -70,7 +70,7 @@ function formulario(url,nombreFormulario){
 }
 
 function eliminarDatos(url,id){
-    $("body").append(htmlCargado());
+      $(".cargando").show();
      var  data = {  _method:"delete",_token : $("#token").attr("value")};
       $.post(url+"/"+id, data,function(resul){
           var notificacion = new Notificacion();
@@ -80,10 +80,10 @@ function eliminarDatos(url,id){
          $(".contenedor").html(resul.html.original);
 
       }).done(function( data ) {
-        $(".cargando").remove();
+        $(".cargando").hide();
       }).fail(function(error) {
 
-          $(".cargando").remove();
+          $(".cargando").hide();
           var data = JSON.parse(error.responseText);
           // undefined
           var notificacion = new Notificacion();

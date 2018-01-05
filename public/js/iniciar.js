@@ -5,46 +5,19 @@ photo = new Array();
 
 
 
-//html del gis cargando
-function htmlCargado(){
-
-  return '<div class="cargando">'+
-    '<div class="contenedor-cargando">'+
-      '<div class="container-fluid">'+
-      	'<div class="row titulo-cargando">'+
-      		'<div class="col-md-12 ">'+
-            'Cargando'+
-      		'</div>'+
-      	'</div>'+
-      	'<div class="row logo-empresa-cargando">'+
-      		'<div class="col-md-12 ">'+
-            '<img src="archivos/logo.png" width="100" height="100" class="img-fluid" alt="Responsive image">'+
-      		'</div>'+
-      	'</div>'+
-      	'<div class="row gif-cargando">'+
-      		'<div class="col-md-12">'+
-            '<img src="archivos/loader.gif" width="150" height="100" class="img-fluid" alt="Responsive image">'+
-      		'</div>'+
-      	'</div>'+
-      '</div>'+
-    '</div>'+
-  '</div>';
-
-
-}
 function onCargandoSubmit(){
-    $("body").append(htmlCargado());
+    $(".cargando").show();
 }
 
 function getAjax(url){
     $(".contenedor").html();
-    $("body").append(htmlCargado());
+    $(".cargando").show();
     $.get(url,function(resul){
         $(".contenedor").html(resul);
     }) .done(function( data ) {
-      $(".cargando").remove();
+      $(".cargando").hide();
     }).fail(function(error) {
-      $(".cargando").remove();
+      $(".cargando").hide();
       var data = JSON.parse(error.responseText).errors;
       if(data!=undefined){
          for(var key in data) {
@@ -65,13 +38,13 @@ function getAjax(url){
 
 function getAjaxContenedor(url,elemento,id_referido){
     $("."+elemento).html();
-    $("body").append(htmlCargado());
+    $(".cargando").show();
     $.get(url,{id_referido:id_referido},function(resul){
         $("."+elemento).html(resul);
     }) .done(function( data ) {
-      $(".cargando").remove();
+      $(".cargando").hide();
     }).fail(function(error) {
-      $(".cargando").remove();
+      $(".cargando").hide();
       var data = JSON.parse(error.responseText).errors;
       if(data!=undefined){
          for(var key in data) {
@@ -91,14 +64,14 @@ function getAjaxContenedor(url,elemento,id_referido){
 }
 function getAjaxModal(url,elemento,dato){
     $("."+elemento).html();
-    $("body").append(htmlCargado());
+    $(".cargando").show();
     $.get(url,{dato:dato},function(resul){
       $("body").append(resul);
       $('#'+elemento).modal('show');
     }) .done(function( data ) {
-      $(".cargando").remove();
+      $(".cargando").hide();
     }).fail(function(error) {
-      $(".cargando").remove();
+      $(".cargando").hide();
       var data = JSON.parse(error.responseText).errors;
       if(data!=undefined){
          for(var key in data) {
@@ -135,7 +108,7 @@ function getAjaxModal(url,elemento,dato){
 			processData: false,
 			dataType: 'json',
 			success: function (resul) {
-        $(".cargando").remove();
+        $(".cargando").hide();
         var notificacion = new Notificacion();
         notificacion.crearContenedor();
         notificacion.crearNotificacion(resul.msj,resul.notificacion);
@@ -143,7 +116,7 @@ function getAjaxModal(url,elemento,dato){
          $(".modal").modal("hide");
 			},
 			error: function (error) {
-        $(".cargando").remove();
+        $(".cargando").hide();
         var data = JSON.parse(error.responseText).errors;
         if(data!=undefined){
            for(var key in data) {
@@ -176,7 +149,7 @@ function addDatos(formulario){
 	}
 function postAjax(url,id){
   $(".contenedor").html();
-  $("body").append(htmlCargado());
+  $(".cargando").show();
         var  data = {  _method:"delete",_token : $("#token").attr("value")};
          $.post(url+"/"+id, data,function(resul){
 
@@ -186,9 +159,9 @@ function postAjax(url,id){
               $(".contenedor").html(resul.html.original);
 
          }).done(function( data ) {
-           $(".cargando").remove();
+           $(".cargando").hide();
          }).fail(function(error) {
-           $(".cargando").remove();
+           $(".cargando").hide();
            var data = JSON.parse(error.responseText).errors;
            if(data!=undefined){
               for(var key in data) {
@@ -209,7 +182,7 @@ function postAjax(url,id){
 
 function postAjaxSend(){
   $(".contenedor").html();
-  $("body").append(htmlCargado());
+  $(".cargando").show();
   var formData = new FormData();
   // formData.append("photo",  $('#imageUpload')[0].files[0]);
   var data=$('.formulario').serializeArray();
@@ -223,10 +196,10 @@ function postAjaxSend(){
               $(".contenedor").html(resul.html.original);
 
          }).done(function( data ) {
-           $(".cargando").remove();
+           $(".cargando").hide();
          }).fail(function(error) {
 
-           $(".cargando").remove();
+           $(".cargando").hide();
            var data = JSON.parse(error.responseText).errors;
            if(data!=undefined){
               for(var key in data) {
@@ -248,7 +221,7 @@ function postAjaxSend(){
 
 function postAjaxObservation(){
   $(".contenedor").html();
-  $("body").append(htmlCargado());
+  $(".cargando").show();
 
   var data=$('.formulario-observation').serializeArray();
            $.post($('.formulario-observation').attr('action'), data,function(resul){
@@ -259,9 +232,9 @@ function postAjaxObservation(){
               $(".contenedor").html(resul.html.original);
 
          }).done(function( data ) {
-           $(".cargando").remove();
+           $(".cargando").hide();
          }).fail(function(error) {
-           $(".cargando").remove();
+           $(".cargando").hide();
            var data = JSON.parse(error.responseText).errors;
            if(data!=undefined){
               for(var key in data) {
@@ -301,7 +274,7 @@ $(document).on('submit','.formulario-observation',function(e){
 });
 
 function oprimirHref(url,elemento){
-
+  // onCargandoSubmit();
   var valor=$("#"+elemento).val()==""?".c*":$("#"+elemento).val();
   window.location = url+"/"+valor;
 }

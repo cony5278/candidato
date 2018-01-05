@@ -1,0 +1,19 @@
+SELECT
+  ID,
+  CASE
+    WHEN TYPE='A'
+    THEN 'ADMINISTRADOR'
+    ELSE 'VOTANTE'
+  END TYPE,
+  EMAIL AS CORREO,
+  concat_ws(' ',NAME,NAME2,LASTNAME,LASTNAME2) AS NOMBRES
+FROM
+  USERS
+WHERE
+  (
+    NAME LIKE '%s$buscar$s%'
+  OR NAME2 LIKE '%s$buscar$s%'
+  OR LASTNAME LIKE '%s$buscar$s%'
+  OR LASTNAME2 LIKE '%s$buscar$s%'
+  )
+AND TYPE = 'E'

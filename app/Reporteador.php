@@ -27,20 +27,19 @@ class Reporteador {
     }
     public static function exportar($nombre,$formato,$param){
 
-      switch ($formato) {
-        case EvssaConstantes::EXCEL:
+      if($formato==EvssaConstantes::EXCEL) {
+
               self::descargar($nombre,$formato,$param);
-          break;
-        case EvssaConstantes::EXCEL10:
-                self::descargar($nombre,$formato,$param);
-          break;
-        case EvssaConstantes::PDF:
-              self::descargar($nombre,$formato,$param);
-          break;
-        default:
-          # code...
-          break;
       }
+          if($formato==EvssaConstantes::EXCEL10){
+                self::descargar($nombre,$formato,$param);
+      }
+          if($formato==EvssaConstantes::PDF)  {
+              self::descargar($nombre,$formato,$param);
+
+      }
+
+
   }
 
   private static function descargar($nombre,$formato,$param){
@@ -63,8 +62,7 @@ class Reporteador {
       $file = file_get_contents($file);
       self::cabeceras($nombre,$formato,$path);
       readfile($path);
-      flush();
-      unlink($path);
+
     }
 
 

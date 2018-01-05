@@ -1,0 +1,7 @@
+SELECT
+  ID,
+  NOMBRE
+FROM
+  DEPARTAMENTOS
+WHERE
+  NOMBRE LIKE '%s$buscar$s%'

@@ -184,7 +184,7 @@ class CompaniaController extends Controller
 
 
       if (!empty($request->file('photo'))) {
-          $archivo->guardarArchivo(Auth::user());
+          $archivo->guardarArchivoSuper();
       }
 
       $compania->id_ano=$data['id_ano'];

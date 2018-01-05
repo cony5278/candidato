@@ -248,6 +248,29 @@ class MesaVotacionController extends Controller
   }
 
   public function refrescar(Request $request){
+    dd(Departamentos::join("ciudades","departamentos.id","ciudades.id_departamento")
+                  ->join("puntos_votacions","ciudades.id","puntos_votacions.id_ciudad")
+                  ->join("mesas_votacions","puntos_votacions.id","mesas_votacions.id_punto")
+                  ->join("users","mesas_votacions.id","users.id_mesa")
+                  ->orWhere("mesas_votacions.numero","like","".$request->buscar."%")
+                  ->orWhere("puntos_votacions.direccion","like","%".$request->buscar."%")
+                  ->orWhere("ciudades.nombre","like","%".$request->buscar."%")
+                  ->orWhere("departamentos.nombre","like","%".$request->buscar."%")
+                  ->orWhere(function ($query) use($request) {
+                               $query->orWhere("users.name","LIKE","%".$request->buscar."%")
+                                   ->orWhere("users.name2","LIKE","%".$request->buscar."%")
+                                   ->orWhere("users.lastname","LIKE","%".$request->buscar."%")
+                                   ->orWhere("users.lastname2","LIKE","%".$request->buscar."%");
+                                 })
+                  ->select("departamentos.nombre as departamento",
+                           "ciudades.nombre as ciudad",
+                           "puntos_votacions.direccion",
+                           "mesas_votacions.numero",
+                           "mesas_votacions.id",
+                           "users.name",
+                           "users.name2",
+                           "users.lastname",
+                           "users.lastname2")->toSql());
 
     return response()->json(view("lugar.mesa.tabla")->with(["urllistar"=>"mesa","urlgeneral"=>url("/"),"listadesplieguemesa"=>
               Departamentos::join("ciudades","departamentos.id","ciudades.id_departamento")
@@ -281,11 +304,13 @@ class MesaVotacionController extends Controller
   public function oprimirPdf($buscar){
 
     $reemplazos=array(
-      "buscar"=>str_replace(" ",".c*",$buscar)
+    "buscar"=>$buscar==".c*"?"":str_replace(" ",".c*",$buscar)
     );
     $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0001MESAGENERAL",$reemplazos));
 
     Reporteador::exportar("0001MESAGENERAL",EvssaConstantes::PDF,$param);
+
+    return redirect()->back();
   }
 
   /**
@@ -293,10 +318,11 @@ class MesaVotacionController extends Controller
   */
   public function oprimirExcel($buscar){
     $reemplazos=array(
-      "buscar"=>str_replace(" ",".c*",$buscar)
+    "buscar"=>$buscar==".c*"?"":str_replace(" ",".c*",$buscar)
     );
     $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0001MESAGENERAL",$reemplazos));
 
     Reporteador::exportar("0001MESAGENERAL",EvssaConstantes::EXCEL,$param);
+    return redirect()->back();
   }
 }

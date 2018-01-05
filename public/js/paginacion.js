@@ -163,20 +163,20 @@ function registraduria(event,evento,url,acme,type){
     if(acme!='A'){
       var keycode = (event.keyCode ? event.keyCode : event.which);
       if(keycode == 13) {
-          $("body").append(htmlCargado());
+            $(".cargando").show();
           $.ajax({
               url: url,
               data: {cedula: $(evento).val(),acme:acme,type:type},
               type: 'GET',
               dataType: 'json',
               success: function (data) {
-                  $(".cargando").remove();
+                  $(".cargando").hide();
                   $(".contenedor").html();
                   $(".contenedor").html(data);
               },
              error: function(error){
-            
-               $(".cargando").remove();
+
+               $(".cargando").hide();
                var data = JSON.parse(error.responseText).errors;
                if(data!=undefined){
                   for(var key in data) {

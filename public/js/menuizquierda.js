@@ -19,7 +19,7 @@ function menuizquierda(opcion){
 
 function getAjax(url){
     $(".contenedor").html();
-    $("body").append(htmlCargado());
+      $(".cargando").show();
     $.get(url,function(resul){
         if(resul.notificacion==undefined){
           $(".contenedor").html(resul);
@@ -29,9 +29,9 @@ function getAjax(url){
           notificacion.crearNotificacion(resul.msj,resul.notificacion);
         }
     }) .done(function( data ) {
-      $(".cargando").remove();
+      $(".cargando").hide();
     }).fail(function(error) {
-      $(".cargando").remove();
+      $(".cargando").hide();
       var data = JSON.parse(error.responseText).errors;
       if(data!=undefined){
          for(var key in data) {

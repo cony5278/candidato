@@ -258,7 +258,19 @@ class PuntoVotacionController extends Controller
 
   }
   public function refrescar(Request $request){
-    return response()->json(view("lugar.punto.tabla")->with(["urllistar"=>"punto","urlgeneral"=>url("/"),"listapuntovotacion"=>Ciudades::join("puntos_votacions","ciudades.id","puntos_votacions.id_ciudad")->orWhere("puntos_votacions.nombre","like","%".$request->buscar."%")->orWhere("puntos_votacions.direccion","like","%".$request->buscar."%")->orWhere("ciudades.nombre","like","%".$request->buscar."%")->select("puntos_votacions.direccion","puntos_votacions.id","puntos_votacions.nombre","ciudades.nombre as ciudad")->paginate(10)
+    dd(Ciudades::join("puntos_votacions","ciudades.id","puntos_votacions.id_ciudad")
+    ->orWhere("puntos_votacions.nombre","like","%".$request->buscar."%")
+    ->orWhere("puntos_votacions.direccion","like","%".$request->buscar."%")
+    ->orWhere("ciudades.nombre","like","%".$request->buscar."%")
+    ->select("puntos_votacions.direccion","puntos_votacions.id","puntos_votacions.nombre","ciudades.nombre as ciudad")->toSql()
+    );
+    return response()->json(view("lugar.punto.tabla")->with(["urllistar"=>"punto","urlgeneral"=>url("/"),"listapuntovotacion"=>
+          Ciudades::join("puntos_votacions","ciudades.id","puntos_votacions.id_ciudad")
+          ->orWhere("puntos_votacions.nombre","like","%".$request->buscar."%")
+          ->orWhere("puntos_votacions.direccion","like","%".$request->buscar."%")
+          ->orWhere("ciudades.nombre","like","%".$request->buscar."%")
+          ->select("puntos_votacions.direccion","puntos_votacions.id","puntos_votacions.nombre","ciudades.nombre as ciudad")
+          ->paginate(10)
     ])->render());
   }
 
@@ -292,7 +304,7 @@ class PuntoVotacionController extends Controller
   public function oprimirPdf($buscar){
 
     $reemplazos=array(
-      "buscar"=>str_replace(" ",".c*",$buscar)
+          "buscar"=>$buscar==".c*"?"":str_replace(" ",".c*",$buscar)
     );
     $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("002PUNTOSVOTACION",$reemplazos));
 
@@ -304,7 +316,7 @@ class PuntoVotacionController extends Controller
   */
   public function oprimirExcel($buscar){
     $reemplazos=array(
-      "buscar"=>str_replace(" ",".c*",$buscar)
+          "buscar"=>$buscar==".c*"?"":str_replace(" ",".c*",$buscar)
     );
     $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("002PUNTOSVOTACION",$reemplazos));
 

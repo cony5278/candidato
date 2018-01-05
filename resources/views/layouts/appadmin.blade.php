@@ -35,7 +35,7 @@
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
-
+@include('layouts.cargando')
 @include('alert.notificacion')
 
 <!-- Navigation-->
@@ -141,12 +141,7 @@
 
 
 
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
-                <a class="nav-link" href="#">
-                    <i class="fa fa-fw fa-link"></i>
-                    <span class="nav-link-text">Link</span>
-                </a>
-            </li>
+
         </ul>
         <ul class="navbar-nav sidenav-toggler">
             <li class="nav-item">
@@ -157,7 +152,7 @@
         </ul>
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-                <img id="imagePreview-header-logo-campana" width="{{$compania->ancho}}" height="$compania->alto" src="{{$compania->imagen=='default.png'?'archivos/\\default.png':'archivos/'.Auth::user()->type.'/'.Auth::user()->id.'/'.$compania->imagen}}" class="img-thumbnail" />
+                <img id="imagePreview-header-logo-campana" width="{{$compania->ancho}}" height="$compania->alto" src="{{$compania->imagen=='default.png'?'archivos/\\default.png':'archivos/S/'.$compania->imagen}}" class="img-thumbnail" />
           </li>
           <li class="nav-item">
               <a class="nav-link" data-toggle="modal" onclick="mostrarSeccionMenu('A','compania','001');getAjaxModal('usuario/'+{{Auth::user()->id}}+'/edit','modal-edicion',null)" data-target="#modal-edicion">

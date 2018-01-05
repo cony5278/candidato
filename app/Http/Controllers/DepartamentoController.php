@@ -256,7 +256,8 @@ class DepartamentoController extends Controller
     */
         public function refrescar(Request $request){
 
-          return response()->json(view("lugar.departamento.tabla")->with(["urllistar"=>"departamento","urlgeneral"=>url("/"),"listadepartamentos"=>Departamentos::where("nombre","like","%".$request->buscar."%")->paginate(10)])->render());
+          return response()->json(view("lugar.departamento.tabla")->with(["urllistar"=>"departamento","urlgeneral"=>url("/"),"listadepartamentos"=>
+          Departamentos::where("nombre","like","%".$request->buscar."%")->paginate(10)])->render());
       }
 
       /**
@@ -265,7 +266,7 @@ class DepartamentoController extends Controller
       public function oprimirPdf($buscar){
 
         $reemplazos=array(
-          "buscar"=>str_replace(" ",".c*",$buscar)
+            "buscar"=>$buscar==".c*"?"":str_replace(" ",".c*",$buscar)
         );
         $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0003DEPARTAMENTOS",$reemplazos));
 
@@ -277,7 +278,7 @@ class DepartamentoController extends Controller
       */
       public function oprimirExcel($buscar){
         $reemplazos=array(
-          "buscar"=>str_replace(" ",".c*",$buscar)
+              "buscar"=>$buscar==".c*"?"":str_replace(" ",".c*",$buscar)
         );
         $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0003DEPARTAMENTOS",$reemplazos));
 

@@ -88,7 +88,7 @@ return Departamentos::join("ciudades","departamentos.id","ciudades.id_departamen
 });
 
 Route::get('/select', function () {
-  return view("auth.admin.form.formacionacademica");
+  return config('app.url');
 });
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
@@ -108,6 +108,8 @@ Route::group(['middleware'=>'super'],function(){
 });
 
 Route::group(['middleware'=>'comun'],function(){
+  Route::resource('compania', 'CompaniaController',  ['only' => ['create', 'store', 'update', 'destroy','edit','index']]);
+
   Route::get('usuarioe/refrescar', 'UsuarioEController@refrescar');
   Route::get('usuario/refrescar', 'UsuarioAController@refrescar');
   Route::get('oprimirusuariogeneralpdf/{buscar}', 'UsuarioAController@oprimirPdf');

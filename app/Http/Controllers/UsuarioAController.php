@@ -251,14 +251,18 @@ class UsuarioAController extends Controller
         }
         $usuario=$this->actualizar($usuario,$request);
 
-        $listar=$this->cargarListaPersona();
-        $listar->setPath(url("home"));
-          return response()->json([
-              EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
-              EvssaConstantes::MSJ=>"Se ha actualizado correctamente el usuario.",
-              "html"=>response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'A','urllistar'=>'usuario',"urlgeneral"=>url("/"),'urlreportepdfgeneral'=>'oprimirusuariogeneralpdf','urlreporteexcelgeneral'=>'oprimirusuariogeneralexcel'])->render())
+            if($request->ajax()) {
+                $listar=$this->cargarListaPersona();
+                $listar->setPath(url("home"));
+                  return response()->json([
+                      EvssaConstantes::NOTIFICACION=> EvssaConstantes::SUCCESS,
+                      EvssaConstantes::MSJ=>"Se ha actualizado correctamente el usuario.",
+                      "html"=>response()->json(view('auth.admin.listar')->with(['listarusuario'=>$listar,'type'=>'A','urllistar'=>'usuario',"urlgeneral"=>url("/"),'urlreportepdfgeneral'=>'oprimirusuariogeneralpdf','urlreporteexcelgeneral'=>'oprimirusuariogeneralexcel'])->render())
 
-          ]);
+                  ]);
+            }else{
+              return redirect()->back();
+            }
         } catch (EvssaException $e) {
             return response()->json([
                 EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
@@ -270,6 +274,9 @@ class UsuarioAController extends Controller
                  EvssaConstantes::MSJ=>"Registro secundario encontrado",
              ],400);
         }
+
+
+
 
     }
 

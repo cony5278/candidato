@@ -33,7 +33,7 @@
 </div>
 
 <div class="form-group">
-  <img id="imagePreview-general" width="200" height="200" src="{{$compania->imagen=='default.png'?'archivos/\\default.png':'archivos/'.Auth::user()->type.'/'.Auth::user()->id.'/'.$compania->imagen}}" class="img-thumbnail" />
+  <img id="imagePreview-general" width="200" height="200" src="{{$compania->imagen=='default.png'?'archivos/\\default.png':'archivos/S/'.$compania->imagen}}" class="img-thumbnail" />
 </div>
 <div class="form-group">
     <label for="exampleInputEmail1">Ancho de la imagen:</label>

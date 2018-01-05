@@ -265,8 +265,18 @@ class CiudadController extends Controller
 *refrescar la tabla
 */
     public function refrescar(Request $request){
+      dd(  Departamentos::join("ciudades","departamentos.id","ciudades.id_departamento")
+        ->orWhere("ciudades.nombre","like","%".$request->buscar."%")
+        ->orWhere("departamentos.nombre","like","%".$request->buscar."%")
+        ->select("ciudades.id","ciudades.nombre as ciudad","departamentos.nombre as departamento")->toSql()
+        );
+
         return response()->json(view("lugar.ciudad.tabla")->with(["urllistar"=>"ciudad","urlgeneral"=>url("/"),"listaciudades"=>
-        Departamentos::join("ciudades","departamentos.id","ciudades.id_departamento")->orWhere("ciudades.nombre","like","%".$request->buscar."%")->orWhere("departamentos.nombre","like","%".$request->buscar."%")->select("ciudades.id","ciudades.nombre as ciudad","departamentos.nombre as departamento")->paginate(10)])->render());
+        Departamentos::join("ciudades","departamentos.id","ciudades.id_departamento")
+        ->orWhere("ciudades.nombre","like","%".$request->buscar."%")
+        ->orWhere("departamentos.nombre","like","%".$request->buscar."%")
+        ->select("ciudades.id","ciudades.nombre as ciudad","departamentos.nombre as departamento")
+        ->paginate(10)])->render());
     }
 
     /**

@@ -10,9 +10,10 @@
   -moz-opacity: 0.67;
   -khtml-opacity: 0.67;
   opacity: 0.77;
-  z-index: 1500;
+  z-index: 2000;
   margin: 0px;
   padding: 0px;
+
 }
 .contenedor-cargando{
   position: relative;

@@ -35,7 +35,12 @@ class User extends Authenticatable
         return $this->where("type",$tipo)->paginate(2);
     }
     public function getAllUsuarioRefresh(Request $request,$type){
-
+      dd($this->where(function ($query) use($request) {
+                   $query->orWhere("NAME","LIKE","%".$request->buscar."%")
+                       ->orWhere("NAME2","LIKE","%".$request->buscar."%")
+                       ->orWhere("LASTNAME","LIKE","%".$request->buscar."%")
+                       ->orWhere("LASTNAME2","LIKE","%".$request->buscar."%");
+               })->where("type","=",$type)->toSql());
       return $this->where(function ($query) use($request) {
                    $query->orWhere("NAME","LIKE","%".$request->buscar."%")
                        ->orWhere("NAME2","LIKE","%".$request->buscar."%")

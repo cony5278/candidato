@@ -19,10 +19,16 @@ class MDAdmin
     {
         $usuario=\Auth::user();
         if($usuario->type=='E'){
-          return response()->json([
-              EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
-              EvssaConstantes::MSJ=>'admin',
-          ]);
+          if($request->ajax()) {
+            return response()->json([
+                EvssaConstantes::NOTIFICACION=> EvssaConstantes::DANGER,
+                EvssaConstantes::MSJ=>"No tiene privilegios para acceder a este recurso consulte al administrador del sistema",
+            ],400);
+          }else{
+            Session::flash(EvssaConstantes::NOTIFICACION,EvssaConstantes::DANGER);
+            Session::flash(EvssaConstantes::MSJ,"No tiene privilegios para acceder a este recurso consulte al administrador del sistema");
+            return redirect()->to("home");
+          }
         }
         return $next($request);
     }
