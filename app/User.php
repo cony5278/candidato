@@ -32,25 +32,20 @@ class User extends Authenticatable
     ];
 
     public function getAllUsuarioAdmin($tipo){
-        return $this->where("type",$tipo)->paginate(2);
+        return $this->where("type",$tipo)->paginate(10);
     }
     public function getAllUsuarioRefresh(Request $request,$type){
-      dd($this->where(function ($query) use($request) {
-                   $query->orWhere("NAME","LIKE","%".$request->buscar."%")
-                       ->orWhere("NAME2","LIKE","%".$request->buscar."%")
-                       ->orWhere("LASTNAME","LIKE","%".$request->buscar."%")
-                       ->orWhere("LASTNAME2","LIKE","%".$request->buscar."%");
-               })->where("type","=",$type)->toSql());
+
       return $this->where(function ($query) use($request) {
                    $query->orWhere("NAME","LIKE","%".$request->buscar."%")
                        ->orWhere("NAME2","LIKE","%".$request->buscar."%")
                        ->orWhere("LASTNAME","LIKE","%".$request->buscar."%")
                        ->orWhere("LASTNAME2","LIKE","%".$request->buscar."%");
-               })->where("type","=",$type)->paginate(2);
+               })->where("type","=",$type)->paginate(10);
     }
 
     public function getAllUsuarioTodo(){
-        return $this->paginate(2);
+        return $this->paginate(10);
     }
     public function actualizar(Request $request, $id){
         $registro=$this->where('id', '=', $id)->first();
