@@ -2,13 +2,45 @@
 formacion=[];
 photo = new Array();
 
-
+function oprimirReporte(formulario,tipo){
+  console.log("oprimio");
+  $("#tiporeporte").val(tipo);
+  $("#"+formulario).submit();
+}
 
 
 function onCargandoSubmit(){
     $(".cargando").show();
 }
+function getAjaxReporte(url,opcion,elemento){
+    $(".cargando").show();
+    var valor=$("#"+elemento).val()==""?".c*":$("#"+elemento).val();
+    $.get(opcion==1?url:url+"/"+valor,function(resul){
+      console.log("reporte");
+      var notificacion = new Notificacion();
+      notificacion.crearContenedor();
+      notificacion.crearNotificacion("Se descargo correctamente el reporte","INFO");
+    }) .done(function( data ) {
+      $(".cargando").hide();
+    }).fail(function(error) {
+      $(".cargando").hide();
+      var data = JSON.parse(error.responseText).errors;
+      if(data!=undefined){
+         for(var key in data) {
 
+                 var notificacion = new Notificacion();
+                 notificacion.crearContenedor();
+                 notificacion.crearNotificacion(data[key],"DANGER");
+         }
+
+       }else{
+         data = JSON.parse(error.responseText);
+         var notificacion = new Notificacion();
+         notificacion.crearContenedor();
+         notificacion.crearNotificacion(data.msj,data.notificacion);
+       }
+    });
+}
 function getAjax(url){
     $(".contenedor").html();
     $(".cargando").show();

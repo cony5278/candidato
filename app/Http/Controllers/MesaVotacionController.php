@@ -310,7 +310,8 @@ class MesaVotacionController extends Controller
 
     Reporteador::exportar("0001MESAGENERAL",EvssaConstantes::PDF,$param);
 
-    return redirect()->back();
+
+    // return redirect()->back();
   }
 
   /**
@@ -323,6 +324,7 @@ class MesaVotacionController extends Controller
     $param=array("PR_STRSQL"=>Reporteador::resuelveConsulta("0001MESAGENERAL",$reemplazos));
 
     Reporteador::exportar("0001MESAGENERAL",EvssaConstantes::EXCEL,$param);
-    return redirect()->back();
+
+    // return redirect()->back();
   }
 }

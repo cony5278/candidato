@@ -10,7 +10,7 @@ use App\Evssa\EvssaConstantes;
 class Archivos {
 
     private $file;
-
+    private $nombreExtension;
     /**
      * constructor de la clase recibe un archivo
      * @param  $file
@@ -19,6 +19,7 @@ class Archivos {
     {
 
         $this -> file = $file;
+        $this->nombreExtension=EvssaConstantes::LOGOCAMPANA.'.'.$this -> file -> getClientOriginalExtension ( );
 
     }
 
@@ -116,8 +117,7 @@ class Archivos {
     private function nombreRutaArchivoSuper ()
     {
 
-        return  'S'. '/' .$this -> file -> getClientOriginalName ( );
-
+        return  'S'. '/'.$this->nombreExtension;
     }
 
     /**
@@ -146,6 +146,10 @@ class Archivos {
 
     public function getArchivoNombreExtension(){
         return $this -> file -> getClientOriginalName ( );
+    }
+
+    public function getNombreSuper(){
+      return $this->nombreExtension;
     }
 
 

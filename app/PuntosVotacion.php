@@ -25,9 +25,10 @@ class PuntosVotacion extends Model
         return $this->where('nombre','like','%'.$buscar.'%')->get();
     }
     function getListarpuntoDespliegueFinal(Request $request){
-      return $this->where('nombre','like','%'.$request->buscar.'%')->where("id_ciudad","=",$request->id)->get();
+
+      return $this->where('direccion','like','%'.$request->buscar.'%')->where("id_ciudad","=",$request->id)->get();
     }
-  
+
     public function  crear($direccion,$ciudad){
         $this->direccion=$direccion;
         $this->id_ciudad=$ciudad->id;

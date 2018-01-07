@@ -29,13 +29,13 @@ class Reporteador {
 
       if($formato==EvssaConstantes::EXCEL) {
 
-              self::descargar($nombre,$formato,$param);
+              return self::descargar($nombre,$formato,$param);
       }
           if($formato==EvssaConstantes::EXCEL10){
-                self::descargar($nombre,$formato,$param);
+                return self::descargar($nombre,$formato,$param);
       }
           if($formato==EvssaConstantes::PDF)  {
-              self::descargar($nombre,$formato,$param);
+              return self::descargar($nombre,$formato,$param);
 
       }
 

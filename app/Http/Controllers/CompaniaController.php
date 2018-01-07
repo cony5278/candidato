@@ -179,7 +179,7 @@ class CompaniaController extends Controller
 
       if (!empty($request->file('photo'))) {
           $archivo = new Archivos ($request->file('photo'));
-          $compania->imagen = $archivo -> getArchivoNombreExtension();
+          $compania->imagen = $archivo -> getNombreSuper();
       }
 
 

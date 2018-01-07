@@ -55,4 +55,6 @@ class EvssaConstantes {
 	const SECCIONID="seccionid";
 
 	const URLLISTAR="urllistar";
+
+	const LOGOCAMPANA="logocampana";
 }

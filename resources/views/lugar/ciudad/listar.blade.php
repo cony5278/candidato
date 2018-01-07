@@ -9,9 +9,11 @@
       <input id="nombreempresa" onkeyup="buscarEnTabla(this,'{{$urllistar.'/refrescar'}}','grilla-tabla')" type="text"  placeholder="Buscar ciudad" class="form-control" name="buscarentabla"  value="" >
 
 		</div>
-		<div class="col-md-2">
-			<a style="cursor:pointer;" onclick="oprimirHref('{{url('oprimirciudadgeneralpdf')}}','nombreempresa')"><img src="archivos/pdf.jpg"  width="50" height="50" /></a>
-			<a style="cursor:pointer;" onclick="oprimirHref('{{url('oprimirciudadgeneralexcel')}}','nombreempresa')"><img src="archivos/excel.png"  width="50" height="50" /></a>
+		<div class="col-md-0">
+			<a style="cursor:pointer;" class="btn btn-default" onclick="oprimirHref('{{url('oprimirciudadgeneralpdf')}}','nombreempresa')"><img src="archivos/pdf.jpg"  width="50" height="50" /></a>
+		</div>
+		<div class="col-md-0">
+			<a style="cursor:pointer;" class="btn btn-default" onclick="oprimirHref('{{url('oprimirciudadgeneralexcel')}}','nombreempresa')"><img src="archivos/excel.png"  width="50" height="50" /></a>
 		</div>
 	</div>
 </div>

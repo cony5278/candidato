@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="0001MESAGENERAL" language="groovy" pageWidth="510" pageHeight="842" columnWidth="470" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="352402d9-1b13-4acc-b7f7-28c3e9c5b207">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="38"/>
+	<property name="ireport.y" value="9"/>
 	<parameter name="PR_STRSQL" class="java.lang.String"/>
 	<parameter name="PR_STRSQLAUX" class="java.lang.String">
 		<defaultValueExpression><![CDATA[$P{PR_STRSQL}.replace(".c*"," ")]]></defaultValueExpression>
@@ -132,25 +132,25 @@
 	<detail>
 		<band height="36" splitType="Stretch">
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="70" height="20" uuid="bbab4571-18c9-45d5-aa36-640a7cb5ebd9"/>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="0" width="70" height="20" isPrintWhenDetailOverflows="true" uuid="bbab4571-18c9-45d5-aa36-640a7cb5ebd9"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{ID}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="170" y="0" width="100" height="20" uuid="7552435a-6008-405a-b0b9-0d7c28b6389f"/>
+				<reportElement stretchType="RelativeToBandHeight" x="170" y="0" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="7552435a-6008-405a-b0b9-0d7c28b6389f"/>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$F{NUMERO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="270" y="0" width="100" height="20" uuid="f341f2a5-f1ac-4483-bc88-0be118e11504"/>
+				<reportElement stretchType="RelativeToBandHeight" x="270" y="0" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="f341f2a5-f1ac-4483-bc88-0be118e11504"/>
 				<textFieldExpression><![CDATA[$F{DEPARTAMENTO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="370" y="0" width="100" height="20" uuid="31b1f365-e78d-44b2-bff2-0fd74ab976ec"/>
+				<reportElement stretchType="RelativeToBandHeight" x="370" y="0" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="31b1f365-e78d-44b2-bff2-0fd74ab976ec"/>
 				<textFieldExpression><![CDATA[$F{CIUDAD}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement stretchType="RelativeToBandHeight" x="70" y="0" width="100" height="20" uuid="5acaefd0-29f1-4466-a088-58b6b30b188d"/>
+				<reportElement stretchType="RelativeToBandHeight" x="70" y="0" width="100" height="20" isPrintWhenDetailOverflows="true" uuid="5acaefd0-29f1-4466-a088-58b6b30b188d"/>
 				<textFieldExpression><![CDATA[$F{DIRECCION}]]></textFieldExpression>
 			</textField>
 		</band>

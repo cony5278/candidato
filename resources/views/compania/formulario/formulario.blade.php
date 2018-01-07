@@ -51,7 +51,7 @@
     <small id="emailHelp" class="form-text text-muted">Señor usuario digite el nombre de la convocatoria ejemplo(senado,camara...) .</small>
 </div>
 <div class="form-group">
-    <label for="exampleInputEmail1">Buscar Año:</label>
+    <label for="exampleInputEmail1">Buscar año:</label>
     <input type="number" onkeyup="despliegueCombo(this,'{{$urldespliegue}}')" class="form-control"  value="{{empty($ano)?'':$ano->numero}}" placeholder="ano">
     <small id="emailHelp" class="form-text text-muted">Señor usuario seleccione un año.</small>
 </div>
@@ -68,7 +68,7 @@
 
 
 <div class="form-group">
-    <label for="exampleInputEmail1">Buscar Mes:</label>
+    <label for="exampleInputEmail1">Buscar mes:</label>
     <input type="text" onkeyup="despliegueComboClass(this,'{{$urldesplieguefinal}}','desplieguemes','')" class="form-control"  value="{{empty($mes)?'':$mes->nombre}}" placeholder="mes">
     <small id="emailHelp" class="form-text text-muted">Señor usuario seleccione un mes.</small>
 </div>

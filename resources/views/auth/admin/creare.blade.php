@@ -212,7 +212,7 @@
 
             <div class="form-group">
                 <label for="exampleInputEmail1">Buscar Punto de votación:</label>
-                <input type="text" style="text-align:center" onkeyup="despliegueComboFinal(this,'{{$urlpunto}}','desplieguefinal','desplieguepunto');limpiar([desplieguemesa'])" class="form-control"  value="{{empty($punto)?'':$punto->direccion}}" placeholder="punto">
+                <input type="text" style="text-align:center" onkeyup="despliegueComboFinal(this,'{{$urlpunto}}','desplieguefinal','desplieguepunto');limpiar(['desplieguemesa'])" class="form-control"  value="{{empty($punto)?'':$punto->direccion}}" placeholder="punto">
                 <small id="emailHelp" class="form-text text-muted">Señor seleccione un punto de votación.</small>
             </div>
 
@@ -244,7 +244,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label style="text-align:center !important;"  for="exampleInputEmail1">Potencial de votos:</label>
+                <label align="center"  for="exampleInputEmail1">Potencial de votos:</label>
                 <input style="text-align:center;"  type="number" name="potencial" class="form-control"  value="{{empty($usuario->potencial)?'':$usuario->potencial}}" placeholder="potencial votante">
                 <small id="emailHelp" class="form-text text-muted">Potencial electoral. <span for="exampleInputEmail1" data-toggle="modal" data-target="#modal-potencial" style="cursor:pointer;font-weight:bold; color:#f79625 !important;" onclick="calcularPotencial('{{empty($usuario)?'':$usuario->id}}')">Ver.</span></small>
 

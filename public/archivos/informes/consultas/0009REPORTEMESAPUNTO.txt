@@ -1,0 +1,12 @@
+SELECT departamentos.nombre as departamentos,ciudades.nombre as ciudad, concat_ws(' ',NAME,NAME2,LASTNAME,LASTNAME2) as nombre,puntos_votacions.direccion,mesas_votacions.numero FROM departamentos INNER JOIN ciudades
+ON departamentos.ID=ciudades.id_departamento
+INNER JOIN puntos_votacions ON
+ciudades.id=puntos_votacions.id_ciudad 
+INNER JOIN mesas_votacions ON
+puntos_votacions.ID=mesas_votacions.id_punto 
+INNER JOIN users ON 
+mesas_votacions.id=users.id_mesa
+WHERE departamentos.id='s$departamento$s'
+and ciudades.id='s$ciudad$s'
+and puntos_votacions.id='s$punto$s'
+order by users.id

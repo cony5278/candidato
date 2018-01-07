@@ -154,6 +154,10 @@ Route::group(['middleware'=>'comun'],function(){
   //mes
   Route::resource('mes', 'mesController',  ['only' => ['index']]);
   Route::get('mes/refrescar','MesController@refrescar');
+//formulari mesa informes
+  Route::resource('mesaforminforme', 'MesaInformeController',  ['only' => ['index']]);
+  Route::post('oprimirinformemesa', 'MesaInformeController@oprimirPdf')->name('oprimirPdf');
+
 
 });
 Route::group(['middleware'=>'admin'],function(){

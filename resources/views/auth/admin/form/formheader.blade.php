@@ -72,7 +72,7 @@
     </div>
 
     <div class="form-group">
-         <label for="exampleInputEmail1">Correo electronico:</label>
+         <label for="exampleInputEmail1">Correo Electrónico:</label>
          <input id="email" type="email" placeholder="Correo electronico" class="form-control" name="email" value="{{empty($usuario->email)? old('email') :$usuario->email}}" required>
 
     </div>

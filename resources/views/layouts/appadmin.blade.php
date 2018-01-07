@@ -133,7 +133,7 @@
                         <a onclick="mostrarSeccionMenu('I','mesa','')">Mesa</a>
                     </li>
                     <li>
-                        <a href="#">Informe</a>
+                        <a onclick="mostrarSeccionMenu('I','mesaforminforme','')">Informe</a>
                     </li>
 
                 </ul>
