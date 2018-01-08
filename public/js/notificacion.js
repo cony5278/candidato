@@ -45,7 +45,7 @@ function Notificacion(){
 		        codigo+="    <div class='alert p-3 mb-2 bg-danger text-white cambiar-notificacion'>";
 		        codigo+="        <button  type='button' class='close' data-dismiss='alert' aria-hidden='true'>";
 		        codigo+="            ×</button>";
-		        codigo+="        <i class='fa fa-hand-o-right' aria-hidden='true'></i></span> <strong>Evssa Software</strong>";
+		        codigo+="        <i class='fa fa-hand-o-right' aria-hidden='true'></i></span> <strong>Software Electoral CRD</strong>";
 		        codigo+="        <hr class='message-inner-separator'>";
 		        codigo+="        <p>";
 		        codigo+=mensaje;
@@ -59,7 +59,7 @@ function Notificacion(){
 		        codigo+="    <div class='alert p-3 mb-2 bg-warning text-dark cambiar-notificacion'>";
 		        codigo+="        <button  type='button' class='close' data-dismiss='alert' aria-hidden='true'>";
 		        codigo+="            ×</button>";
-		        codigo+="        <i class='fa fa-dot-circle-o' aria-hidden='true'></i> <strong>Evssa Software</strong>";
+		        codigo+="        <i class='fa fa-dot-circle-o' aria-hidden='true'></i> <strong>Software Electoral CRD</strong>";
 		        codigo+="        <hr class='message-inner-separator'>";
 		        codigo+="        <p>";
 		        codigo+=mensaje;
@@ -74,7 +74,7 @@ function Notificacion(){
 		        codigo+="    <div class='alert p-3 mb-2 bg-info text-white cambiar-notificacion'>";
 		        codigo+="        <button  type='button' class='close' data-dismiss='alert' aria-hidden='true'>";
 		        codigo+="            ×</button>";
-		        codigo+="        <i class='fa fa-info-circle' aria-hidden='true'></i> <strong>Evssa Software</strong>";
+		        codigo+="        <i class='fa fa-info-circle' aria-hidden='true'></i> <strong>Software Electoral CRD</strong>";
 		        codigo+="        <hr class='message-inner-separator'>";
 		        codigo+="        <p>";
 		        codigo+=mensaje;
@@ -89,7 +89,7 @@ function Notificacion(){
 		        codigo+="    <div class='alert p-3 mb-2 bg-success text-white cambiar-notificacion'>";
 		        codigo+="        <button  type='button' class='close' data-dismiss='alert' aria-hidden='true'>";
 		        codigo+="            ×</button>";
-		        codigo+="        <i class='fa fa-check-circle' aria-hidden='true'></i> <strong>Mensaje exitoso</strong>";
+		        codigo+="        <i class='fa fa-check-circle' aria-hidden='true'></i> <strong>Software Electoral CRD</strong>";
 		        codigo+="        <hr class='message-inner-separator'>";
 		        codigo+="        <p>";
 		        codigo+=mensaje;

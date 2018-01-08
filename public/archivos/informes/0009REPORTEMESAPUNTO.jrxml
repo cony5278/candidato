@@ -21,20 +21,24 @@
 	<field name="numero" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<variable name="nombre_1" class="java.lang.Integer" resetType="Page" calculation="Count">
+		<variableExpression><![CDATA[$F{nombre}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="143" splitType="Stretch">
+		<band height="157" splitType="Stretch">
 			<staticText>
 				<reportElement x="167" y="40" width="284" height="92" uuid="8a090e28-a808-4bc0-b650-772edd97e3bf"/>
 				<textElement textAlignment="Center">
 					<font fontName="Tahoma" size="20" isBold="true"/>
 				</textElement>
-				<text><![CDATA[UBICACIÓN DE PERSONAS EN LOS PUNTOS DE VOTACIÓN]]></text>
+				<text><![CDATA[PUNTO Y MESAS DE VOTACIÓN]]></text>
 			</staticText>
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="312" y="10" width="168" height="20" uuid="62551112-163e-40e4-917a-e4b89a38fdb3"/>
+				<reportElement x="387" y="10" width="168" height="20" uuid="62551112-163e-40e4-917a-e4b89a38fdb3"/>
+				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<image>
@@ -50,6 +54,17 @@
 				<reportElement x="247" y="10" width="40" height="20" uuid="f5924f7c-86cb-4f5a-9e00-f18b05acd808"/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
+			<textField evaluationTime="Page">
+				<reportElement x="335" y="132" width="100" height="25" uuid="6c6c17e4-f47f-44ae-8e75-0f11d463f7fb"/>
+				<textFieldExpression><![CDATA[$V{nombre_1}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="167" y="132" width="168" height="25" uuid="9bd5098b-8828-4c2d-b7ef-ddc4ca461f5b"/>
+				<textElement textAlignment="Left">
+					<font fontName="Tahoma" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD DE PERSONAS:]]></text>
+			</staticText>
 		</band>
 	</pageHeader>
 	<columnHeader>
