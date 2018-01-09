@@ -32,7 +32,7 @@ class User extends Authenticatable
     ];
 
     public function getAllUsuarioAdmin($tipo){
-        dd($this->where("type",$tipo)->paginate(10)->toSql());
+
         return $this->where("type",$tipo)->paginate(10);
     }
     public function getAllUsuarioRefresh(Request $request,$type){

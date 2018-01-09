@@ -261,6 +261,9 @@ class UsuarioAController extends Controller
 
                   ]);
             }else{
+              Session::flash(EvssaConstantes::NOTIFICACION,EvssaConstantes::SUCCESS,);
+              Session::flash(EvssaConstantes::MSJ,"Se ha actualizado correctamente el usuario.");
+
               return redirect()->back();
             }
         } catch (EvssaException $e) {
