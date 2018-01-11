@@ -43,6 +43,8 @@ class Reporteador {
   }
 
   private static function descargar($nombre,$formato,$param){
+      $param["PR_IMAGE"]=public_path('archivos').'\\'.'logoaux.png';
+      // dd($param);
       $jasper = new JasperPHP;
       $output = public_path('archivos').'\informes';
       $input =$output.'\\'.$nombre.'.jrxml';

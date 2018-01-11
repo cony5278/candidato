@@ -7,6 +7,7 @@
 	<parameter name="PR_STRSQLAUX" class="java.lang.String">
 		<defaultValueExpression><![CDATA[$P{PR_STRSQL}.replace(".c*"," ")]]></defaultValueExpression>
 	</parameter>
+	<parameter name="PR_IMAGE" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[$P!{PR_STRSQLAUX}]]>
 	</queryString>
@@ -31,7 +32,7 @@
 		<band height="103" splitType="Stretch">
 			<image>
 				<reportElement x="0" y="0" width="157" height="96" uuid="7899454d-c934-4b44-b51f-4d467f44b595"/>
-				<imageExpression><![CDATA["F:\\electoral\\electoral\\public\\archivos\\logoaux.png"]]></imageExpression>
+				<imageExpression><![CDATA[$P{PR_IMAGE}]]></imageExpression>
 			</image>
 			<staticText>
 				<reportElement x="157" y="47" width="284" height="30" uuid="68301776-97eb-4909-8fb5-993b28293b44"/>
