@@ -1,4 +1,4 @@
-SELECT departamentos.nombre as departamentos,ciudades.nombre as ciudad, concat_ws(' ',NAME,NAME2,LASTNAME,LASTNAME2) as nombre,puntos_votacions.direccion,mesas_votacions.numero FROM departamentos INNER JOIN ciudades
+SELECT departamentos.nombre as departamentos,ciudades.nombre as ciudad, concat_ws(' ',NAME,NAME2,LASTNAME,LASTNAME2) as usuario,puntos_votacions.direccion,mesas_votacions.numero FROM departamentos INNER JOIN ciudades
 ON departamentos.ID=ciudades.id_departamento
 INNER JOIN puntos_votacions ON
 ciudades.id=puntos_votacions.id_ciudad 
